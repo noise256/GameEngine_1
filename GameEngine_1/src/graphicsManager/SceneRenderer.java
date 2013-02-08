@@ -489,6 +489,7 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 		updateObservers(keyPressedEvent);
 	}
 
+	boolean originShift = false;
 	@Override
 	public void keyReleased(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_LEFT) {
@@ -517,6 +518,18 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 		}
 		if (e.getKeyCode() == KeyEvent.VK_N) {
 			Constants.displayNormals = Constants.displayNormals ? false : true;
+		}
+		if (e.getKeyCode() == KeyEvent.VK_O) {
+			if (!originShift) {
+				camera.translate(new Vector3D(1.0, 0.0, 0.0), -25000);
+				camera.translate(new Vector3D(0.0, 1.0, 0.0), -25000);
+				originShift = true;
+			}
+			else {
+				camera.translate(new Vector3D(1.0, 0.0, 0.0), 25000);
+				camera.translate(new Vector3D(0.0, 1.0, 0.0), 25000);
+				originShift = false;
+			}
 		}
 		InputUpdateEvent inputEvent = new InputUpdateEvent(this, e);
 		updateObservers(inputEvent);

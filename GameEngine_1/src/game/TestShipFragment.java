@@ -1,13 +1,13 @@
 package game;
 
 import gameManager.GameManager;
-import graphicsManager.Constants;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
 
 import javax.media.opengl.GL3bc;
 
+import modelManager.TextureLoader;
 import objectManager.GameObject;
 import objectManager.ObjectType;
 
@@ -21,6 +21,7 @@ import brickManager.Brick.BrickType;
 import brickManager.BrickObject;
 import collisionManager.Collidable;
 
+import com.jogamp.opengl.util.texture.Texture;
 
 public class TestShipFragment extends BrickObject {
 
@@ -67,94 +68,37 @@ public class TestShipFragment extends BrickObject {
 	public void updateView() {
 		if (sceneNodes.get("root") == null) {
 			SceneNode root = new SceneNode(null) {
+				private Texture metalTexture;
+				
 				@Override
 				public void update(GL3bc gl) {
+					if (metalTexture == null) {
+						TextureLoader.loadTexture(gl, "metal1", "data/border.png");
+						metalTexture = TextureLoader.getTexture("metal1");
+					}
+					metalTexture.enable(gl);
+					metalTexture.bind(gl);
+					
 					gl.glPushMatrix();
 
-					gl.glEnable(GL3bc.GL_BLEND);
-					gl.glEnable(GL3bc.GL_LIGHTING);
-					
 					// translate and rotate
 					gl.glTranslatef((float) position.getX(), (float) position.getY(), 0);
 					gl.glRotatef((float) (orientation * 180 / Math.PI), 0, 0, 1);
 					
-
-			        
-					for (Brick brick : bricks) {
-						ArrayList<Float> vertices = brick.getVertices();
-				        ArrayList<Float> normals = brick.getNormals((float) getRadius());
-				        ArrayList<Float> textureCoords = brick.getTextureCoords();
-				        
-						gl.glPushMatrix();
+					for (int i = 0; i < bricks.size(); i++) {
+						Brick brick = bricks.get(i);
+						brick.updateView();
 						
-						gl.glEnable(GL3bc.GL_BLEND);
-						gl.glEnable(GL3bc.GL_LIGHTING);
-						gl.glEnable(GL3bc.GL_TEXTURE_2D);
-						
-						gl.glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
-						gl.glScalef(1.0f, 1.0f, 1.0f);
-						
-						gl.glTranslatef((float) brick.getPosition().getX(), (float) brick.getPosition().getY(), 0.0f);
-						
-						gl.glBegin(GL3bc.GL_TRIANGLES);
-						for (int j = 0; j < vertices.size(); j+=9) {
-							gl.glNormal3f(normals.get(j), normals.get(j+1), normals.get(j+2));
-							gl.glTexCoord3f(textureCoords.get(j), textureCoords.get(j+1), textureCoords.get(j+2));
-							gl.glVertex3f(vertices.get(j), vertices.get(j+1), vertices.get(j+2) + 5);
-							
-							gl.glNormal3f(normals.get(j+3), normals.get(j+4), normals.get(j+5));
-							gl.glTexCoord3f(textureCoords.get(j+3), textureCoords.get(j+4), textureCoords.get(j+5));
-							gl.glVertex3f(vertices.get(j+3), vertices.get(j+4), vertices.get(j+5) + 5);
-							
-							gl.glNormal3f(normals.get(j+6), normals.get(j+7), normals.get(j+8));
-							gl.glTexCoord3f(textureCoords.get(6), textureCoords.get(j+7), textureCoords.get(j+8));
-							gl.glVertex3f(vertices.get(j+6), vertices.get(j+7), vertices.get(j+8) + 5);
-						}
-						gl.glEnd();
-
-						gl.glDisable(GL3bc.GL_BLEND);
-						gl.glDisable(GL3bc.GL_LIGHTING);
-						gl.glDisable(GL3bc.GL_TEXTURE_2D);
-						
-						gl.glPopMatrix();
-						
-//						gl.glPushMatrix();
-//						gl.glTranslatef((float) brick.getPosition().getX(), (float) brick.getPosition().getY(), 0.0f);
-//						
-//						ArrayList<Float> vertices = brick.getVertices();
-//				        ArrayList<Float> normals = brick.getNormals((float) getRadius());
-//				        
-//						gl.glPushMatrix();
-//						gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-//						gl.glScalef(1.0f, 1.0f, 1.0f);
-//						gl.glBegin(GL3bc.GL_TRIANGLES);
-//						for (int i = 0; i < vertices.size(); i+=3) {
-//							gl.glNormal3f(normals.get(i), normals.get(i+1), normals.get(i+2));
-//							gl.glVertex3f(vertices.get(i), vertices.get(i+1), vertices.get(i+2) + 1);
-//						}
-//						gl.glEnd();
-//						gl.glPopMatrix();
-						
-						if (Constants.displayNormals) {
+						for (SceneNode brickView : brick.getView()) {
 							gl.glPushMatrix();
-							gl.glDisable(GL3bc.GL_LIGHTING);
-							gl.glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
-							gl.glLineWidth(0.5f);
-							gl.glBegin(GL3bc.GL_LINES);
-							for (int i = 0; i < vertices.size(); i+=3) {
-								gl.glVertex3f(vertices.get(i), vertices.get(i+1), vertices.get(i+2) + 2);
-								gl.glVertex3f(normals.get(i)*1.5f, normals.get(i+1)*1.5f, normals.get(i+2) + 2);
+							if (brick.isExploding()) {
+								gl.glRotatef((float) -(orientation * 180 / Math.PI), 0, 0, 1);
 							}
-							gl.glEnd();
-							gl.glEnable(GL3bc.GL_LIGHTING);
+							brickView.update(gl);
 							gl.glPopMatrix();
 						}
-						
-						gl.glPopMatrix();
 					}
 					
-					gl.glDisable(GL3bc.GL_BLEND);
-					gl.glDisable(GL3bc.GL_LIGHTING);
 					gl.glPopMatrix();
 				}
 			};

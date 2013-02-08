@@ -115,6 +115,10 @@ public class TestShip extends Agent {
 	//TODO this is pretty general stuff, things like processing a move order etc. should be moved to the engine
 	@Override
 	public void update() {
+		if (getBrickFromIndex(0).getHealth() <= 0) {
+			setAlive(false);
+		}
+		
 		updateBricks();
 		
 		ArrayList<PhysicalObject> newGameObjects = new ArrayList<PhysicalObject>();
@@ -178,10 +182,6 @@ public class TestShip extends Agent {
 		Brick closest = getClosestBrick(collider.getPosition());
 		
 		closest.setHealth(closest.getHealth() - 1);
-		
-		if (getBrickFromIndex(0).getHealth() <= 0) {
-			setAlive(false);
-		}
 	}
 
 	@Override
