@@ -21,6 +21,7 @@ public class TestProjectile extends Agent {
 	private boolean exploding = false;
 	private int explosionTimer = 10;
 	
+	
 	public TestProjectile(GameObject source, Hashtable<String, Double> values, double lifeDecrement) {
 		super(ObjectType.PROJECTILE, source, values, null, null);
 		this.lifeDecrement = lifeDecrement;
