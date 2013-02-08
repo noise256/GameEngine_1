@@ -211,7 +211,7 @@ public class TestProjectile extends Agent {
 
 	@Override
 	public boolean canCollide() {
-		if (alive && !exploding && life > 0) {
+		if (life > 0) {
 			return true;
 		}
 		else {
