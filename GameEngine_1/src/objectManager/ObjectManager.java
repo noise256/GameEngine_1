@@ -49,11 +49,6 @@ public class ObjectManager implements Observable<ObjectEvent>, Observer<ObjectCh
 	private ArrayList<PhysicalObject> objectsToRemove = new ArrayList<PhysicalObject>();
 	
 	/**
-	 * Collection of dead game objects.
-	 */
-	private ArrayList<PhysicalObject> deadObjects = new ArrayList<PhysicalObject>();
-	
-	/**
 	 * Collection of selected game objects.
 	 */
 	private ArrayList<Agent> selectedAgents = new ArrayList<Agent>();

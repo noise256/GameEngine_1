@@ -162,12 +162,6 @@ public class TestProjectile extends Agent {
 				setAlive(false);
 			}
 		}
-		
-		if (!alive) {
-			ArrayList<PhysicalObject> changedObject = new ArrayList<PhysicalObject>();
-			changedObject.add(this);
-			updateObservers(new ObjectChangeEvent(this, ObjectChangeType.REMOVAL, changedObject));
-		}
 	}
 
 	@Override

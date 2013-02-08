@@ -3,7 +3,7 @@ package objectManager;
 import graphicsManager.Constants;
 
 import java.util.ArrayList;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Hashtable;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
@@ -12,15 +12,15 @@ import physicsManager.PhysicalObject;
 public class EntityHashMap {
 	private int mapWidth;
 	private int mapHeight;
-	private ConcurrentHashMap<Integer, ConcurrentHashMap<Integer, ArrayList<PhysicalObject>>> objectMap;
+	private Hashtable<Integer, Hashtable<Integer, ArrayList<PhysicalObject>>> objectMap;
 	
 	public EntityHashMap(int mapWidth, int mapHeight) {
 		this.mapWidth = mapWidth;
 		this.mapHeight = mapHeight;
-		objectMap = new ConcurrentHashMap<Integer, ConcurrentHashMap<Integer, ArrayList<PhysicalObject>>>();
+		objectMap = new Hashtable<Integer, Hashtable<Integer, ArrayList<PhysicalObject>>>();
 		
 		for (int i = 0; i < mapWidth; i++) {
-			objectMap.put(i, new ConcurrentHashMap<Integer, ArrayList<PhysicalObject>>());
+			objectMap.put(i, new Hashtable<Integer, ArrayList<PhysicalObject>>());
 			for (int j = 0; j < mapHeight; j++) {
 				objectMap.get(i).put(j, new ArrayList<PhysicalObject>());
 			}
@@ -37,7 +37,7 @@ public class EntityHashMap {
 		if (objectMap.get(tC[0]).get(tC[1]).remove(physicalObject)) {
 		}
 		else {
-			throw new EntityHashMapException("Could not remove physicalObject from map: physicalObject does not exist @: " + tC[0] + " " + tC[1]);
+			throw new EntityHashMapException("Could not remove physicalObject: " + physicalObject + " @: [" + i + ", " + j + "] from map: physicalObject does not exist @: " + tC[0] + " " + tC[1]);
 		}
 	}
 	
@@ -84,14 +84,18 @@ public class EntityHashMap {
 		}
 		return entities;
 	}
+	
 	/**
 	 * 
 	 * @param x
 	 * @param y
 	 * @return
 	 */
-	private int[] translateCoordinates(double x, double y) {
-		return new int[] {(int) (x / Constants.modelWidth), (int) (y / Constants.modelHeight)};
+	public int[] translateCoordinates(double x, double y) {
+		return new int[] {
+				Math.min(mapWidth-1, (int) (x / Constants.modelWidth * mapWidth)), 
+				Math.min(mapHeight-1, (int) (y / Constants.modelHeight * mapHeight))
+		};
 	}
 }
 

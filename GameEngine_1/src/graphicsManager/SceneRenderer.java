@@ -399,6 +399,7 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 		cameraControlTable.put("rDown", false);
 	}
 
+	@SuppressWarnings("unused")
 	private void initFog(GL3bc gl) {
 		float density = 0.1f;
 		float[] colour = new float[] {0.5f, 0.5f, 0.5f, 1.0f};

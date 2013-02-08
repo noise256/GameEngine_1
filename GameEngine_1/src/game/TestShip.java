@@ -179,12 +179,6 @@ public class TestShip extends Agent {
 		
 		closest.setHealth(closest.getHealth() - 1);
 		
-//		if (brick.getHealth() <= 0) {
-//			for (Brick adjacent : getAdjacentBricks(brick.getIndex())) {
-//				adjacent.setHealth(adjacent.getHealth() - 8);
-//			}
-//		}
-		
 		if (getBrickFromIndex(0).getHealth() <= 0) {
 			setAlive(false);
 		}
