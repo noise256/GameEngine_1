@@ -6,8 +6,6 @@ import java.util.Hashtable;
 import javax.media.opengl.GL3bc;
 
 import objectManager.GameObject;
-import objectManager.ObjectChangeEvent;
-import objectManager.ObjectChangeEvent.ObjectChangeType;
 import objectManager.ObjectType;
 import physicsManager.PhysicalObject;
 import sceneManager.SceneNode;
