@@ -120,7 +120,7 @@ public class ShipSquareBrick extends SquareBrick {
 							// translate and rotate
 							gl.glTranslatef(particles[i][0], particles[i][1], 0);
 							
-							gl.glColor4f(1.0f, 1.0f, 0.0f, particles[i][4]);
+							gl.glColor4f(1.0f, 0.5f, 0.0f, particles[i][4]);
 							gl.glBegin(GL3bc.GL_QUADS);
 								gl.glVertex3f(1.0f, 1.0f, 0.0f);
 								gl.glVertex3f(1.0f, -1.0f, 0.0f);

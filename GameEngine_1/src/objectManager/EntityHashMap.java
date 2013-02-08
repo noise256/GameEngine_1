@@ -78,7 +78,7 @@ public class EntityHashMap {
 		for (int i = Math.max(tc[0] - 1, 0); i <= Math.min(tc[0] + 1, objectMap.size()); i++) {
 			for (int j = Math.max(tc[1] - 1, 0); j <= Math.min(tc[1] + 1, objectMap.get(0).size()); j++) {
 				for (PhysicalObject match : objectMap.get(i).get(j)) {
-						entities.add(match);
+					entities.add(match);
 				}
 			}
 		}
@@ -93,8 +93,8 @@ public class EntityHashMap {
 	 */
 	public int[] translateCoordinates(double x, double y) {
 		return new int[] {
-				Math.min(mapWidth-1, (int) (x / Constants.modelWidth * mapWidth)), 
-				Math.min(mapHeight-1, (int) (y / Constants.modelHeight * mapHeight))
+			Math.min(mapWidth-1, (int) (x / Constants.modelWidth * mapWidth)), 
+			Math.min(mapHeight-1, (int) (y / Constants.modelHeight * mapHeight))
 		};
 	}
 }

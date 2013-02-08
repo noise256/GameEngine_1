@@ -33,11 +33,7 @@ public class TestShipFragment extends BrickObject {
 	public void collide(Collidable collider) {
 		Brick brick = getClosestBrick(collider.getPosition());
 		
-		brick.setHealth(brick.getHealth() - 1);
-		
-		if (bricks.get(0).getHealth() <= 0) {
-			setAlive(false);
-		}
+		brick.setHealth(brick.getHealth() - 10);
 	}
 
 	@Override
@@ -108,6 +104,10 @@ public class TestShipFragment extends BrickObject {
 
 	@Override
 	public void update() {
+		if (getBrickFromIndex(0) == null) {
+			setAlive(false);
+		}
+		
 		updateBricks();
 	}
 
@@ -165,6 +165,11 @@ public class TestShipFragment extends BrickObject {
 
 	@Override
 	public boolean canCollide() {
-		return true;
+		if (alive) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 }
