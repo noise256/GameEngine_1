@@ -115,7 +115,7 @@ public class TestShip extends Agent {
 	//TODO this is pretty general stuff, things like processing a move order etc. should be moved to the engine
 	@Override
 	public void update() {
-		if (getBrickFromIndex(0).getHealth() <= 0) {
+		if (getBrickFromIndex(0) == null) {
 			setAlive(false);
 		}
 		
@@ -157,10 +157,6 @@ public class TestShip extends Agent {
 					currentOrder = null;
 				}
 			}
-		}
-		
-		if (bricks.isEmpty()) {
-			setAlive(false);
 		}
 		
 		if (!newGameObjects.isEmpty()) {

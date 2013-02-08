@@ -37,7 +37,7 @@ public abstract class BrickObject extends PhysicalObject {
 				brick.setExploding(true);
 				brick.setExplosionTimer(brick.getExplosionTimer() - 1);
 				
-				if (brick.getHealth() <= 0 && brick.getExplosionTimer() <= 0) {
+				if (brick.getHealth() <= 0) {
 					brick.setAlive(false);
 				}
 			}
@@ -67,7 +67,7 @@ public abstract class BrickObject extends PhysicalObject {
 	private void removeDeadBricks() {
 		ArrayList<Brick> toRemove = new ArrayList<Brick>();
 		for (Brick brick : bricks) {
-			if (!brick.isAlive()) {
+			if (!brick.isAlive() && brick.getExplosionTimer() <= 0) {
 				toRemove.add(brick);
 			}
 		}

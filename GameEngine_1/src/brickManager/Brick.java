@@ -33,6 +33,10 @@ public abstract class Brick implements EntityView {
 
 	protected boolean alive = true;
 	protected boolean exploding = false;
+	
+	/**
+	 * Must be greater than 0.
+	 */
 	protected int explosionTimer = 10;
 	
 	public Brick(BrickType brickType, int index, int health, Vector2D position, float edgeLength, int numSegments) {
