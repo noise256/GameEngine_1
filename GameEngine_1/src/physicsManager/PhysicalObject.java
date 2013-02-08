@@ -35,8 +35,6 @@ public abstract class PhysicalObject extends GameObject implements Collidable {
 	protected double turningForce;
 	protected double maxTurningForce;
 	
-	protected boolean canCollide;
-	
 	public PhysicalObject(ObjectType objectType, GameObject source, Hashtable<String, Double> values) {
 		super(objectType, source);
 		

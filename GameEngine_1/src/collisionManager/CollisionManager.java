@@ -15,7 +15,7 @@ public class CollisionManager {
 				.getNearbyEntities(collidable.getPosition());
 
 		for (PhysicalObject object : nearbyObjects) {
-			if (collidable.canCollide() && collidable.canCollide()) {
+			if (object.canCollide() && collidable.canCollide()) {
 				if (!collidable.equals(object) && !isParent(collidable, object) && !isSameParent(collidable, object)) {
 					if (compareCircleBounds(collidable, object)) {
 						if (compareLineBounds(collidable, object)) {

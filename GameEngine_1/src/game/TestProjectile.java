@@ -153,7 +153,6 @@ public class TestProjectile extends Agent {
 		life -= lifeDecrement;
 
 		if (life <= 0) {
-			canCollide = false;
 			exploding = true;
 			explosionTimer -= 1;
 			
@@ -212,7 +211,12 @@ public class TestProjectile extends Agent {
 
 	@Override
 	public boolean canCollide() {
-		return canCollide;
+		if (alive && !exploding && life > 0) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 	
 	

@@ -54,7 +54,7 @@ public class TestShipFragment extends BrickObject {
 		}
 		
 		if (max.getBrickType() == BrickType.SQUARE) {
-			return max.getPosition().getNorm() + + Math.sqrt(max.getEdgeLength()*2 + max.getEdgeLength()*2);
+			return max.getPosition().getNorm() + Math.sqrt(max.getEdgeLength()*2 + max.getEdgeLength()*2);
 		}
 		else if (max.getBrickType() == BrickType.TRIANGLE) {
 			return max.getPosition().getNorm();

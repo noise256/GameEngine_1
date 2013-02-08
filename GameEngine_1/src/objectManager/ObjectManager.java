@@ -61,7 +61,24 @@ public class ObjectManager implements Observable<ObjectEvent>, Observer<ObjectCh
 	/**
 	 * Increments a time step for each object in the game.
 	 */
-	public void tick() {
+	public void tick() {		
+		/**
+		 * Iterate through current objects.
+		 */
+		for (PhysicalObject physicalObject : physicalObjects) {
+			physicalObject.update();
+			
+			PhysicsEngine.update(physicalObject);
+			
+			entityHashMap.moveEntity(physicalObject);
+			
+			CollisionManager.checkCollisions(physicalObject, entityHashMap);
+			
+			if (!physicalObject.isAlive()) {
+				objectsToRemove.add(physicalObject);
+			}
+		}
+		
 		/**
 		 * Add new objects.
 		 */
@@ -84,35 +101,6 @@ public class ObjectManager implements Observable<ObjectEvent>, Observer<ObjectCh
 		}
 		objectsToRemove.clear();
 		
-		/**
-		 * Iterate through current objects.
-		 */
-		for (PhysicalObject physicalObject : physicalObjects) {
-			physicalObject.update();
-			
-			PhysicsEngine.update(physicalObject);
-			
-			entityHashMap.moveEntity(physicalObject);
-			
-			CollisionManager.checkCollisions(physicalObject, entityHashMap);
-			
-			if (!physicalObject.isAlive()) {
-				objectsToRemove.add(physicalObject);
-			}
-		}
-		
-//		/**
-//		 * Remove dead objects.
-//		 */
-//		for (PhysicalObject physicalObject : deadObjects) {
-//			physicalObjects.remove(physicalObject);
-//			try {
-//				entityHashMap.removeEntity(physicalObject, physicalObject.getPosition().getX(), physicalObject.getPosition().getY());
-//			} catch (EntityHashMapException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//		deadObjects.clear();
 		updateObservers(getObjectManagerUpdateEvent());
 	}
 	

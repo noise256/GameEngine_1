@@ -180,8 +180,8 @@ public class TestShip extends Agent {
 	@Override
 	public void collide(Collidable collider) {
 		Brick closest = getClosestBrick(collider.getPosition());
-		
-		closest.setHealth(closest.getHealth() - 1);
+
+		closest.setHealth(closest.getHealth() - 10);
 	}
 
 	@Override
