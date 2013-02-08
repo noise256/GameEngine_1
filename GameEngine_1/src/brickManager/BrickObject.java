@@ -56,7 +56,7 @@ public abstract class BrickObject extends PhysicalObject {
 		for (Brick brick : bricks) {
 			absolutePosition = MathBox.rotatePoint(brick.getPosition(), orientation).add(position);
 			double distance = absolutePosition.distance(colliderPosition);
-			if (distance < min) {
+			if (distance < min && !brick.isExploding() && brick.isAlive()) {
 				closest = brick;
 				min = distance;
 			}

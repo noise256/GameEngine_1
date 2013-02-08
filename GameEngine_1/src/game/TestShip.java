@@ -175,9 +175,9 @@ public class TestShip extends Agent {
 
 	@Override
 	public void collide(Collidable collider) {
-		Brick brick = getClosestBrick(collider.getPosition());
+		Brick closest = getClosestBrick(collider.getPosition());
 		
-		brick.setHealth(brick.getHealth() - 1);
+		closest.setHealth(closest.getHealth() - 1);
 		
 //		if (brick.getHealth() <= 0) {
 //			for (Brick adjacent : getAdjacentBricks(brick.getIndex())) {
@@ -198,7 +198,7 @@ public class TestShip extends Agent {
 		
 		Brick max = bricks.get(0);
 		for (Brick brick : bricks) {
-			if (brick.getPosition().getNorm() > max.getPosition().getNorm()) {
+			if (!brick.isExploding() && brick.isAlive() && brick.getPosition().getNorm() > max.getPosition().getNorm()) {
 				max = brick;
 			}
 		}
@@ -269,6 +269,11 @@ public class TestShip extends Agent {
 
 	@Override
 	public boolean canCollide() {
-		return true;
+		if (alive) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 }
