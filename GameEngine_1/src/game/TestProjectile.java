@@ -106,7 +106,7 @@ public class TestProjectile extends Agent {
 								particles[i][1] += particles[i][3];
 								particles[i][2] = Math.abs(particles[i][2] * 0.99f) >= particles[i][2] * 0.1f ? particles[i][2] * 0.99f : particles[i][2] * 0.1f;
 								particles[i][3] = Math.abs(particles[i][3] * 0.99f) >= particles[i][3] * 0.1f ? particles[i][3] * 0.99f : particles[i][3] * 0.1f;
-								
+								particles[i][4] = particles[i][4] - 1/200 > 0.0f ? particles[i][4] - 1/200 : 0.0f;
 							}
 						}
 						
