@@ -10,8 +10,6 @@ import modelManager.TextureLoader;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
-import com.jogamp.opengl.util.texture.Texture;
-
 import sceneManager.SceneNode;
 import utilityManager.MathBox;
 import brickManager.SquareBrick;
@@ -25,16 +23,12 @@ public class ShipSquareBrick extends SquareBrick {
 	public void updateView() {
 		if (sceneNodes.get("root") == null && !exploding) {
 			SceneNode root = new SceneNode(null) {
-				private Texture metalTexture;
-				
 				@Override
 				public void update(GL3bc gl) {
-					if (metalTexture == null) {
-						TextureLoader.loadTexture(gl, "metal1", "BrickTexture1.png");
-						metalTexture = TextureLoader.getTexture("metal1");
+					if (!TextureLoader.getCurrentTextureName().equals("BrickTexture1")) {
+						TextureLoader.loadTexture(gl, "BrickTexture1", "BrickTexture1.png");
+						TextureLoader.setCurrentTexture(gl, "BrickTexture1");
 					}
-					metalTexture.enable(gl);
-					metalTexture.bind(gl);
 					
 					ArrayList<Float> vertices = getVertices();
 					ArrayList<Float> normals = getNormals((float) parent.getRadius());
@@ -98,20 +92,15 @@ public class ShipSquareBrick extends SquareBrick {
 		else if (exploding) {
 			if (sceneNodes.get("explosionNode") == null) {
 				SceneNode explosionNode = new SceneNode(null) {
-					private Texture projectileTexture;
-					
 					private int numParticles = 100;
 					private float[][] particles;
 					
 					@Override
 					public void update(GL3bc gl) {
-						if (projectileTexture == null) {
-							TextureLoader.loadTexture(gl, "projectile1", "ProjectileTexture1.png");
-							projectileTexture = TextureLoader.getTexture("projectile1");
+						if (!TextureLoader.getCurrentTextureName().equals("ProjectileTexture1")) {
+							TextureLoader.loadTexture(gl, "ProjectileTexture1", "ProjectileTexture1.png");
+							TextureLoader.setCurrentTexture(gl, "ProjectileTexture1");
 						}
-						
-						projectileTexture.enable(gl);
-						projectileTexture.bind(gl);
 						
 						if (particles == null) {
 							particles = new float[numParticles][5];

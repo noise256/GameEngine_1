@@ -28,7 +28,6 @@ import com.jogamp.newt.event.KeyListener;
 import com.jogamp.newt.event.MouseEvent;
 import com.jogamp.newt.event.MouseListener;
 import com.jogamp.opengl.util.gl2.GLUT;
-import com.jogamp.opengl.util.texture.Texture;
 
 import eventManager.Observable;
 import eventManager.Observer;
@@ -42,8 +41,6 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 	private GLU glu = new GLU();
 
 	private Camera camera;
-
-	private Texture skybox;
 	
 	private Hashtable<String, Boolean> cameraControlTable = new Hashtable<String, Boolean>();
 
@@ -83,11 +80,11 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 	
 	
 	private void drawSkybox(GL3bc gl) {
-		if (skybox == null) {
-			TextureLoader.loadTexture(gl, "skybox", "stars1.png");
-			skybox = TextureLoader.getTexture("skybox");
+		if (!TextureLoader.getCurrentTextureName().equals("SkyBox1")) {
+			TextureLoader.loadTexture(gl, "SkyBox1", "stars1.png");
+			TextureLoader.setCurrentTexture(gl, "SkyBox1");
 		}
-		
+	    
 		gl.glPushMatrix();
 		gl.glLoadIdentity();
 		
@@ -100,8 +97,7 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 	    
 	    gl.glColor4f(1,1,1,1);
 	    
-	    skybox.enable(gl);
-	    skybox.bind(gl);
+
 	    
 	    // Render the front quad
 	    gl.glBegin(GL3bc.GL_QUADS);

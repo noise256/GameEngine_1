@@ -5,10 +5,7 @@ import java.util.Hashtable;
 
 import javax.media.opengl.GL3bc;
 
-import com.jogamp.opengl.util.texture.Texture;
-
 import modelManager.TextureLoader;
-
 import objectManager.GameObject;
 import objectManager.ObjectType;
 import physicsManager.PhysicalObject;
@@ -35,17 +32,12 @@ public class TestProjectile extends Agent {
 	public void updateView() {
 		if (sceneNodes.get("root") == null && !exploding) {
 			SceneNode root = new SceneNode(null) {
-				private Texture projectileTexture;
-				
 				@Override
 				public void update(GL3bc gl) {
-					if (projectileTexture == null) {
-						TextureLoader.loadTexture(gl, "projectile1", "ProjectileTexture1.png");
-						projectileTexture = TextureLoader.getTexture("projectile1");
+					if (!TextureLoader.getCurrentTextureName().equals("ProjectileTexture1")) {
+						TextureLoader.loadTexture(gl, "ProjectileTexture1", "ProjectileTexture1.png");
+						TextureLoader.setCurrentTexture(gl, "ProjectileTexture1");
 					}
-					
-					projectileTexture.enable(gl);
-					projectileTexture.bind(gl);
 
 					gl.glEnable(GL3bc.GL_BLEND);
 					gl.glEnable(GL3bc.GL_TEXTURE_2D);
@@ -84,20 +76,15 @@ public class TestProjectile extends Agent {
 		else if (exploding) {
 			if (sceneNodes.get("explosionNode") == null) {
 				SceneNode explosionNode = new SceneNode(null) {
-					private Texture projectileTexture;
-					
 					private int numParticles = 100;
 					private float[][] particles;
 					
 					@Override
 					public void update(GL3bc gl) {
-						if (projectileTexture == null) {
-							TextureLoader.loadTexture(gl, "projectile1", "ProjectileTexture1.png");
-							projectileTexture = TextureLoader.getTexture("projectile1");
+						if (!TextureLoader.getCurrentTextureName().equals("ProjectileTexture1")) {
+							TextureLoader.loadTexture(gl, "ProjectileTexture1", "ProjectileTexture1.png");
+							TextureLoader.setCurrentTexture(gl, "ProjectileTexture1");
 						}
-						
-						projectileTexture.enable(gl);
-						projectileTexture.bind(gl);
 						
 						if (particles == null) {
 							particles = new float[numParticles][5];
