@@ -63,8 +63,8 @@ public abstract class Ship extends Agent {
 			}
 		}
 		else {
-			stopTurning();
 			stop();
+			stopTurning();
 		}
 		
 		//update subsystem states
