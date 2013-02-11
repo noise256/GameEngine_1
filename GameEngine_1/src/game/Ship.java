@@ -62,6 +62,10 @@ public abstract class Ship extends Agent {
 				}
 			}
 		}
+		else {
+			stopTurning();
+			stop();
+		}
 		
 		//update subsystem states
 		ArrayList<SubSystem> subSystemsToRemove = new ArrayList<SubSystem>();
@@ -75,12 +79,15 @@ public abstract class Ship extends Agent {
 			system.setOrientation(orientation);
 			
 			if (system.getSubSystemType() == SubSystemType.weapon && currentOrder != null) {
-				if (currentOrder.getAgentInputType() == AgentInputType.ATTACK && ((TestWeapon) system).isInRange(((AgentInputAttack) currentOrder).getTarget().getPosition())) {
+				if (currentOrder.getAgentInputType() == AgentInputType.ATTACK && ((TestWeapon) system).isValidTarget(((AgentInputAttack) currentOrder).getTarget())) {
 					system.setActivated(true);
 				}
 				else {
 					system.setActivated(false);
 				}
+			}
+			else {
+				system.setActivated(false);
 			}
 			
 			system.update();

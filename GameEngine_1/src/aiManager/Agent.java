@@ -69,7 +69,13 @@ public abstract class Agent extends BrickObject implements Selectable {
 	
 	protected void moveTo(Vector2D destination) {
 		//curent relative destination vec
-		Vector2D dest = getDestinationVec(destination).normalize();
+		Vector2D dest = null;
+		try {
+			dest = getDestinationVec(destination).normalize();
+		}
+		catch (MathArithmeticException e) {
+			dest = new Vector2D(0.0, 0.0);
+		}
 		
 		//current velocity vec
 		Vector2D vel = null;
@@ -101,19 +107,20 @@ public abstract class Agent extends BrickObject implements Selectable {
 		return destination.subtract(position);
 	}
 	
-//	public void stop() {
-//		if (turnTo(velocityVec.negate())) {
-//			double possibleAcceleration = maxForce/mass;
-//			double requiredAcceleration = Math.sqrt(Math.pow(velocityVec.getX(), 2) + Math.pow(velocityVec.getY(), 2));
-//			
-//			if (possibleAcceleration <= requiredAcceleration) {
-//				setForce(maxForce);
-//			}
-//			else {
-//				setForce(mass * requiredAcceleration);
-//			}
-//		}
-//	}
+	public void stop() {
+		Vector2D dest = new Vector2D(0.0, 0.0);
+		
+		double posAcc = maxForce/mass;
+		double reqAcc = dest.getNorm() - velocityVec.getNorm();
+		
+		setForce(dest.subtract(velocityVec));
+		if (Math.abs(reqAcc) > posAcc) {
+			setForceMagnitude(maxForce);
+		}
+		else {
+			setForceMagnitude(reqAcc);
+		}
+	}
 	
 	public void turnTo(Vector2D vec) {
 		Vector2D zeroVec = new Vector2D(1.0, 0.0);

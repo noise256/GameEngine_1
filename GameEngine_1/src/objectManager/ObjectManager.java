@@ -223,6 +223,7 @@ public class ObjectManager implements Observable<ObjectEvent>, Observer<ObjectCh
 		
 		return CollisionManager.checkPointCollisions(position, entityHashMap);
 	}
+	
 	@Override
 	public void update(ObjectChangeEvent event) {
 		if (event.getChangeType() == ObjectChangeType.CREATION) {

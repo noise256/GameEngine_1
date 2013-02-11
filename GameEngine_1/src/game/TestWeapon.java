@@ -8,6 +8,8 @@ import objectManager.GameObject;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
+import physicsManager.PhysicalObject;
+
 import utilityManager.MathBox;
 
 import brickManager.SystemBrick;
@@ -79,11 +81,14 @@ public class TestWeapon extends SubSystem {
 	public void updateView() {
 	}
 	
-	public boolean isInRange(Vector2D target) {
-		if (position.add(systemBrick.getPosition()).distance(target) <= maxRange) {
-			return true;
+	public boolean isValidTarget(PhysicalObject target) {
+		if (!target.isAlive()) {
+			return false;
 		}
-		return false;
+		else if (position.add(systemBrick.getPosition()).distance(target.getPosition()) > maxRange) {
+			return false;
+		}
+		return true;
 	}
 	
 	public ArrayList<TestProjectile> getProjectiles() {
