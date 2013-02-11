@@ -18,6 +18,8 @@ public class TestWeapon extends SubSystem {
 
 	private double lifeDecrement;
 	
+	private double maxRange;
+	
 	private ArrayList<TestProjectile> projectiles = new ArrayList<TestProjectile>();
 	
 	public TestWeapon(GameObject source, SystemBrick systemBrick, Vector2D position, double orientation, double fireIncrement, double lifeDecrement) {
@@ -25,6 +27,8 @@ public class TestWeapon extends SubSystem {
 		this.source = source;
 		this.fireIncrement = fireIncrement;
 		this.lifeDecrement = lifeDecrement;
+		
+		this.maxRange = 5 * (1/lifeDecrement);
 	}
 
 	private void fire() {
@@ -75,6 +79,13 @@ public class TestWeapon extends SubSystem {
 	public void updateView() {
 	}
 	
+	public boolean isInRange(Vector2D target) {
+		if (position.add(systemBrick.getPosition()).distance(target) <= maxRange) {
+			return true;
+		}
+		return false;
+	}
+	
 	public ArrayList<TestProjectile> getProjectiles() {
 		return projectiles;
 	}
@@ -92,5 +103,9 @@ public class TestWeapon extends SubSystem {
 	}
 
 	public void setVelocity(Vector2D velocity) {
+	}
+
+	public double getMaxRange() {
+		return maxRange;
 	}
 }

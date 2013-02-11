@@ -161,7 +161,7 @@ public class TestShip extends Agent {
 			system.setOrientation(orientation);
 			
 			if (system.getSubSystemType() == SubSystemType.weapon && currentOrder != null) {
-				if (currentOrder.getAgentInputType() == AgentInputType.ATTACK) {
+				if (currentOrder.getAgentInputType() == AgentInputType.ATTACK && ((TestWeapon) system).isInRange(((AgentInputAttack) currentOrder).getTarget().getPosition())) {
 					system.setActivated(true);
 				}
 				else {
