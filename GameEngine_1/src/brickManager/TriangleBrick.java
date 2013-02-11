@@ -88,55 +88,55 @@ public abstract class TriangleBrick extends Brick {
 			
 			switch (brickOrientation) {
 			case ZERO:
-				textureCoords.add(edgeLength / 2);
-				textureCoords.add(edgeLength / 2);
+				textureCoords.add(1.0f);
+				textureCoords.add(1.0f);
 				textureCoords.add(0.0f);
 
-				textureCoords.add(edgeLength / 2);
-				textureCoords.add(-edgeLength / 2);
+				textureCoords.add(1.0f);
+				textureCoords.add(0.0f);
 				textureCoords.add(0.0f);
 
-				textureCoords.add(-edgeLength / 2);
-				textureCoords.add(edgeLength / 2);
+				textureCoords.add(0.0f);
+				textureCoords.add(1.0f);
 				textureCoords.add(0.0f);
 				break;
 			case ONE:
-				textureCoords.add(edgeLength / 2);
-				textureCoords.add(edgeLength / 2);
+				textureCoords.add(1.0f);
+				textureCoords.add(1.0f);
 				textureCoords.add(0.0f);
 
-				textureCoords.add(edgeLength / 2);
-				textureCoords.add(-edgeLength / 2);
+				textureCoords.add(1.0f);
+				textureCoords.add(0.0f);
 				textureCoords.add(0.0f);
 
-				textureCoords.add(-edgeLength / 2);
-				textureCoords.add(-edgeLength / 2);
+				textureCoords.add(0.0f);
+				textureCoords.add(0.0f);
 				textureCoords.add(0.0f);
 				break;
 			case TWO:
-				textureCoords.add(edgeLength / 2);
-				textureCoords.add(-edgeLength / 2);
+				textureCoords.add(1.0f);
+				textureCoords.add(0.0f);
 				textureCoords.add(0.0f);
 
-				textureCoords.add(-edgeLength / 2);
-				textureCoords.add(-edgeLength / 2);
+				textureCoords.add(0.0f);
+				textureCoords.add(0.0f);
 				textureCoords.add(0.0f);
 
-				textureCoords.add(-edgeLength / 2);
-				textureCoords.add(edgeLength / 2);
+				textureCoords.add(0.0f);
+				textureCoords.add(1.0f);
 				textureCoords.add(0.0f);
 				break;
 			case THREE:
-				textureCoords.add(edgeLength / 2);
-				textureCoords.add(edgeLength / 2);
+				textureCoords.add(1.0f);
+				textureCoords.add(1.0f);
 				textureCoords.add(0.0f);
 
-				textureCoords.add(-edgeLength / 2);
-				textureCoords.add(-edgeLength / 2);
+				textureCoords.add(0.0f);
+				textureCoords.add(0.0f);
 				textureCoords.add(0.0f);
 
-				textureCoords.add(-edgeLength / 2);
-				textureCoords.add(edgeLength / 2);
+				textureCoords.add(0.0f);
+				textureCoords.add(1.0f);
 				textureCoords.add(0.0f);
 				break;
 			}
