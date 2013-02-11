@@ -19,7 +19,6 @@ public abstract class GameManager implements Runnable, Observer<InputUpdateEvent
 	
 	public GameManager() {
 		GWindow window = new GWindow();
-//		SceneRenderer renderer = new SceneRenderer();
 		glWindow = window.getWindow();
 		glWindow.addGLEventListener(renderer);
 
@@ -29,9 +28,6 @@ public abstract class GameManager implements Runnable, Observer<InputUpdateEvent
 		renderer.addObserver(this);
 
 		// start gwindow and renderer
-//		FPSAnimator animator = new FPSAnimator(glWindow, 60);
-//		animator.add(glWindow);
-//		animator.start();
 		glWindow.addKeyListener(renderer);
 		glWindow.addMouseListener(renderer);
 	}
@@ -66,12 +62,13 @@ public abstract class GameManager implements Runnable, Observer<InputUpdateEvent
 				fps = 0;
 			}
 
-			// update the game logic
+			//update the game logic
 			tick();
 
+			//render
 			glWindow.display();
-//			renderer.display(drawable);
-			// sleep the current thread for the appropriate amount of time
+			
+			//sleep the current thread for the appropriate amount of time
 			try {
 				Thread.sleep(Math.max(0, (lastLoopTime - System.nanoTime() + OPTIMAL_TIME) / 1000000));
 			} catch (InterruptedException e) {
@@ -81,9 +78,7 @@ public abstract class GameManager implements Runnable, Observer<InputUpdateEvent
 	}
 
 	public void tick() {
-		// if (!locked) {
 		objectManager.tick();
-		// }
 	}
 
 	public static ObjectManager getObjectManager() {

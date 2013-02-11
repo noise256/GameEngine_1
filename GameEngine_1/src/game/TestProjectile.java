@@ -5,6 +5,10 @@ import java.util.Hashtable;
 
 import javax.media.opengl.GL3bc;
 
+import com.jogamp.opengl.util.texture.Texture;
+
+import modelManager.TextureLoader;
+
 import objectManager.GameObject;
 import objectManager.ObjectType;
 import physicsManager.PhysicalObject;
@@ -19,7 +23,7 @@ public class TestProjectile extends Agent {
 	private double lifeDecrement;
 
 	private boolean exploding = false;
-	private int explosionTimer = 10;
+	private int explosionTimer = 100;
 	
 	
 	public TestProjectile(GameObject source, Hashtable<String, Double> values, double lifeDecrement) {
@@ -31,49 +35,48 @@ public class TestProjectile extends Agent {
 	public void updateView() {
 		if (sceneNodes.get("root") == null && !exploding) {
 			SceneNode root = new SceneNode(null) {
+				private Texture projectileTexture;
+				
 				@Override
 				public void update(GL3bc gl) {
-					gl.glPushMatrix();
+					if (projectileTexture == null) {
+						TextureLoader.loadTexture(gl, "projectile1", "ProjectileTexture1.png");
+						projectileTexture = TextureLoader.getTexture("projectile1");
+					}
+					
+					projectileTexture.enable(gl);
+					projectileTexture.bind(gl);
 
 					gl.glEnable(GL3bc.GL_BLEND);
-					gl.glDisable(GL3bc.GL_TEXTURE_2D);
+					gl.glEnable(GL3bc.GL_TEXTURE_2D);
+					gl.glDisable(GL3bc.GL_LIGHTING);
+					
+					gl.glPushMatrix();
 					
 					// translate and rotate
 					gl.glTranslatef((float) position.getX(), (float) position.getY(), 0);
 					gl.glRotatef((float) (orientation * 180 / Math.PI), 0, 0, 1);
-
-					// draw
-					float degToRad = (float) Math.PI / 180;
-					float r;
 					
-					gl.glColor4f(1.0f, 0.0f, 0.0f, 0.2f);
-					gl.glBegin(GL3bc.GL_POLYGON);
-					for (int i = 0; i < 360; i++) {
-						r = i * degToRad;
-						gl.glVertex3d(Math.cos(r) * 9, Math.sin(r) * 9, 0.0);
-					}
+					gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+					gl.glBegin(GL3bc.GL_QUADS);
+						gl.glTexCoord3f(1.0f, 1.0f, 0.0f);
+						gl.glVertex3f(10.0f, 10.0f, 0.0f);
+						
+						gl.glTexCoord3f(1.0f, 0.0f, 0.0f);
+						gl.glVertex3f(10.0f, -10.0f, 0.0f);
+						
+						gl.glTexCoord3f(0.0f, 0.0f, 0.0f);
+						gl.glVertex3f(-10.0f, -10.0f, 0.0f);
+						
+						gl.glTexCoord3f(0.0f, 1.0f, 0.0f);
+						gl.glVertex3f(-10.0f, 10.0f, 0.0f);
 					gl.glEnd();
-
-					gl.glColor4f(1.0f, 1.0f, 0.0f, 0.2f);
-					gl.glBegin(GL3bc.GL_POLYGON);
-					for (int i = 0; i < 360; i++) {
-						r = i * degToRad;
-						gl.glVertex3d(Math.cos(r) * 6, Math.sin(r) * 6, 1);
-					}
-					gl.glEnd();
-					
-					gl.glColor4f(1.0f, 1.0f, 1.0f, 0.8f);
-					gl.glBegin(GL3bc.GL_POLYGON);
-					for (int i = 0; i < 360; i++) {
-						r = i * degToRad;
-						gl.glVertex3d(Math.cos(r) * 3, Math.sin(r) * 3, 2);
-					}
-					gl.glEnd();
-					
-					gl.glDisable(GL3bc.GL_BLEND);
-					gl.glEnable(GL3bc.GL_TEXTURE_2D);
 					
 					gl.glPopMatrix();
+					
+					gl.glDisable(GL3bc.GL_BLEND);
+					gl.glDisable(GL3bc.GL_TEXTURE_2D);
+					gl.glEnable(GL3bc.GL_LIGHTING);
 				}
 			};
 			sceneNodes.put("root", root);
@@ -81,11 +84,21 @@ public class TestProjectile extends Agent {
 		else if (exploding) {
 			if (sceneNodes.get("explosionNode") == null) {
 				SceneNode explosionNode = new SceneNode(null) {
+					private Texture projectileTexture;
+					
 					private int numParticles = 100;
 					private float[][] particles;
 					
 					@Override
 					public void update(GL3bc gl) {
+						if (projectileTexture == null) {
+							TextureLoader.loadTexture(gl, "projectile1", "ProjectileTexture1.png");
+							projectileTexture = TextureLoader.getTexture("projectile1");
+						}
+						
+						projectileTexture.enable(gl);
+						projectileTexture.bind(gl);
+						
 						if (particles == null) {
 							particles = new float[numParticles][5];
 							
@@ -93,7 +106,7 @@ public class TestProjectile extends Agent {
 							for (int i = 0; i < numParticles; i++) {
 								particles[i] = new float[] {
 									(float) position.getX(), (float) position.getY(),
-									MathBox.nextFloat() * 5 * MathBox.nextSign(), MathBox.nextFloat() * 5 * MathBox.nextSign(),
+									MathBox.nextFloat() * 0.5f * MathBox.nextSign(), MathBox.nextFloat() * 0.5f * MathBox.nextSign(),
 									MathBox.nextFloat()
 								};
 							}
@@ -106,30 +119,38 @@ public class TestProjectile extends Agent {
 							}
 						}
 						
+						gl.glEnable(GL3bc.GL_BLEND);
+						gl.glEnable(GL3bc.GL_TEXTURE_2D);
+						gl.glDisable(GL3bc.GL_LIGHTING);
+						
 						for (int i = 0; i < numParticles; i++) {
 							//render particles
 							gl.glPushMatrix();
-
-							gl.glEnable(GL3bc.GL_BLEND);
-							gl.glDisable(GL3bc.GL_TEXTURE_2D);
 							
 							// translate and rotate
 							gl.glTranslatef(particles[i][0], particles[i][1], 0);
 							
-							gl.glColor4f(1.0f, 1.0f, 0.0f, particles[i][4]);
+							gl.glColor4f(1.0f, 1.0f, 1.0f, particles[i][4]);
 							gl.glBegin(GL3bc.GL_QUADS);
-								gl.glVertex3f(1.0f, 1.0f, 0.0f);
-								gl.glVertex3f(1.0f, -1.0f, 0.0f);
-								gl.glVertex3f(-1.0f, -1.0f, 0.0f);
-								gl.glVertex3f(-1.0f, 1.0f, 0.0f);
+								gl.glTexCoord3f(1.0f, 1.0f, 0.0f);
+								gl.glVertex3f(2.5f, 2.5f, 0.0f);
+								
+								gl.glTexCoord3f(1.0f, 0.0f, 0.0f);
+								gl.glVertex3f(2.5f, -2.5f, 0.0f);
+								
+								gl.glTexCoord3f(0.0f, 0.0f, 0.0f);
+								gl.glVertex3f(-2.5f, -2.5f, 0.0f);
+								
+								gl.glTexCoord3f(0.0f, 1.0f, 0.0f);
+								gl.glVertex3f(-2.5f, 2.5f, 0.0f);
 							gl.glEnd();
-							
-							gl.glDisable(GL3bc.GL_BLEND);
-							gl.glEnable(GL3bc.GL_TEXTURE_2D);
 							
 							gl.glPopMatrix();
 						}
-
+						
+						gl.glDisable(GL3bc.GL_BLEND);
+						gl.glDisable(GL3bc.GL_TEXTURE_2D);
+						gl.glEnable(GL3bc.GL_LIGHTING);
 					}
 				};
 				sceneNodes.put("explosionNode", explosionNode);

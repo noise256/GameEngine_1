@@ -6,7 +6,11 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL3bc;
 
+import modelManager.TextureLoader;
+
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+
+import com.jogamp.opengl.util.texture.Texture;
 
 import sceneManager.SceneNode;
 import utilityManager.MathBox;
@@ -21,8 +25,17 @@ public class ShipSystemBrick extends SystemBrick {
 	public void updateView() {
 		if (sceneNodes.get("root") == null && !exploding) {
 			SceneNode root = new SceneNode(null) {
+				private Texture metalTexture;
+				
 				@Override
 				public void update(GL3bc gl) {
+					if (metalTexture == null) {
+						TextureLoader.loadTexture(gl, "metal1", "BrickTexture1.png");
+						metalTexture = TextureLoader.getTexture("metal1");
+					}
+					metalTexture.enable(gl);
+					metalTexture.bind(gl);
+					
 					ArrayList<Float> vertices = getVertices();
 					ArrayList<Float> normals = getNormals((float) parent.getRadius());
 					ArrayList<Float> textureCoords = getTextureCoords();
@@ -88,8 +101,18 @@ public class ShipSystemBrick extends SystemBrick {
 					private int numParticles = 100;
 					private float[][] particles;
 					
+					private Texture projectileTexture;
+					
 					@Override
 					public void update(GL3bc gl) {
+						if (projectileTexture == null) {
+							TextureLoader.loadTexture(gl, "projectile1", "ProjectileTexture1.png");
+							projectileTexture = TextureLoader.getTexture("projectile1");
+						}
+						
+						projectileTexture.enable(gl);
+						projectileTexture.bind(gl);
+						
 						if (particles == null) {
 							particles = new float[numParticles][5];
 							

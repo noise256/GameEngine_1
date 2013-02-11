@@ -5,8 +5,6 @@ import java.util.Hashtable;
 
 import javax.media.opengl.GL3bc;
 
-import modelManager.TextureLoader;
-
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import sceneManager.SceneNode;
@@ -15,8 +13,6 @@ import aiManager.AgentInputAttack;
 import aiManager.AgentInputMove;
 import brickManager.Brick;
 import collisionManager.Collidable;
-
-import com.jogamp.opengl.util.texture.Texture;
 
 public class TestShip extends Ship {
 	public TestShip(Hashtable<String, Double> values, ArrayList<Brick> bricks, ArrayList<ArrayList<Integer>> adjacencyList) {
@@ -27,17 +23,8 @@ public class TestShip extends Ship {
 	public void updateView() {
 		if (sceneNodes.get("root") == null) {
 			SceneNode root = new SceneNode(null) {
-				private Texture metalTexture;
-				
 				@Override
 				public void update(GL3bc gl) {
-					if (metalTexture == null) {
-						TextureLoader.loadTexture(gl, "metal1", "border.png");
-						metalTexture = TextureLoader.getTexture("metal1");
-					}
-					metalTexture.enable(gl);
-					metalTexture.bind(gl);
-					
 					gl.glPushMatrix();
 
 					// translate and rotate

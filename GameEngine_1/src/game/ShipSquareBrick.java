@@ -6,7 +6,11 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL3bc;
 
+import modelManager.TextureLoader;
+
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+
+import com.jogamp.opengl.util.texture.Texture;
 
 import sceneManager.SceneNode;
 import utilityManager.MathBox;
@@ -21,8 +25,17 @@ public class ShipSquareBrick extends SquareBrick {
 	public void updateView() {
 		if (sceneNodes.get("root") == null && !exploding) {
 			SceneNode root = new SceneNode(null) {
+				private Texture metalTexture;
+				
 				@Override
 				public void update(GL3bc gl) {
+					if (metalTexture == null) {
+						TextureLoader.loadTexture(gl, "metal1", "BrickTexture1.png");
+						metalTexture = TextureLoader.getTexture("metal1");
+					}
+					metalTexture.enable(gl);
+					metalTexture.bind(gl);
+					
 					ArrayList<Float> vertices = getVertices();
 					ArrayList<Float> normals = getNormals((float) parent.getRadius());
 					ArrayList<Float> textureCoords = getTextureCoords();
@@ -33,7 +46,7 @@ public class ShipSquareBrick extends SquareBrick {
 					gl.glEnable(GL3bc.GL_LIGHTING);
 					gl.glEnable(GL3bc.GL_TEXTURE_2D);
 
-					gl.glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
+					gl.glColor4f(1.0f, 1.0f, 1.0f, 0.0f);
 					gl.glScalef(1.0f, 1.0f, 1.0f);
 
 					gl.glTranslatef((float) position.getX(), (float) position.getY(), 0.0f);
@@ -85,11 +98,21 @@ public class ShipSquareBrick extends SquareBrick {
 		else if (exploding) {
 			if (sceneNodes.get("explosionNode") == null) {
 				SceneNode explosionNode = new SceneNode(null) {
+					private Texture projectileTexture;
+					
 					private int numParticles = 100;
 					private float[][] particles;
 					
 					@Override
 					public void update(GL3bc gl) {
+						if (projectileTexture == null) {
+							TextureLoader.loadTexture(gl, "projectile1", "ProjectileTexture1.png");
+							projectileTexture = TextureLoader.getTexture("projectile1");
+						}
+						
+						projectileTexture.enable(gl);
+						projectileTexture.bind(gl);
+						
 						if (particles == null) {
 							particles = new float[numParticles][5];
 							
@@ -97,7 +120,7 @@ public class ShipSquareBrick extends SquareBrick {
 							for (int i = 0; i < numParticles; i++) {
 								particles[i] = new float[] {
 									(float) position.getX(), (float) position.getY(),
-									MathBox.nextFloat() * 5 * MathBox.nextSign(), MathBox.nextFloat() * 5 * MathBox.nextSign(),
+									MathBox.nextFloat() * 0.5f * MathBox.nextSign(), MathBox.nextFloat() * 0.5f * MathBox.nextSign(),
 									MathBox.nextFloat()
 								};
 							}
@@ -110,30 +133,38 @@ public class ShipSquareBrick extends SquareBrick {
 							}
 						}
 						
+						gl.glEnable(GL3bc.GL_BLEND);
+						gl.glEnable(GL3bc.GL_TEXTURE_2D);
+						gl.glDisable(GL3bc.GL_LIGHTING);
+						
 						for (int i = 0; i < numParticles; i++) {
 							//render particles
 							gl.glPushMatrix();
 							
-							gl.glEnable(GL3bc.GL_BLEND);
-							gl.glDisable(GL3bc.GL_TEXTURE_2D);
-							
 							// translate and rotate
 							gl.glTranslatef(particles[i][0], particles[i][1], 0);
 							
-							gl.glColor4f(1.0f, 0.5f, 0.0f, particles[i][4]);
+							gl.glColor4f(1.0f, 1.0f, 1.0f, particles[i][4]);
 							gl.glBegin(GL3bc.GL_QUADS);
-								gl.glVertex3f(1.0f, 1.0f, 0.0f);
-								gl.glVertex3f(1.0f, -1.0f, 0.0f);
-								gl.glVertex3f(-1.0f, -1.0f, 0.0f);
-								gl.glVertex3f(-1.0f, 1.0f, 0.0f);
+								gl.glTexCoord3f(1.0f, 1.0f, 0.0f);
+								gl.glVertex3f(2.5f, 2.5f, 0.0f);
+								
+								gl.glTexCoord3f(1.0f, 0.0f, 0.0f);
+								gl.glVertex3f(2.5f, -2.5f, 0.0f);
+								
+								gl.glTexCoord3f(0.0f, 0.0f, 0.0f);
+								gl.glVertex3f(-2.5f, -2.5f, 0.0f);
+								
+								gl.glTexCoord3f(0.0f, 1.0f, 0.0f);
+								gl.glVertex3f(-2.5f, 2.5f, 0.0f);
 							gl.glEnd();
-							
-							gl.glDisable(GL3bc.GL_BLEND);
-							gl.glEnable(GL3bc.GL_TEXTURE_2D);
 							
 							gl.glPopMatrix();
 						}
-
+						
+						gl.glDisable(GL3bc.GL_BLEND);
+						gl.glDisable(GL3bc.GL_TEXTURE_2D);
+						gl.glEnable(GL3bc.GL_LIGHTING);
 					}
 				};
 				sceneNodes.put("explosionNode", explosionNode);

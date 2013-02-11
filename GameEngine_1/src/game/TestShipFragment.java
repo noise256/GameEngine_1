@@ -7,7 +7,6 @@ import java.util.Hashtable;
 
 import javax.media.opengl.GL3bc;
 
-import modelManager.TextureLoader;
 import objectManager.GameObject;
 import objectManager.ObjectType;
 
@@ -20,8 +19,6 @@ import brickManager.Brick;
 import brickManager.Brick.BrickType;
 import brickManager.BrickObject;
 import collisionManager.Collidable;
-
-import com.jogamp.opengl.util.texture.Texture;
 
 public class TestShipFragment extends BrickObject {
 
@@ -64,17 +61,9 @@ public class TestShipFragment extends BrickObject {
 	public void updateView() {
 		if (sceneNodes.get("root") == null) {
 			SceneNode root = new SceneNode(null) {
-				private Texture metalTexture;
 				
 				@Override
 				public void update(GL3bc gl) {
-					if (metalTexture == null) {
-						TextureLoader.loadTexture(gl, "metal1", "border.png");
-						metalTexture = TextureLoader.getTexture("metal1");
-					}
-					metalTexture.enable(gl);
-					metalTexture.bind(gl);
-					
 					gl.glPushMatrix();
 
 					// translate and rotate
