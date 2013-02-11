@@ -149,57 +149,60 @@ public abstract class TriangleBrick extends Brick {
 		if (normals == null) {
 			normals = new ArrayList<Float>();
 			
+			float bx = (float) position.getX();
+			float by = (float) position.getY();
+			
 			switch (brickOrientation) {
 			case ZERO:
-				normals.add(edgeLength / 2);
-				normals.add(edgeLength / 2);
+				normals.add(bx + edgeLength / 2);
+				normals.add(by + edgeLength / 2);
 				normals.add(1.0f);
 
-				normals.add(edgeLength / 2);
-				normals.add(-edgeLength / 2);
+				normals.add(bx + edgeLength / 2);
+				normals.add(by + -edgeLength / 2);
 				normals.add(1.0f);
 
-				normals.add(-edgeLength / 2);
-				normals.add(edgeLength / 2);
+				normals.add(bx + -edgeLength / 2);
+				normals.add(by + edgeLength / 2);
 				normals.add(1.0f);
 				break;
 			case ONE:
-				normals.add(edgeLength / 2);
-				normals.add(edgeLength / 2);
+				normals.add(bx + edgeLength / 2);
+				normals.add(by + edgeLength / 2);
 				normals.add(1.0f);
 
-				normals.add(edgeLength / 2);
-				normals.add(-edgeLength / 2);
+				normals.add(bx + edgeLength / 2);
+				normals.add(by + -edgeLength / 2);
 				normals.add(1.0f);
 
-				normals.add(-edgeLength / 2);
-				normals.add(-edgeLength / 2);
+				normals.add(bx + -edgeLength / 2);
+				normals.add(by + -edgeLength / 2);
 				normals.add(1.0f);
 				break;
 			case TWO:
-				normals.add(edgeLength / 2);
-				normals.add(-edgeLength / 2);
+				normals.add(bx + edgeLength / 2);
+				normals.add(by + -edgeLength / 2);
 				normals.add(1.0f);
 
-				normals.add(-edgeLength / 2);
-				normals.add(-edgeLength / 2);
+				normals.add(bx + -edgeLength / 2);
+				normals.add(by + -edgeLength / 2);
 				normals.add(1.0f);
 
-				normals.add(-edgeLength / 2);
-				normals.add(edgeLength / 2);
+				normals.add(bx + -edgeLength / 2);
+				normals.add(by + edgeLength / 2);
 				normals.add(1.0f);
 				break;
 			case THREE:
-				normals.add(edgeLength / 2);
-				normals.add(edgeLength / 2);
+				normals.add(bx + edgeLength / 2);
+				normals.add(by + edgeLength / 2);
 				normals.add(1.0f);
 
-				normals.add(-edgeLength / 2);
-				normals.add(-edgeLength / 2);
+				normals.add(bx + -edgeLength / 2);
+				normals.add(by + -edgeLength / 2);
 				normals.add(1.0f);
 
-				normals.add(-edgeLength / 2);
-				normals.add(edgeLength / 2);
+				normals.add(bx + -edgeLength / 2);
+				normals.add(by + edgeLength / 2);
 				normals.add(1.0f);
 				break;
 			}
