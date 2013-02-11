@@ -37,7 +37,7 @@ public abstract class Brick implements EntityView {
 	/**
 	 * Must be greater than 0.
 	 */
-	protected int explosionTimer = 10;
+	protected int explosionTimer = 50;
 	
 	public Brick(BrickType brickType, int index, int health, Vector2D position, float edgeLength, int numSegments) {
 		this.brickType = brickType;

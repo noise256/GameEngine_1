@@ -20,7 +20,7 @@ public class TestProjectile extends Agent {
 	private double lifeDecrement;
 
 	private boolean exploding = false;
-	private int explosionTimer = 100;
+	private int explosionTimer = 50;
 	
 	
 	public TestProjectile(GameObject source, Hashtable<String, Double> values, double lifeDecrement) {

@@ -47,10 +47,7 @@ public class TextureLoader {
 		currentTextureName = name;
 		currentTexture = textures.get(name);
 		
-		currentTexture.enable(gl); //TODO do i need to do this every time?
 		currentTexture.bind(gl);
-		
-		System.out.println("Current texture = " + name);
 	}
 	
 	public static String getCurrentTextureName() {
