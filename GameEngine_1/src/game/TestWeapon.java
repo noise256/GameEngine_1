@@ -8,6 +8,8 @@ import objectManager.GameObject;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
+import utilityManager.MathBox;
+
 import brickManager.SystemBrick;
 
 public class TestWeapon extends SubSystem {
@@ -45,8 +47,8 @@ public class TestWeapon extends SubSystem {
 		
 		projValues.put("damage", 1.0);
 		
-		projValues.put("positionX", position.getX());
-		projValues.put("positionY", position.getY());
+		projValues.put("positionX", position.getX() + MathBox.rotatePoint(systemBrick.getPosition(), orientation).getX());
+		projValues.put("positionY", position.getY() + MathBox.rotatePoint(systemBrick.getPosition(), orientation).getY());
 		projValues.put("orientation", orientation);
 		
 		TestProjectile newProjectile = new TestProjectile(source, projValues, lifeDecrement);
@@ -55,6 +57,11 @@ public class TestWeapon extends SubSystem {
 	}
 
 	public void update() {
+		if (!systemBrick.isAlive()) {
+			alive = false;
+			return;
+		}
+		
 		if (fireCount <= 0.0 && activated) {
 			fire();
 			fireCount = 1.0;
@@ -66,8 +73,6 @@ public class TestWeapon extends SubSystem {
 	
 	@Override
 	public void updateView() {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	public ArrayList<TestProjectile> getProjectiles() {

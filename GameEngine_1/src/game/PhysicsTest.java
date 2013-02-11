@@ -12,6 +12,7 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import utilityManager.MathBox;
 import aiManager.AgentInputAttack;
 import brickManager.Brick;
+import brickManager.SystemBrick;
 import brickManager.TriangleBrick.BrickOrientation;
 
 import com.jogamp.common.nio.Buffers;
@@ -104,7 +105,10 @@ public class PhysicsTest extends GameManager {
 		bricks1.add(new ShipTriangleBrick(39, new Vector2D(40.0, 10.0), BrickOrientation.TWO, 10.0f, 1));
 		bricks1.add(new ShipTriangleBrick(40, new Vector2D(40.0, -10.0), BrickOrientation.THREE, 10.0f, 1));
 		
-
+		//weapon brick : row10
+		SystemBrick systemBrick1 = new ShipSystemBrick(41, new Vector2D(40.0, 0.0), 10.0f, 1);
+		bricks1.add(systemBrick1);
+		
 		ArrayList<ArrayList<Integer>> adjacencyList1 = new ArrayList<ArrayList<Integer>>();
 		
 		ArrayList<Integer> adjacencyBrick0 = new ArrayList<Integer>();
@@ -284,6 +288,7 @@ public class PhysicsTest extends GameManager {
 		adjacencyBrick36.add(31);
 		adjacencyBrick36.add(37);
 		adjacencyBrick36.add(38);
+		adjacencyBrick36.add(41);
 		
 		ArrayList<Integer> adjacencyBrick37 = new ArrayList<Integer>();
 		adjacencyBrick37.add(32);
@@ -297,9 +302,16 @@ public class PhysicsTest extends GameManager {
 		
 		ArrayList<Integer> adjacencyBrick39 = new ArrayList<Integer>();
 		adjacencyBrick39.add(37);
+		adjacencyBrick39.add(41);
 		
 		ArrayList<Integer> adjacencyBrick40 = new ArrayList<Integer>();
 		adjacencyBrick40.add(38);
+		adjacencyBrick40.add(41);
+		
+		ArrayList<Integer> adjacencyBrick41 = new ArrayList<Integer>();
+		adjacencyBrick41.add(36);
+		adjacencyBrick41.add(39);
+		adjacencyBrick41.add(40);
 		
 		adjacencyList1.add(adjacencyBrick0);
 		adjacencyList1.add(adjacencyBrick1);
@@ -342,17 +354,14 @@ public class PhysicsTest extends GameManager {
 		adjacencyList1.add(adjacencyBrick38);
 		adjacencyList1.add(adjacencyBrick39);
 		adjacencyList1.add(adjacencyBrick40);
+		adjacencyList1.add(adjacencyBrick41);
 		/**
 		 * End construct bricks for test ship 1.
 		 */
 		
-		
-		
 		TestShip testShip1 = new TestShip(values, bricks1, adjacencyList1);
 		
-//		ShipWeaponBrick shipWeaponBrick1 = new ShipWeaponBrick(null, 5, 10, new Vector2D(25.0, 0.0), 24f);
-		TestWeapon testWeapon = new TestWeapon(testShip1, null, testShip1.getPosition(), testShip1.getOrientation(), 0.1, 0.01);
-//		bricks1.add(shipWeaponBrick1);
+		TestWeapon testWeapon = new TestWeapon(testShip1, systemBrick1, testShip1.getPosition(), testShip1.getOrientation(), 0.1, 0.01);
 		testShip1.addSubSystem(testWeapon);
 
 		objectManager.addPhysicalObject(testShip1);
@@ -420,7 +429,10 @@ public class PhysicsTest extends GameManager {
 			bricks2.add(new ShipTriangleBrick(39, new Vector2D(40.0, 10.0), BrickOrientation.TWO, 10.0f, 1));
 			bricks2.add(new ShipTriangleBrick(40, new Vector2D(40.0, -10.0), BrickOrientation.THREE, 10.0f, 1));
 			
-
+			//weapon brick : row10
+			SystemBrick systemBrick2 = new ShipSystemBrick(41, new Vector2D(40.0, 0.0), 10.0f, 1);
+			bricks2.add(systemBrick2);
+			
 			ArrayList<ArrayList<Integer>> adjacencyList2 = new ArrayList<ArrayList<Integer>>();
 			
 			ArrayList<Integer> adjacency2Brick0 = new ArrayList<Integer>();
@@ -600,6 +612,7 @@ public class PhysicsTest extends GameManager {
 			adjacency2Brick36.add(31);
 			adjacency2Brick36.add(37);
 			adjacency2Brick36.add(38);
+			adjacency2Brick36.add(41);
 			
 			ArrayList<Integer> adjacency2Brick37 = new ArrayList<Integer>();
 			adjacency2Brick37.add(32);
@@ -613,9 +626,16 @@ public class PhysicsTest extends GameManager {
 			
 			ArrayList<Integer> adjacency2Brick39 = new ArrayList<Integer>();
 			adjacency2Brick39.add(37);
+			adjacency2Brick39.add(41);
 			
 			ArrayList<Integer> adjacency2Brick40 = new ArrayList<Integer>();
 			adjacency2Brick40.add(38);
+			adjacency2Brick40.add(41);
+			
+			ArrayList<Integer> adjacency2Brick41 = new ArrayList<Integer>();
+			adjacency2Brick41.add(36);
+			adjacency2Brick41.add(39);
+			adjacency2Brick41.add(40);
 			
 			adjacencyList2.add(adjacency2Brick0);
 			adjacencyList2.add(adjacency2Brick1);
@@ -658,13 +678,14 @@ public class PhysicsTest extends GameManager {
 			adjacencyList2.add(adjacency2Brick38);
 			adjacencyList2.add(adjacency2Brick39);
 			adjacencyList2.add(adjacency2Brick40);
+			adjacencyList2.add(adjacency2Brick41);
 			
 			values.put("positionX", Math.random() * 2000.0 * MathBox.nextSign() + 25000.0);
 			values.put("positionY", Math.random() * 2000.0 * MathBox.nextSign() + 25000.0);
 			values.put("orientation",  0.0);
 			
 			TestShip testShip2 = new TestShip(values, bricks2, adjacencyList2);
-			testShip2.addSubSystem(new TestWeapon(testShip2, null, testShip2.getPosition(), testShip2.getOrientation(), 0.05, 0.01));
+			testShip2.addSubSystem(new TestWeapon(testShip2, systemBrick2, testShip2.getPosition(), testShip2.getOrientation(), 0.05, 0.01));
 			testShip2.addInput(new AgentInputAttack(testShip1));
 			
 			objectManager.addPhysicalObject(testShip2);

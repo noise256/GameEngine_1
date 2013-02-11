@@ -12,8 +12,8 @@ public abstract class SubSystem extends GameObject {
 		weapon;
 	}
 	
-	private SubSystemType subSystemType;
-	private SystemBrick systemBrick;
+	protected SubSystemType subSystemType;
+	protected SystemBrick systemBrick;
 	
 	protected boolean activated;
 	

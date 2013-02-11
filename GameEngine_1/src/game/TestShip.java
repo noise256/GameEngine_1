@@ -150,7 +150,13 @@ public class TestShip extends Agent {
 		}
 		
 //		//update subsystem states
+		ArrayList<SubSystem> subSystemsToRemove = new ArrayList<SubSystem>();
 		for (SubSystem system : subSystems) {
+			if (!system.isAlive()) {
+				subSystemsToRemove.add(system);
+				continue;
+			}
+			
 			system.setPosition(position);
 			system.setOrientation(orientation);
 			
@@ -174,6 +180,10 @@ public class TestShip extends Agent {
 		if (!newGameObjects.isEmpty()) {
 			updateObservers(new ObjectChangeEvent(this, ObjectChangeType.CREATION, newGameObjects));
 			newGameObjects.clear();
+		}
+		
+		if (!subSystemsToRemove.isEmpty()) {
+			subSystems.removeAll(subSystemsToRemove);
 		}
 	}
 
