@@ -102,7 +102,7 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 	
 	private void drawSkybox(GL3bc gl) {
 		if (skybox == null) {
-			TextureLoader.loadTexture(gl, "skybox", "data/stars1.png");
+			TextureLoader.loadTexture(gl, "skybox", "stars1.png");
 			skybox = TextureLoader.getTexture("skybox");
 		}
 		

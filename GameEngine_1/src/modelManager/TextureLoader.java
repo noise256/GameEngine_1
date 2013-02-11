@@ -1,9 +1,7 @@
 package modelManager;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Hashtable;
 
 import javax.media.opengl.GL3bc;
@@ -16,15 +14,9 @@ public class TextureLoader {
 	private static Hashtable<String, Texture> textures = new Hashtable<String, Texture>();
 	
 	public static void loadTexture(GL3bc gl, String name, String path) {
+		InputStream fis = TextureLoader.class.getClassLoader().getResourceAsStream(path);
+		
 		Texture texture = null;
-		
-		FileInputStream fis = null;
-		try {
-			fis = new FileInputStream(new File(path));
-		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
-		}
-		
 	    try {
 			texture = TextureIO.newTexture(fis, true, TextureIO.PNG);
 		} catch (GLException e) {

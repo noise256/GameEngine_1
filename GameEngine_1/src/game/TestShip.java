@@ -32,7 +32,7 @@ public class TestShip extends Ship {
 				@Override
 				public void update(GL3bc gl) {
 					if (metalTexture == null) {
-						TextureLoader.loadTexture(gl, "metal1", "data/border.png");
+						TextureLoader.loadTexture(gl, "metal1", "border.png");
 						metalTexture = TextureLoader.getTexture("metal1");
 					}
 					metalTexture.enable(gl);
