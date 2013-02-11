@@ -92,14 +92,14 @@ public class ShipSquareBrick extends SquareBrick {
 		else if (exploding) {
 			if (sceneNodes.get("explosionNode") == null) {
 				SceneNode explosionNode = new SceneNode(null) {
-					private int numParticles = 100;
+					private int numParticles = 1000;
 					private float[][] particles;
 					
 					@Override
 					public void update(GL3bc gl) {
-						if (!TextureLoader.getCurrentTextureName().equals("ProjectileTexture1")) {
-							TextureLoader.loadTexture(gl, "ProjectileTexture1", "ProjectileTexture1.png");
-							TextureLoader.setCurrentTexture(gl, "ProjectileTexture1");
+						if (!TextureLoader.getCurrentTextureName().equals("ProjectileTexture2")) {
+							TextureLoader.loadTexture(gl, "ProjectileTexture2", "ProjectileTexture2.png");
+							TextureLoader.setCurrentTexture(gl, "ProjectileTexture2");
 						}
 						
 						if (particles == null) {

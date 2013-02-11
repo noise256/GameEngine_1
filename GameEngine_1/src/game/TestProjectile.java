@@ -20,7 +20,7 @@ public class TestProjectile extends Agent {
 	private double lifeDecrement;
 
 	private boolean exploding = false;
-	private int explosionTimer = 50;
+	private int explosionTimer = 200;
 	
 	
 	public TestProjectile(GameObject source, Hashtable<String, Double> values, double lifeDecrement) {
@@ -93,7 +93,8 @@ public class TestProjectile extends Agent {
 							for (int i = 0; i < numParticles; i++) {
 								particles[i] = new float[] {
 									(float) position.getX(), (float) position.getY(),
-									MathBox.nextFloat() * 0.5f * MathBox.nextSign(), MathBox.nextFloat() * 0.5f * MathBox.nextSign(),
+									MathBox.nextFloat() * 2f * MathBox.nextSign(), 
+									MathBox.nextFloat() * 2f * MathBox.nextSign(),
 									MathBox.nextFloat()
 								};
 							}
@@ -103,6 +104,9 @@ public class TestProjectile extends Agent {
 							for (int i = 0; i < numParticles; i++) {
 								particles[i][0] += particles[i][2];
 								particles[i][1] += particles[i][3];
+								particles[i][2] = Math.abs(particles[i][2] * 0.99f) >= particles[i][2] * 0.1f ? particles[i][2] * 0.99f : particles[i][2] * 0.1f;
+								particles[i][3] = Math.abs(particles[i][3] * 0.99f) >= particles[i][3] * 0.1f ? particles[i][3] * 0.99f : particles[i][3] * 0.1f;
+								
 							}
 						}
 						

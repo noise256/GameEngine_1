@@ -97,9 +97,9 @@ public class ShipSystemBrick extends SystemBrick {
 					
 					@Override
 					public void update(GL3bc gl) {
-						if (!TextureLoader.getCurrentTextureName().equals("ProjectileTexture1")) {
-							TextureLoader.loadTexture(gl, "ProjectileTexture1", "ProjectileTexture1.png");
-							TextureLoader.setCurrentTexture(gl, "ProjectileTexture1");
+						if (!TextureLoader.getCurrentTextureName().equals("ProjectileTexture2")) {
+							TextureLoader.loadTexture(gl, "ProjectileTexture2", "ProjectileTexture2.png");
+							TextureLoader.setCurrentTexture(gl, "ProjectileTexture2");
 						}
 						
 						if (particles == null) {
