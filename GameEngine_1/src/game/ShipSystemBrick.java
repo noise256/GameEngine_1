@@ -120,7 +120,7 @@ public class ShipSystemBrick extends SystemBrick {
 							for (int i = 0; i < numParticles; i++) {
 								particles[i] = new float[] {
 									(float) position.getX(), (float) position.getY(),
-									MathBox.nextFloat() * 5 * MathBox.nextSign(), MathBox.nextFloat() * 5 * MathBox.nextSign(),
+									MathBox.nextFloat() * 0.5f * MathBox.nextSign(), MathBox.nextFloat() * 0.5f * MathBox.nextSign(),
 									MathBox.nextFloat()
 								};
 							}
@@ -133,30 +133,38 @@ public class ShipSystemBrick extends SystemBrick {
 							}
 						}
 						
+						gl.glEnable(GL3bc.GL_BLEND);
+						gl.glEnable(GL3bc.GL_TEXTURE_2D);
+						gl.glDisable(GL3bc.GL_LIGHTING);
+						
 						for (int i = 0; i < numParticles; i++) {
 							//render particles
 							gl.glPushMatrix();
 							
-							gl.glEnable(GL3bc.GL_BLEND);
-							gl.glDisable(GL3bc.GL_TEXTURE_2D);
-							
 							// translate and rotate
 							gl.glTranslatef(particles[i][0], particles[i][1], 0);
 							
-							gl.glColor4f(1.0f, 0.5f, 0.0f, particles[i][4]);
+							gl.glColor4f(1.0f, 1.0f, 1.0f, particles[i][4]);
 							gl.glBegin(GL3bc.GL_QUADS);
-								gl.glVertex3f(1.0f, 1.0f, 0.0f);
-								gl.glVertex3f(1.0f, -1.0f, 0.0f);
-								gl.glVertex3f(-1.0f, -1.0f, 0.0f);
-								gl.glVertex3f(-1.0f, 1.0f, 0.0f);
+								gl.glTexCoord3f(1.0f, 1.0f, 0.0f);
+								gl.glVertex3f(2.5f, 2.5f, 0.0f);
+								
+								gl.glTexCoord3f(1.0f, 0.0f, 0.0f);
+								gl.glVertex3f(2.5f, -2.5f, 0.0f);
+								
+								gl.glTexCoord3f(0.0f, 0.0f, 0.0f);
+								gl.glVertex3f(-2.5f, -2.5f, 0.0f);
+								
+								gl.glTexCoord3f(0.0f, 1.0f, 0.0f);
+								gl.glVertex3f(-2.5f, 2.5f, 0.0f);
 							gl.glEnd();
-							
-							gl.glDisable(GL3bc.GL_BLEND);
-							gl.glEnable(GL3bc.GL_TEXTURE_2D);
 							
 							gl.glPopMatrix();
 						}
-
+						
+						gl.glDisable(GL3bc.GL_BLEND);
+						gl.glDisable(GL3bc.GL_TEXTURE_2D);
+						gl.glEnable(GL3bc.GL_LIGHTING);
 					}
 				};
 				sceneNodes.put("explosionNode", explosionNode);

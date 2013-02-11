@@ -140,19 +140,17 @@ public class ShipTriangleBrick extends TriangleBrick {
 
 						if (particles == null) {
 							particles = new float[numParticles][5];
-
-							// construct initial particles
+							
+							//construct initial particles
 							for (int i = 0; i < numParticles; i++) {
 								particles[i] = new float[] {
-										(float) position.getX(),
-										(float) position.getY(),
-										MathBox.nextFloat() * 0.5f
-												* MathBox.nextSign(),
-										MathBox.nextFloat() * 0.5f
-												* MathBox.nextSign(),
-										MathBox.nextFloat() };
+									(float) position.getX(), (float) position.getY(),
+									MathBox.nextFloat() * 0.5f * MathBox.nextSign(), MathBox.nextFloat() * 0.5f * MathBox.nextSign(),
+									MathBox.nextFloat()
+								};
 							}
-						} else {
+						}
+						else {
 							// adjust positions of particles
 							for (int i = 0; i < numParticles; i++) {
 								particles[i][0] += particles[i][2];
