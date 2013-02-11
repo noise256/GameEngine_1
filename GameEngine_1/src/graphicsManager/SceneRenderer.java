@@ -70,12 +70,9 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 
 		updateCamera(gl);
 		
-//		gl.glLightfv(GL3bc.GL_LIGHT0, GL3bc.GL_POSITION, new float[] {20000.0f, 20000.0f, 0.0f, 1.0f}, 0);
 		gl.glPushMatrix();
 		gl.glTranslatef(0.0f, 0.0f, 0.0f);
-		gl.glLightfv(GL3bc.GL_LIGHT0, GL3bc.GL_POSITION, new float[] {-1.0f, -1.0f, 1.0f, 0.0f}, 0);
-//		gl.glLightf(GL3bc.GL_LIGHT0, GL3bc.GL_SPOT_CUTOFF, 90f);
-//		gl.glLightfv(GL3bc.GL_LIGHT0, GL3bc.GL_SPOT_DIRECTION, new float[] {0,0,1}, 0);
+//		gl.glLightfv(GL3bc.GL_LIGHT0, GL3bc.GL_POSITION, new float[] {-1.0f, -1.0f, 1.0f, 0.0f}, 0);
 		gl.glPopMatrix();
 		
 		drawSkybox(gl);
@@ -83,21 +80,6 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 		drawDebugCube(gl, (float) camera.getView().getX(), (float) camera.getView().getY(), (float) camera.getView().getZ());
 		drawText(gl);
 	}
-//	
-//	private void loadSkybox(GL3bc gl) {
-//		InputStream fis = getClass().getClassLoader().getResourceAsStream("stars1.png");
-//		
-//	    try {
-//			texture = TextureIO.newTexture(fis, true, TextureIO.PNG);
-//		} catch (GLException e) {
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//	    
-//	    texture.enable(gl);
-//	    texture.bind(gl);
-//	}
 	
 	
 	private void drawSkybox(GL3bc gl) {
@@ -419,7 +401,6 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 	
 	private void initLighting(GL3bc gl) {
 		gl.glEnable(GL3bc.GL_LIGHTING);
-//		gl.glEnable(GL3bc.GL_COLOR_MATERIAL);
 		
 		gl.glLightModelfv(GL3bc.GL_LIGHT_MODEL_AMBIENT, new float[] {0.1f, 0.1f, 0.1f, 1.0f}, 0);
 		
@@ -435,19 +416,11 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 		gl.glLightfv(GL3bc.GL_LIGHT0, GL3bc.GL_DIFFUSE, new float[] {1.0f, 1.0f, 1.0f, 1.0f}, 0);
 		gl.glLightfv(GL3bc.GL_LIGHT0, GL3bc.GL_SPECULAR, new float[] {1.0f, 1.0f, 1.0f, 1.0f}, 0);
 		
-		
 		gl.glMaterialfv(GL3bc.GL_FRONT, GL3bc.GL_AMBIENT, new float[] {0.3f, 0.3f, 0.3f, 1.0f}, 0);
 		gl.glMaterialfv(GL3bc.GL_FRONT, GL3bc.GL_DIFFUSE, new float[] {0.4f, 0.4f, 0.4f, 1.0f}, 0);
 		gl.glMaterialfv(GL3bc.GL_FRONT, GL3bc.GL_SPECULAR, new float[] {0.0f, 0.0f, 0.0f, 1.0f}, 0);
-//		gl.glMaterialfv(GL, arg1, arg2)
-		gl.glLightfv(GL3bc.GL_LIGHT0, GL3bc.GL_POSITION, new float[] {0.0f, 0.0f, 1.0f, 1.0f}, 1);
 		
-//		gl.glMaterialfv(GL3bc.GL_FRONT, GL3bc.GL_SHININESS, new float[] {128.0f, 128.0f, 128.0f, 128.0f}, 0);
-//		gl.glEnable(GL3bc.GL_LIGHT0);
-//		gl.glMaterialfv(GL3bc.GL_FRONT, GL3bc.GL_EMISSION, new float[] {1.0f, 0.0f, 0.0f, 0.1f}, 0);
-//		gl.glMaterialfv(GL3bc.GL_FRONT, GL3bc.GL_SPECULAR, new float[] {0.0f, 0.8f, 0.8f, 1.0f}, 0);
-
-		
+		gl.glLightfv(GL3bc.GL_LIGHT0, GL3bc.GL_POSITION, new float[] {-1.0f, -1.0f, 1.0f, 0.0f}, 0);
 	}
 	@Override
 	public void reshape(GLAutoDrawable arg0, int arg1, int arg2, int arg3,
