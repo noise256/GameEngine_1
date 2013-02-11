@@ -353,7 +353,7 @@ public class PhysicsTest extends GameManager {
 //		ShipWeaponBrick shipWeaponBrick1 = new ShipWeaponBrick(null, 5, 10, new Vector2D(25.0, 0.0), 24f);
 		TestWeapon testWeapon = new TestWeapon(testShip1, null, testShip1.getPosition(), testShip1.getOrientation(), 0.1, 0.01);
 //		bricks1.add(shipWeaponBrick1);
-		testShip1.addWeapon(testWeapon);
+		testShip1.addSubSystem(testWeapon);
 
 		objectManager.addPhysicalObject(testShip1);
 		testShip1.addObserver(objectManager);
@@ -664,7 +664,7 @@ public class PhysicsTest extends GameManager {
 			values.put("orientation",  0.0);
 			
 			TestShip testShip2 = new TestShip(values, bricks2, adjacencyList2);
-			testShip2.addWeapon(new TestWeapon(testShip2, null, testShip2.getPosition(), testShip2.getOrientation(), 0.05, 0.01));
+			testShip2.addSubSystem(new TestWeapon(testShip2, null, testShip2.getPosition(), testShip2.getOrientation(), 0.05, 0.01));
 			testShip2.addInput(new AgentInputAttack(testShip1));
 			
 			objectManager.addPhysicalObject(testShip2);

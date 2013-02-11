@@ -1,5 +1,6 @@
 package game;
 
+import game.SubSystem.SubSystemType;
 import gameManager.GameManager;
 
 import java.util.ArrayList;
@@ -28,7 +29,8 @@ import collisionManager.Collidable;
 import com.jogamp.opengl.util.texture.Texture;
 
 public class TestShip extends Agent {
-	private ArrayList<TestWeapon> weapons = new ArrayList<TestWeapon>();
+	private ArrayList<SubSystem> subSystems = new ArrayList<SubSystem>();
+//	private ArrayList<TestWeapon> weapons = new ArrayList<TestWeapon>();
 	
 	public TestShip(Hashtable<String, Double> values, ArrayList<Brick> bricks, ArrayList<ArrayList<Integer>> adjacencyList) {
 		super(ObjectType.AGENT, null, values, bricks, adjacencyList);
@@ -115,18 +117,20 @@ public class TestShip extends Agent {
 	//TODO this is pretty general stuff, things like processing a move order etc. should be moved to the engine
 	@Override
 	public void update() {
+		ArrayList<PhysicalObject> newGameObjects = new ArrayList<PhysicalObject>();
+		
+		//check alive state
 		if (getBrickFromIndex(0) == null) {
 			setAlive(false);
 		}
 		
+		//update brick states, remove dead bricks, generate fragments
 		updateBricks();
 		
-		ArrayList<PhysicalObject> newGameObjects = new ArrayList<PhysicalObject>();
-		
+		//update behaviour
 		if (!inputQueue.isEmpty()) {
 			currentOrder = inputQueue.remove(0);
 		}
-		
 		if (currentOrder != null) {
 			if (currentOrder.getAgentInputType() == AgentInputType.MOVE) {
 				moveTo(((AgentInputMove) currentOrder).getDestination());
@@ -137,21 +141,7 @@ public class TestShip extends Agent {
 				PhysicalObject target = currentAttackOrder.getTarget();
 				
 				if (target.isAlive()) {
-					if (target.getPosition().subtract(position).getNorm() < 300.0) {
-						attack(((AgentInputAttack) currentOrder).getTarget());
-						for (TestWeapon weapon : weapons) {
-							weapon.setPosition(position);
-							weapon.setOrientation(orientation);
-							weapon.setVelocity(velocityVec);
-							
-							weapon.update();
-							newGameObjects.addAll(weapon.getProjectiles());
-							weapon.clearProjectiles();
-						}
-					}
-					else {
-						follow(target);
-					}
+					attack(((AgentInputAttack) currentOrder).getTarget());
 				}
 				else {
 					currentOrder = null;
@@ -159,18 +149,32 @@ public class TestShip extends Agent {
 			}
 		}
 		
+//		//update subsystem states
+		for (SubSystem system : subSystems) {
+			system.setPosition(position);
+			system.setOrientation(orientation);
+			
+			if (system.getSubSystemType() == SubSystemType.weapon && currentOrder != null) {
+				if (currentOrder.getAgentInputType() == AgentInputType.ATTACK) {
+					system.setActivated(true);
+				}
+				else {
+					system.setActivated(false);
+				}
+			}
+			
+			system.update();
+			
+			if (system.getSubSystemType() == SubSystemType.weapon) {
+				newGameObjects.addAll(((TestWeapon) system).getProjectiles());
+				((TestWeapon) system).clearProjectiles();
+			}
+		}
+		
 		if (!newGameObjects.isEmpty()) {
 			updateObservers(new ObjectChangeEvent(this, ObjectChangeType.CREATION, newGameObjects));
+			newGameObjects.clear();
 		}
-		newGameObjects.clear();
-	}
-	
-	public ArrayList<TestWeapon> getWeapons() {
-		return weapons;
-	}
-	
-	public void addWeapon(TestWeapon weapon) {
-		weapons.add(weapon);
 	}
 
 	@Override
@@ -265,5 +269,9 @@ public class TestShip extends Agent {
 		else {
 			return false;
 		}
+	}
+	
+	public void addSubSystem(SubSystem subSystem) {
+		subSystems.add(subSystem);
 	}
 }

@@ -5,17 +5,12 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 
 import objectManager.GameObject;
-import objectManager.SubSystem;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import brickManager.SystemBrick;
 
 public class TestWeapon extends SubSystem {
-	private Vector2D position;
-	private Vector2D velocity;
-	private double orientation;
-	
 	private double fireCount;
 	private double fireIncrement;
 
@@ -24,10 +19,8 @@ public class TestWeapon extends SubSystem {
 	private ArrayList<TestProjectile> projectiles = new ArrayList<TestProjectile>();
 	
 	public TestWeapon(GameObject source, SystemBrick systemBrick, Vector2D position, double orientation, double fireIncrement, double lifeDecrement) {
-		super(source, systemBrick);
+		super(source, systemBrick, SubSystemType.weapon, position, orientation);
 		this.source = source;
-		this.position = position;
-		this.orientation = orientation;
 		this.fireIncrement = fireIncrement;
 		this.lifeDecrement = lifeDecrement;
 	}
@@ -46,8 +39,8 @@ public class TestWeapon extends SubSystem {
 		projValues.put("forceMagnitude", 1.0);
 		
 		projValues.put("turningForce", 0.0);
-		projValues.put("velocityX", velocity.getX());
-		projValues.put("velocityY", velocity.getY());
+		projValues.put("velocityX", 0.0);
+		projValues.put("velocityY", 0.0);
 		projValues.put("turningVelocity", 0.0);
 		
 		projValues.put("damage", 1.0);
@@ -59,11 +52,10 @@ public class TestWeapon extends SubSystem {
 		TestProjectile newProjectile = new TestProjectile(source, projValues, lifeDecrement);
 		newProjectile.addObserver(GameManager.getObjectManager()); //TODO don't really like this static call to get the objectmanager
 		projectiles.add(newProjectile);
-		
 	}
 
 	public void update() {
-		if (fireCount <= 0.0) {
+		if (fireCount <= 0.0 && activated) {
 			fire();
 			fireCount = 1.0;
 		}
@@ -95,6 +87,5 @@ public class TestWeapon extends SubSystem {
 	}
 
 	public void setVelocity(Vector2D velocity) {
-		this.velocity = velocity;
 	}
 }

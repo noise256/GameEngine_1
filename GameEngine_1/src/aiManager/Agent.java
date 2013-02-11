@@ -29,23 +29,25 @@ public abstract class Agent extends BrickObject implements Selectable {
 	protected void attack(PhysicalObject target) {
 		Vector2D dest = target.getPosition().subtract(position);
 		
-		//attempt to 'lead' target
-		Vector2D targetTravelVector = null;
-		try {
-			double projectileVelocity = 2.5; //TODO need to calculate this based on actualy weapon characteristics
-			targetTravelVector = target.getVelocityVec().normalize().scalarMultiply(target.getVelocityVec().getNorm() * dest.getNorm() / projectileVelocity);
-		}
-		catch (MathArithmeticException e) {
-			targetTravelVector = new Vector2D(0.0, 0.0);
-		}
+		//attempt to stay at appropriate range
+		double weaponRange = 300.0; //TODO need to caculate this based on actual weapon characteristics
 		
-		dest = dest.add(targetTravelVector);
+		if (dest.getNorm() < weaponRange) {
+			//attempt to 'lead' target
+			Vector2D targetTravelVector = null;
+			try {
+				double projectileVelocity = 2.5; //TODO need to calculate this based on actualy weapon characteristics
+				targetTravelVector = target.getVelocityVec().normalize().scalarMultiply(target.getVelocityVec().getNorm() * dest.getNorm() / projectileVelocity);
+			}
+			catch (MathArithmeticException e) {
+				targetTravelVector = new Vector2D(0.0, 0.0);
+			}
+			
+			dest = dest.add(targetTravelVector);
+		}
 		
 		//turn agent
 		turnTo(dest);
-		
-		//attempt to stay at appropriate range
-		double weaponRange = 300.0; //TODO need to caculate this based on actual weapon characteristics
 		
 		dest = dest.scalarMultiply(1 - weaponRange/dest.getNorm());
 		

@@ -2,7 +2,6 @@ package game;
 
 import java.util.ArrayList;
 
-import objectManager.SubSystem;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
