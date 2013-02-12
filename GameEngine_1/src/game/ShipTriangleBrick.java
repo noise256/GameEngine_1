@@ -127,6 +127,10 @@ public class ShipTriangleBrick extends TriangleBrick {
 									MathBox.nextFloat() * 0.5f * MathBox.nextSign(), MathBox.nextFloat() * 0.5f * MathBox.nextSign(),
 									MathBox.nextFloat()
 								};
+								//normalise velocity
+								float magnitude = (float) Math.sqrt(particles[i][2]*particles[i][2] + particles[i][3] * particles[i][3]);
+								particles[i][2] = particles[i][2] / magnitude;
+								particles[i][3] = particles[i][3] / magnitude;
 							}
 						}
 						else {

@@ -91,12 +91,18 @@ public class TestProjectile extends Agent {
 							
 							//construct initial particles
 							for (int i = 0; i < numParticles; i++) {
+								//initial values
 								particles[i] = new float[] {
-									(float) position.getX(), (float) position.getY(),
+									(float) position.getX(), 
+									(float) position.getY(),
 									MathBox.nextFloat() * 2f * MathBox.nextSign(), 
 									MathBox.nextFloat() * 2f * MathBox.nextSign(),
 									MathBox.nextFloat()
 								};
+								//normalise velocity
+								float magnitude = (float) Math.sqrt(particles[i][2]*particles[i][2] + particles[i][3] * particles[i][3]);
+								particles[i][2] = particles[i][2] / magnitude;
+								particles[i][3] = particles[i][3] / magnitude;
 							}
 						}
 						else {
