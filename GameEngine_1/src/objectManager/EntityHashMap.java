@@ -3,7 +3,7 @@ package objectManager;
 import graphicsManager.Constants;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
@@ -12,15 +12,15 @@ import physicsManager.PhysicalObject;
 public class EntityHashMap {
 	private int mapWidth;
 	private int mapHeight;
-	private Hashtable<Integer, Hashtable<Integer, ArrayList<PhysicalObject>>> objectMap;
+	private ConcurrentHashMap<Integer, ConcurrentHashMap<Integer, ArrayList<PhysicalObject>>> objectMap;
 	
 	public EntityHashMap(int mapWidth, int mapHeight) {
 		this.mapWidth = mapWidth;
 		this.mapHeight = mapHeight;
-		objectMap = new Hashtable<Integer, Hashtable<Integer, ArrayList<PhysicalObject>>>();
+		objectMap = new ConcurrentHashMap<Integer, ConcurrentHashMap<Integer, ArrayList<PhysicalObject>>>();
 		
 		for (int i = 0; i < mapWidth; i++) {
-			objectMap.put(i, new Hashtable<Integer, ArrayList<PhysicalObject>>());
+			objectMap.put(i, new ConcurrentHashMap<Integer, ArrayList<PhysicalObject>>());
 			for (int j = 0; j < mapHeight; j++) {
 				objectMap.get(i).put(j, new ArrayList<PhysicalObject>());
 			}
@@ -75,11 +75,14 @@ public class EntityHashMap {
 		
 		int[] tc = translateCoordinates(position.getX(), position.getY());
 		
-		for (int i = Math.max(tc[0] - 1, 0); i <= Math.min(tc[0] + 1, objectMap.size()); i++) {
-			for (int j = Math.max(tc[1] - 1, 0); j <= Math.min(tc[1] + 1, objectMap.get(0).size()); j++) {
-				for (PhysicalObject match : objectMap.get(i).get(j)) {
-					entities.add(match);
-				}
+		int iMin = Math.max(tc[0] - 1, 0);
+		int iMax = Math.min(tc[0] + 1, objectMap.size());
+		int jMin = Math.max(tc[1] - 1, 0);
+		int jMax = Math.min(tc[1] + 1, objectMap.get(0).size());
+		
+		for (int i = iMin; i <= iMax; i++) {
+			for (int j = jMin; j <= jMax; j++) {
+				entities.addAll(objectMap.get(i).get(j));
 			}
 		}
 		return entities;

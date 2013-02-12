@@ -9,10 +9,8 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import physicsManager.PhysicalObject;
 
 public class CollisionManager {
-	public static void checkCollisions(PhysicalObject collidable,
-			EntityHashMap entityHashMap) {
-		ArrayList<PhysicalObject> nearbyObjects = entityHashMap
-				.getNearbyEntities(collidable.getPosition());
+	public static void checkCollisions(PhysicalObject collidable, EntityHashMap entityHashMap) {
+		ArrayList<PhysicalObject> nearbyObjects = entityHashMap.getNearbyEntities(collidable.getPosition());
 
 		for (PhysicalObject object : nearbyObjects) {
 			if (object.canCollide() && collidable.canCollide()) {
@@ -28,31 +26,27 @@ public class CollisionManager {
 		}
 	}
 
-	public static PhysicalObject checkPointCollisions(Vector2D point,
-			EntityHashMap entityHashMap) {
-		ArrayList<PhysicalObject> nearbyObjects = entityHashMap
-				.getNearbyEntities(point);
+	public static PhysicalObject checkPointCollisions(Vector2D point, EntityHashMap entityHashMap) {
+		ArrayList<PhysicalObject> nearbyObjects = entityHashMap.getNearbyEntities(point);
 
 		for (PhysicalObject object : nearbyObjects) {
-			if (compareCircleBounds(1, object.getRadius(),
-					point.distance(object.getPosition()))) {
+			if (compareCircleBounds(1, object.getRadius(), point.distance(object.getPosition()))) {
 				return object;
 			}
 		}
 		return null;
 	}
 
-	public static boolean compareCircleBounds(Collidable first,
-			Collidable second) {
+	public static boolean compareCircleBounds(Collidable first, Collidable second) {
 		double dist = first.getPosition().distance(second.getPosition());
 		return compareCircleBounds(first.getRadius(), second.getRadius(), dist);
 	}
 
-	public static boolean compareCircleBounds(double rad1, double rad2,
-			double dist) {
+	public static boolean compareCircleBounds(double rad1, double rad2, double dist) {
 		if (rad1 + rad2 > dist) {
 			return true;
-		} else {
+		}
+		else {
 			return false;
 		}
 	}
@@ -81,42 +75,51 @@ public class CollisionManager {
 
 		return new Vector2D(xi, yi);
 	}
-	
+
 	private static boolean isParent(PhysicalObject first, PhysicalObject second) {
 		if (first.getSource() == null && second.getSource() == null) {
 			return false;
-		} else if (first.getSource() != null && second.getSource() == null) {
+		}
+		else if (first.getSource() != null && second.getSource() == null) {
 			if (first.getSource().equals(second)) {
 				return true;
-			} else {
+			}
+			else {
 				return false;
 			}
-		} else if (first.getSource() == null && second.getSource() != null) {
+		}
+		else if (first.getSource() == null && second.getSource() != null) {
 			if (second.getSource().equals(first)) {
 				return true;
-			} else {
+			}
+			else {
 				return false;
 			}
-		} else if (first.getSource() != null && second.getSource() != null) {
+		}
+		else if (first.getSource() != null && second.getSource() != null) {
 			if (first.getSource().equals(second)) {
 				return true;
-			} else if (second.getSource().equals(first)) {
+			}
+			else if (second.getSource().equals(first)) {
 				return true;
-			} else {
+			}
+			else {
 				return false;
 			}
-		} else {
+		}
+		else {
 			return false;
 		}
 	}
 
-	private static boolean isSameParent(PhysicalObject first,
-			PhysicalObject second) {
+	private static boolean isSameParent(PhysicalObject first, PhysicalObject second) {
 		if (first.getSource() == null || second.getSource() == null) {
 			return false;
-		} else if (first.getSource().equals(second.getSource())) {
+		}
+		else if (first.getSource().equals(second.getSource())) {
 			return true;
-		} else {
+		}
+		else {
 			return false;
 		}
 	}
