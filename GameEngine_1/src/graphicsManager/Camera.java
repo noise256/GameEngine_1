@@ -1,11 +1,12 @@
 package graphicsManager;
+
 import org.apache.commons.math3.geometry.euclidean.threed.Rotation;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 public class Camera {
 	private float angle;
-	
+
 	/**
 	 * Vector containing the position of the camera.
 	 */
@@ -33,13 +34,13 @@ public class Camera {
 	private Rotation total = Rotation.IDENTITY;
 
 	private Rotation local = Rotation.IDENTITY;
-	
+
 	private Vector2D mouseStart = new Vector2D(0, 0);
-	
+
 	private Vector2D mouseEnd = new Vector2D(0, 0);
 
 	private boolean mouseRotation;
-	
+
 	/**
 	 * Class constructor.
 	 * 
@@ -67,19 +68,16 @@ public class Camera {
 			if (mouseRotation) {
 				Vector3D m1 = getPointOnSphere(mouseStart);
 				Vector3D m2 = getPointOnSphere(mouseEnd);
-				
+
 				newAxis = m1.crossProduct(m2);
 				rotation = Vector3D.angle(m1, m2) * 20;
-				
+
 				mouseStart = mouseEnd;
 			}
-			
+
 			// Construct quaternion from the new rotation:
-			local = new Rotation(Math.cos(rotation / 2), 
-								 Math.sin(rotation / 2) * newAxis.getX(), 
-								 Math.sin(rotation / 2) * newAxis.getY(),
-								 Math.sin(rotation / 2) * newAxis.getZ(), 
-								 true);
+			local = new Rotation(Math.cos(rotation / 2), Math.sin(rotation / 2) * newAxis.getX(), Math.sin(rotation / 2) * newAxis.getY(),
+					Math.sin(rotation / 2) * newAxis.getZ(), true);
 
 			// Generate new camera rotation quaternion from current rotation
 			// quaternion and new rotation quaternion:
@@ -90,21 +88,21 @@ public class Camera {
 			rotation = 0;
 		}
 	}
-	
+
 	public void translate(Vector3D axis, double distance) {
-		//get forward vector
+		// get forward vector
 		Vector3D forward = new Vector3D(0, 0, 1);
 		total.applyTo(forward).normalize();
-		
-		//get right vector
+
+		// get right vector
 		Vector3D right = new Vector3D(1, 0, 0);
 		total.applyTo(right).normalize();
-		
-		//get up vector
+
+		// get up vector
 		Vector3D up = new Vector3D(0, 1, 0);
 		total.applyTo(up).normalize();
-		
-		//translate camera position
+
+		// translate camera position
 		if (axis.getX() == 1) {
 			cam = new Vector3D(cam.getX() + right.getX() * distance, cam.getY() + right.getY() * distance, cam.getZ() + right.getZ() * distance);
 			view = new Vector3D(view.getX() + right.getX() * distance, view.getY() + right.getY() * distance, view.getZ() + right.getZ() * distance);
@@ -118,19 +116,18 @@ public class Camera {
 			view = new Vector3D(view.getX() + forward.getX() * distance, view.getY() + forward.getY() * distance, view.getZ() + forward.getZ() * distance);
 		}
 	}
-	
+
 	public double[] getRotationMatrix() {
 		double q0 = total.getQ0();
 		double q1 = total.getQ1();
 		double q2 = total.getQ2();
 		double q3 = total.getQ3();
 
-		return new double[] {1-2*q2*q2-2*q3*q3, 	2*q1*q2-2*q0*q3, 	2*q1*q3+2*q0*q2, 	0, 
-							 2*q1*q2+2*q0*q3, 		1-2*q1*q1-2*q3*q3, 	2*q2*q3-2*q0*q1, 	0,
-							 2*q1*q3-2*q0*q2, 		2*q2*q3+2*q0*q1, 	1-2*q1*q1-2*q2*q2, 	0,
-							 0, 					0, 					0, 					1};
+		return new double[] { 1 - 2 * q2 * q2 - 2 * q3 * q3, 2 * q1 * q2 - 2 * q0 * q3, 2 * q1 * q3 + 2 * q0 * q2, 0, 2 * q1 * q2 + 2 * q0 * q3,
+				1 - 2 * q1 * q1 - 2 * q3 * q3, 2 * q2 * q3 - 2 * q0 * q1, 0, 2 * q1 * q3 - 2 * q0 * q2, 2 * q2 * q3 + 2 * q0 * q1,
+				1 - 2 * q1 * q1 - 2 * q2 * q2, 0, 0, 0, 0, 1 };
 	}
-	
+
 	/**
 	 * Set the axis of a new rotation.
 	 * 
@@ -194,14 +191,14 @@ public class Camera {
 		// Solve for z
 		double z = 1 - x * x - y * y;
 		z = z < 0 ? 0 : Math.sqrt(z);
-		
+
 		return new Vector3D(x, y, z).normalize();
 	}
-	
+
 	public void setMouseStart(int x, int y) {
 		mouseStart = new Vector2D(x, y);
 	}
-	
+
 	public void setMouseEnd(int x, int y) {
 		mouseEnd = new Vector2D(x, y);
 	}
@@ -217,6 +214,5 @@ public class Camera {
 	public void setAngle(float angle) {
 		this.angle = angle;
 	}
-	
-	
+
 }

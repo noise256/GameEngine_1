@@ -30,11 +30,11 @@ public class TestShip extends Ship {
 					// translate and rotate
 					gl.glTranslatef((float) position.getX(), (float) position.getY(), 0);
 					gl.glRotatef((float) (orientation * 180 / Math.PI), 0, 0, 1);
-					
+
 					for (int i = 0; i < bricks.size(); i++) {
 						Brick brick = bricks.get(i);
 						brick.updateView();
-						
+
 						for (SceneNode brickView : brick.getView()) {
 							gl.glPushMatrix();
 							if (brick.isExploding()) {
@@ -44,12 +44,12 @@ public class TestShip extends Ship {
 							gl.glPopMatrix();
 						}
 					}
-					
+
 					gl.glPopMatrix();
-					
+
 					if (selected && currentOrder != null) {
 						Vector2D target = null;
-						if (currentOrder.getAgentInputType() == AgentInputType.MOVE) { 
+						if (currentOrder.getAgentInputType() == AgentInputType.MOVE) {
 							gl.glColor4f(0.0f, 1.0f, 0.0f, 0.4f);
 							target = ((AgentInputMove) currentOrder).getDestination();
 						}
@@ -57,29 +57,29 @@ public class TestShip extends Ship {
 							gl.glColor4f(1.0f, 0.0f, 0.0f, 0.4f);
 							target = ((AgentInputAttack) currentOrder).getTarget().getPosition();
 						}
-						
+
 						gl.glEnable(GL3bc.GL_BLEND);
 						gl.glLineWidth(1.0f);
-						
+
 						gl.glPushMatrix();
-							gl.glTranslatef(0.0f, 0.0f, 0.0f);	
-							gl.glBegin(GL3bc.GL_LINES);
-								gl.glVertex3d(position.getX(), position.getY(), 0.0d);
-								gl.glVertex3d(target.getX(), target.getY(), 0.0d);
-							gl.glEnd();
+						gl.glTranslatef(0.0f, 0.0f, 0.0f);
+						gl.glBegin(GL3bc.GL_LINES);
+						gl.glVertex3d(position.getX(), position.getY(), 0.0d);
+						gl.glVertex3d(target.getX(), target.getY(), 0.0d);
+						gl.glEnd();
 						gl.glPopMatrix();
-						
+
 						gl.glPushMatrix();
-							gl.glTranslated(target.getX(), target.getY(), 0.0d);
-							double r = 0;
-							gl.glBegin(GL3bc.GL_POLYGON);
-								for (int i = 0; i < 360; i++) {
-									r = i * Math.PI/180;
-									gl.glVertex3d(Math.cos(r) * 5, Math.sin(r) * 5, 1.0);
-								}
-							gl.glEnd();
+						gl.glTranslated(target.getX(), target.getY(), 0.0d);
+						double r = 0;
+						gl.glBegin(GL3bc.GL_POLYGON);
+						for (int i = 0; i < 360; i++) {
+							r = i * Math.PI / 180;
+							gl.glVertex3d(Math.cos(r) * 5, Math.sin(r) * 5, 1.0);
+						}
+						gl.glEnd();
 						gl.glPopMatrix();
-						
+
 						gl.glDisable(GL3bc.GL_BLEND);
 					}
 				}

@@ -29,7 +29,7 @@ public class TestShipFragment extends BrickObject {
 	@Override
 	public void collide(Collidable collider) {
 		Brick brick = getClosestBrick(collider.getPosition());
-		
+
 		brick.setHealth(brick.getHealth() - 10);
 	}
 
@@ -38,16 +38,16 @@ public class TestShipFragment extends BrickObject {
 		if (bricks.isEmpty()) {
 			return 0.0;
 		}
-		
+
 		Brick max = bricks.get(0);
 		for (Brick brick : bricks) {
 			if (brick.getPosition().getNorm() > max.getPosition().getNorm()) {
 				max = brick;
 			}
 		}
-		
+
 		if (max.getBrickType() == BrickType.SQUARE) {
-			return max.getPosition().getNorm() + Math.sqrt(max.getEdgeLength()*2 + max.getEdgeLength()*2);
+			return max.getPosition().getNorm() + Math.sqrt(max.getEdgeLength() * 2 + max.getEdgeLength() * 2);
 		}
 		else if (max.getBrickType() == BrickType.TRIANGLE) {
 			return max.getPosition().getNorm();
@@ -61,7 +61,7 @@ public class TestShipFragment extends BrickObject {
 	public void updateView() {
 		if (sceneNodes.get("root") == null) {
 			SceneNode root = new SceneNode(null) {
-				
+
 				@Override
 				public void update(GL3bc gl) {
 					gl.glPushMatrix();
@@ -69,11 +69,11 @@ public class TestShipFragment extends BrickObject {
 					// translate and rotate
 					gl.glTranslatef((float) position.getX(), (float) position.getY(), 0);
 					gl.glRotatef((float) (orientation * 180 / Math.PI), 0, 0, 1);
-					
+
 					for (int i = 0; i < bricks.size(); i++) {
 						Brick brick = bricks.get(i);
 						brick.updateView();
-						
+
 						for (SceneNode brickView : brick.getView()) {
 							gl.glPushMatrix();
 							if (brick.isExploding()) {
@@ -83,7 +83,7 @@ public class TestShipFragment extends BrickObject {
 							gl.glPopMatrix();
 						}
 					}
-					
+
 					gl.glPopMatrix();
 				}
 			};
@@ -96,40 +96,40 @@ public class TestShipFragment extends BrickObject {
 		if (getBrickFromIndex(0) == null) {
 			setAlive(false);
 		}
-		
+
 		updateBricks();
 	}
 
 	@Override
 	protected PhysicalObject createFragment(ArrayList<Brick> fragmentBricks, ArrayList<ArrayList<Integer>> adjacencyList) {
-		//get average position of fragment bricks
+		// get average position of fragment bricks
 		Vector2D averagePosition = new Vector2D(0.0, 0.0);
 		for (Brick brick : fragmentBricks) {
 			averagePosition = averagePosition.add(brick.getPosition());
 		}
-		averagePosition = averagePosition.scalarMultiply(1.0/fragmentBricks.size());
-		
-		//adjust position of bricks to be relative to new average position
+		averagePosition = averagePosition.scalarMultiply(1.0 / fragmentBricks.size());
+
+		// adjust position of bricks to be relative to new average position
 		for (Brick brick : fragmentBricks) {
 			brick.setPosition(brick.getPosition().subtract(averagePosition));
 		}
-		
-		//update brick indices
+
+		// update brick indices
 		for (int i = 0; i < fragmentBricks.size(); i++) {
-			//change adjacency list
+			// change adjacency list
 			for (int j = 0; j < adjacencyList.size(); j++) {
 				if (adjacencyList.get(j).contains(new Integer(fragmentBricks.get(i).getIndex()))) {
 					adjacencyList.get(j).remove(new Integer(fragmentBricks.get(i).getIndex()));
 					adjacencyList.get(j).add(new Integer(i));
 				}
 			}
-			//change brick index
+			// change brick index
 			fragmentBricks.get(i).setIndex(i);
 		}
-		
-		//set averagePosition of bricks to an absolute position
+
+		// set averagePosition of bricks to an absolute position
 		averagePosition = MathBox.rotatePoint(averagePosition, orientation).add(position);
-				
+
 		Hashtable<String, Double> values = new Hashtable<String, Double>();
 		values.put("mass", 5000.0);
 		values.put("positionX", averagePosition.getX());
@@ -146,7 +146,7 @@ public class TestShipFragment extends BrickObject {
 		values.put("maxTurningVelocity", 0.1);
 		values.put("maxForce", 1.0);
 		values.put("maxTurningForce", 1.0);
-		
+
 		TestShipFragment fragment = new TestShipFragment(this, values, fragmentBricks, adjacencyList);
 		fragment.addObserver(GameManager.getObjectManager());
 		return fragment;

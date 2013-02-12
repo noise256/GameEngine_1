@@ -11,29 +11,29 @@ public abstract class SubSystem extends GameObject {
 	public enum SubSystemType {
 		weapon;
 	}
-	
+
 	protected SubSystemType subSystemType;
 	protected SystemBrick systemBrick;
-	
+
 	protected boolean activated;
-	
+
 	protected Vector2D position;
 	protected double orientation;
-	
+
 	public SubSystem(GameObject source, SystemBrick systemBrick, SubSystemType subSystemType, Vector2D position, double orientation) {
 		super(ObjectType.SUBSYSTEM, source);
 		this.systemBrick = systemBrick;
 		this.subSystemType = subSystemType;
 	}
-	
+
 	public SystemBrick getSystemBrick() {
 		return systemBrick;
 	}
-	
+
 	public void setSystemBrick(SystemBrick systemBrick) {
 		this.systemBrick = systemBrick;
 	}
-	
+
 	public SubSystemType getSubSystemType() {
 		return subSystemType;
 	}

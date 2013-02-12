@@ -41,7 +41,7 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 	private GLU glu = new GLU();
 
 	private Camera camera;
-	
+
 	private Hashtable<String, Boolean> cameraControlTable = new Hashtable<String, Boolean>();
 
 	private int mouseX;
@@ -53,7 +53,7 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 	@Override
 	public void display(GLAutoDrawable drawable) {
 		gl = drawable.getGL().getGL3bc();
-		
+
 		gl.glClear(GL3bc.GL_COLOR_BUFFER_BIT | GL3bc.GL_DEPTH_BUFFER_BIT);
 
 		gl.glMatrixMode(GL3bc.GL_PROJECTION);
@@ -66,94 +66,116 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 		gl.glLoadIdentity();
 
 		updateCamera(gl);
-		
+
 		gl.glPushMatrix();
 		gl.glTranslatef(0.0f, 0.0f, 0.0f);
-//		gl.glLightfv(GL3bc.GL_LIGHT0, GL3bc.GL_POSITION, new float[] {-1.0f, -1.0f, 1.0f, 0.0f}, 0);
+		// gl.glLightfv(GL3bc.GL_LIGHT0, GL3bc.GL_POSITION, new float[] {-1.0f,
+		// -1.0f, 1.0f, 0.0f}, 0);
 		gl.glPopMatrix();
-		
+
 		drawSkybox(gl);
 		drawSceneNodes(gl);
 		drawDebugCube(gl, (float) camera.getView().getX(), (float) camera.getView().getY(), (float) camera.getView().getZ());
 		drawText(gl);
 	}
-	
-	
+
 	private void drawSkybox(GL3bc gl) {
 		if (!TextureLoader.getCurrentTextureName().equals("SkyBox1")) {
 			TextureLoader.loadTexture(gl, "SkyBox1", "stars1.png");
 			TextureLoader.setCurrentTexture(gl, "SkyBox1");
 		}
-	    
+
 		gl.glPushMatrix();
 		gl.glLoadIdentity();
-		
-	    glu.gluLookAt(0.0f, 0.0f, 0.0f,0.0f, 0.0f,camera.getCam().getZ(),0,1,0);
-	    
-	    gl.glEnable(GL3bc.GL_TEXTURE_2D);
-	    gl.glDisable(GL3bc.GL_DEPTH_TEST);
-	    gl.glDisable(GL3bc.GL_LIGHTING);
-	    gl.glDisable(GL3bc.GL_BLEND);
-	    
-	    gl.glColor4f(1,1,1,1);
-	    
 
-	    
-	    // Render the front quad
-	    gl.glBegin(GL3bc.GL_QUADS);
-        	gl.glTexCoord2f(0, 0); gl.glVertex3f(  1.0f, -1.0f, -1.0f );
-        	gl.glTexCoord2f(1, 0); gl.glVertex3f( -1.0f, -1.0f, -1.0f );
-        	gl.glTexCoord2f(1, 1); gl.glVertex3f( -1.0f,  1.0f, -1.0f );
-        	gl.glTexCoord2f(0, 1); gl.glVertex3f(  1.0f,  1.0f, -1.0f );
-        gl.glEnd();
-        
-	    // Render the left quad
-	    gl.glBegin(GL3bc.GL_QUADS);
-	        gl.glTexCoord2f(0, 0); gl.glVertex3f(  1.0f, -1.0f,  1.0f );
-	        gl.glTexCoord2f(1, 0); gl.glVertex3f(  1.0f, -1.0f, -1.0f );
-	        gl.glTexCoord2f(1, 1); gl.glVertex3f(  1.0f,  1.0f, -1.0f );
-	        gl.glTexCoord2f(0, 1); gl.glVertex3f(  1.0f,  1.0f,  1.0f );
-	    gl.glEnd();
-	 
-	    // Render the back quad
-	    gl.glBegin(GL3bc.GL_QUADS);
-	        gl.glTexCoord2f(0, 0); gl.glVertex3f( -1.0f, -1.0f,  1.0f );
-	        gl.glTexCoord2f(1, 0); gl.glVertex3f(  1.0f, -1.0f,  1.0f );
-	        gl.glTexCoord2f(1, 1); gl.glVertex3f(  1.0f,  1.0f,  1.0f );
-	        gl.glTexCoord2f(0, 1); gl.glVertex3f( -1.0f,  1.0f,  1.0f );
-	    gl.glEnd();
-	 
-	    // Render the right quad
-	    gl.glBegin(GL3bc.GL_QUADS);
-	        gl.glTexCoord2f(0, 0); gl.glVertex3f( -1.0f, -1.0f, -1.0f );
-	        gl.glTexCoord2f(1, 0); gl.glVertex3f( -1.0f, -1.0f,  1.0f );
-	        gl.glTexCoord2f(1, 1); gl.glVertex3f( -1.0f,  1.0f,  1.0f );
-	        gl.glTexCoord2f(0, 1); gl.glVertex3f( -1.0f,  1.0f, -1.0f );
-	    gl.glEnd();
-	 
-	    // Render the top quad
-	    gl.glBegin(GL3bc.GL_QUADS);
-	        gl.glTexCoord2f(0, 1); gl.glVertex3f( -1.0f,  1.0f, -1.0f );
-	        gl.glTexCoord2f(0, 0); gl.glVertex3f( -1.0f,  1.0f,  1.0f );
-	        gl.glTexCoord2f(1, 0); gl.glVertex3f(  1.0f,  1.0f,  1.0f );
-	        gl.glTexCoord2f(1, 1); gl.glVertex3f(  1.0f,  1.0f, -1.0f );
-	    gl.glEnd();
-	 
-	    // Render the bottom quad
-	    gl.glBegin(GL3bc.GL_QUADS);
-	        gl.glTexCoord2f(0, 0); gl.glVertex3f( -1.0f, -1.0f, -1.0f );
-	        gl.glTexCoord2f(0, 1); gl.glVertex3f( -1.0f, -1.0f,  1.0f );
-	        gl.glTexCoord2f(1, 1); gl.glVertex3f(  1.0f, -1.0f,  1.0f );
-	        gl.glTexCoord2f(1, 0); gl.glVertex3f(  1.0f, -1.0f, -1.0f );
-	    gl.glEnd();
-	    
-	    gl.glDisable(GL3bc.GL_TEXTURE_2D);
-	    gl.glEnable(GL3bc.GL_DEPTH_TEST);
-	    gl.glEnable(GL3bc.GL_LIGHTING);
-	    gl.glEnable(GL3bc.GL_BLEND);
+		glu.gluLookAt(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, camera.getCam().getZ(), 0, 1, 0);
+
+		gl.glEnable(GL3bc.GL_TEXTURE_2D);
+		gl.glDisable(GL3bc.GL_DEPTH_TEST);
+		gl.glDisable(GL3bc.GL_LIGHTING);
+		gl.glDisable(GL3bc.GL_BLEND);
+
+		gl.glColor4f(1, 1, 1, 1);
+
+		// Render the front quad
+		gl.glBegin(GL3bc.GL_QUADS);
+		gl.glTexCoord2f(0, 0);
+		gl.glVertex3f(1.0f, -1.0f, -1.0f);
+		gl.glTexCoord2f(1, 0);
+		gl.glVertex3f(-1.0f, -1.0f, -1.0f);
+		gl.glTexCoord2f(1, 1);
+		gl.glVertex3f(-1.0f, 1.0f, -1.0f);
+		gl.glTexCoord2f(0, 1);
+		gl.glVertex3f(1.0f, 1.0f, -1.0f);
+		gl.glEnd();
+
+		// Render the left quad
+		gl.glBegin(GL3bc.GL_QUADS);
+		gl.glTexCoord2f(0, 0);
+		gl.glVertex3f(1.0f, -1.0f, 1.0f);
+		gl.glTexCoord2f(1, 0);
+		gl.glVertex3f(1.0f, -1.0f, -1.0f);
+		gl.glTexCoord2f(1, 1);
+		gl.glVertex3f(1.0f, 1.0f, -1.0f);
+		gl.glTexCoord2f(0, 1);
+		gl.glVertex3f(1.0f, 1.0f, 1.0f);
+		gl.glEnd();
+
+		// Render the back quad
+		gl.glBegin(GL3bc.GL_QUADS);
+		gl.glTexCoord2f(0, 0);
+		gl.glVertex3f(-1.0f, -1.0f, 1.0f);
+		gl.glTexCoord2f(1, 0);
+		gl.glVertex3f(1.0f, -1.0f, 1.0f);
+		gl.glTexCoord2f(1, 1);
+		gl.glVertex3f(1.0f, 1.0f, 1.0f);
+		gl.glTexCoord2f(0, 1);
+		gl.glVertex3f(-1.0f, 1.0f, 1.0f);
+		gl.glEnd();
+
+		// Render the right quad
+		gl.glBegin(GL3bc.GL_QUADS);
+		gl.glTexCoord2f(0, 0);
+		gl.glVertex3f(-1.0f, -1.0f, -1.0f);
+		gl.glTexCoord2f(1, 0);
+		gl.glVertex3f(-1.0f, -1.0f, 1.0f);
+		gl.glTexCoord2f(1, 1);
+		gl.glVertex3f(-1.0f, 1.0f, 1.0f);
+		gl.glTexCoord2f(0, 1);
+		gl.glVertex3f(-1.0f, 1.0f, -1.0f);
+		gl.glEnd();
+
+		// Render the top quad
+		gl.glBegin(GL3bc.GL_QUADS);
+		gl.glTexCoord2f(0, 1);
+		gl.glVertex3f(-1.0f, 1.0f, -1.0f);
+		gl.glTexCoord2f(0, 0);
+		gl.glVertex3f(-1.0f, 1.0f, 1.0f);
+		gl.glTexCoord2f(1, 0);
+		gl.glVertex3f(1.0f, 1.0f, 1.0f);
+		gl.glTexCoord2f(1, 1);
+		gl.glVertex3f(1.0f, 1.0f, -1.0f);
+		gl.glEnd();
+
+		// Render the bottom quad
+		gl.glBegin(GL3bc.GL_QUADS);
+		gl.glTexCoord2f(0, 0);
+		gl.glVertex3f(-1.0f, -1.0f, -1.0f);
+		gl.glTexCoord2f(0, 1);
+		gl.glVertex3f(-1.0f, -1.0f, 1.0f);
+		gl.glTexCoord2f(1, 1);
+		gl.glVertex3f(1.0f, -1.0f, 1.0f);
+		gl.glTexCoord2f(1, 0);
+		gl.glVertex3f(1.0f, -1.0f, -1.0f);
+		gl.glEnd();
+
+		gl.glDisable(GL3bc.GL_TEXTURE_2D);
+		gl.glEnable(GL3bc.GL_DEPTH_TEST);
+		gl.glEnable(GL3bc.GL_LIGHTING);
+		gl.glEnable(GL3bc.GL_BLEND);
 		gl.glPopMatrix();
 	}
-	
+
 	private void updateCamera(GL3bc gl) {
 		if (mouseX <= 5) {
 			camera.translate(new Vector3D(1.0, 0.0, 0.0), -2.5);
@@ -167,7 +189,7 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 		else if (mouseY >= Constants.viewHeight - 6) {
 			camera.translate(new Vector3D(0.0, 1.0, 0.0), 2.5);
 		}
-		
+
 		// update camera input table to include most recent translations and/or
 		// rotations
 		if (cameraControlTable.get("rLeft")) {
@@ -200,10 +222,10 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 		}
 
 		// apply rotation to camera
-//		camera.rotateCamera();
+		// camera.rotateCamera();
 
 		// get current rotation matrix from camera
-//		double[] rotMatrix = camera.getRotationMatrix();
+		// double[] rotMatrix = camera.getRotationMatrix();
 
 		// move to camera position
 		// gl.glTranslatef((float) -camera.getCam().getX(), (float)
@@ -216,9 +238,9 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 
 		// test for mouse picking
 		gl.glTranslatef((float) -camera.getView().getX(), (float) -camera.getView().getY(), (float) -camera.getCam().getZ());
-//		gl.glTranslatef(0.0f, 0.0f, (float) -camera.getCam().getZ());
-//		gl.glTranslatef(0.0f, 0.0f, (float) -camera.getCam().getZ());
-//		gl.glMultMatrixd(rotMatrix, 0);
+		// gl.glTranslatef(0.0f, 0.0f, (float) -camera.getCam().getZ());
+		// gl.glTranslatef(0.0f, 0.0f, (float) -camera.getCam().getZ());
+		// gl.glMultMatrixd(rotMatrix, 0);
 
 		// update the world coordinates to correspond to the current mouse
 		// position and camera rotation
@@ -231,24 +253,17 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 		double[] projection = new double[16];
 		double[] modelview = new double[16];
 
-		inPoint = new double[] {
-				screenX * 2.0 / Constants.viewWidth - 1.0,
-				(Constants.viewHeight - screenY) * 2.0 / Constants.viewHeight
-						- 1.0, -1.0, 1.0 };
+		inPoint = new double[] { screenX * 2.0 / Constants.viewWidth - 1.0, (Constants.viewHeight - screenY) * 2.0 / Constants.viewHeight - 1.0, -1.0, 1.0 };
 
 		// obtain ogl matrices
 		gl.glGetDoublev(GL3bc.GL_PROJECTION_MATRIX, projection, 0);
 		gl.glGetDoublev(GL3bc.GL_MODELVIEW_MATRIX, modelview, 0);
 
 		// multiply projection and modelview matrices and then invert
-		Array2DRowRealMatrix projectionMatrix = new Array2DRowRealMatrix(
-				MathBox.unflattenMatrix4(projection));
-		Array2DRowRealMatrix modelviewMatrix = new Array2DRowRealMatrix(
-				MathBox.unflattenMatrix4(modelview));
-		Array2DRowRealMatrix pmMatrix = projectionMatrix
-				.multiply(modelviewMatrix);
-		Array2DRowRealMatrix inverseMatrix = (Array2DRowRealMatrix) new LUDecomposition(
-				pmMatrix).getSolver().getInverse();
+		Array2DRowRealMatrix projectionMatrix = new Array2DRowRealMatrix(MathBox.unflattenMatrix4(projection));
+		Array2DRowRealMatrix modelviewMatrix = new Array2DRowRealMatrix(MathBox.unflattenMatrix4(modelview));
+		Array2DRowRealMatrix pmMatrix = projectionMatrix.multiply(modelviewMatrix);
+		Array2DRowRealMatrix inverseMatrix = (Array2DRowRealMatrix) new LUDecomposition(pmMatrix).getSolver().getInverse();
 
 		// mutliply inverse matrix by normalized point
 		outPoint = inverseMatrix.operate(inPoint);
@@ -260,16 +275,16 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 
 	private void drawSceneNodes(GL3bc gl) {
 		if (currentEvent != null) {
-		    gl.glDisable(GL3bc.GL_LIGHTING);
-		    gl.glDisable(GL3bc.GL_BLEND);
-		    
+			gl.glDisable(GL3bc.GL_LIGHTING);
+			gl.glDisable(GL3bc.GL_BLEND);
+
 			ArrayList<SceneNode> sceneNodes = currentEvent.getSceneNodes();
 			for (SceneNode sceneNode : sceneNodes) {
 				sceneNode.update(gl);
 			}
-			
-		    gl.glEnable(GL3bc.GL_LIGHTING);
-		    gl.glEnable(GL3bc.GL_BLEND);
+
+			gl.glEnable(GL3bc.GL_LIGHTING);
+			gl.glEnable(GL3bc.GL_BLEND);
 		}
 
 		if (renderQueue.size() > 0) {
@@ -285,7 +300,7 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 
 		gl.glMatrixMode(GL3bc.GL_MODELVIEW);
 		gl.glLoadIdentity();
-		
+
 		gl.glDisable(GL3bc.GL_DEPTH_TEST);
 		gl.glDisable(GL3bc.GL_TEXTURE);
 		gl.glDisable(GL3bc.GL_TEXTURE_2D);
@@ -306,16 +321,16 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 
 	private void drawDebugCube(GL3bc gl, float x, float y, float z) {
 		GLUT glut = new GLUT();
-		
+
 		gl.glPushMatrix();
 		gl.glDisable(GL3bc.GL_LIGHTING);
 		gl.glLineWidth(1.0f);
 		gl.glTranslatef(x, y, z);
-		
+
 		// model objects
 		gl.glColor3f(1.0f, 1.0f, 1.0f); // origin
 		glut.glutWireCube(1.0f);
-		
+
 		gl.glPushMatrix(); // x axis
 		gl.glColor3f(1f, 0f, 0f);
 		gl.glBegin(GL3bc.GL_LINES);
@@ -345,7 +360,7 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 		gl.glTranslatef(0, 0, 50);
 		glut.glutWireCube(10f);
 		gl.glPopMatrix();
-		
+
 		gl.glEnable(GL3bc.GL_LIGHTING);
 		gl.glPopMatrix();
 	}
@@ -353,19 +368,18 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 	@Override
 	public void init(GLAutoDrawable drawable) {
 		GL3bc gl = drawable.getGL().getGL3bc();
-		
+
 		gl.glEnable(GL.GL_DEPTH_TEST);
-		
+
 		gl.glEnable(GL3bc.GL_BLEND);
 		gl.glBlendFunc(GL3bc.GL_SRC_ALPHA, GL3bc.GL_ONE_MINUS_SRC_ALPHA);
 
-//		initFog(gl);
+		// initFog(gl);
 		initLighting(gl);
-		
+
 		gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
-		camera = new Camera(new Vector3D(0, 0, 1000), new Vector3D(
-				Constants.modelWidth / 2, Constants.modelHeight / 2, 0), 70);
+		camera = new Camera(new Vector3D(0, 0, 1000), new Vector3D(Constants.modelWidth / 2, Constants.modelHeight / 2, 0), 70);
 
 		cameraControlTable.put("left", false);
 		cameraControlTable.put("right", false);
@@ -380,47 +394,47 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 	@SuppressWarnings("unused")
 	private void initFog(GL3bc gl) {
 		float density = 0.1f;
-		float[] colour = new float[] {0.5f, 0.5f, 0.5f, 1.0f};
-		
+		float[] colour = new float[] { 0.5f, 0.5f, 0.5f, 1.0f };
+
 		gl.glEnable(GL3bc.GL_FOG);
-		
+
 		gl.glFogi(GL3bc.GL_FOG_MODE, GL3bc.GL_LINEAR);
 		gl.glFogf(GL3bc.GL_FOG_START, 100.0f);
 		gl.glFogf(GL3bc.GL_FOG_END, 1200.0f);
-		
+
 		gl.glFogfv(GL3bc.GL_FOG_COLOR, colour, 0);
-		
+
 		gl.glFogf(GL3bc.GL_FOG_DENSITY, density);
-		
+
 		gl.glHint(GL3bc.GL_FOG_HINT, GL3bc.GL_NICEST);
 	}
-	
+
 	private void initLighting(GL3bc gl) {
 		gl.glEnable(GL3bc.GL_LIGHTING);
-		
-		gl.glLightModelfv(GL3bc.GL_LIGHT_MODEL_AMBIENT, new float[] {0.1f, 0.1f, 0.1f, 1.0f}, 0);
-		
+
+		gl.glLightModelfv(GL3bc.GL_LIGHT_MODEL_AMBIENT, new float[] { 0.1f, 0.1f, 0.1f, 1.0f }, 0);
+
 		gl.glEnable(GL3bc.GL_NORMALIZE);
-		
+
 		gl.glEnable(GL3bc.GL_LINE_SMOOTH);
 		gl.glEnable(GL3bc.GL_POLYGON_SMOOTH);
 		gl.glShadeModel(GL3bc.GL_SMOOTH);
-		
+
 		gl.glEnable(GL3bc.GL_LIGHT0);
-		
-		gl.glLightfv(GL3bc.GL_LIGHT0, GL3bc.GL_AMBIENT, new float[] {1.0f, 1.0f, 1.0f, 1.0f}, 0);
-		gl.glLightfv(GL3bc.GL_LIGHT0, GL3bc.GL_DIFFUSE, new float[] {1.0f, 1.0f, 1.0f, 1.0f}, 0);
-		gl.glLightfv(GL3bc.GL_LIGHT0, GL3bc.GL_SPECULAR, new float[] {1.0f, 1.0f, 1.0f, 1.0f}, 0);
-		
-		gl.glMaterialfv(GL3bc.GL_FRONT, GL3bc.GL_AMBIENT, new float[] {0.3f, 0.3f, 0.3f, 1.0f}, 0);
-		gl.glMaterialfv(GL3bc.GL_FRONT, GL3bc.GL_DIFFUSE, new float[] {0.4f, 0.4f, 0.4f, 1.0f}, 0);
-		gl.glMaterialfv(GL3bc.GL_FRONT, GL3bc.GL_SPECULAR, new float[] {0.0f, 0.0f, 0.0f, 1.0f}, 0);
-		
-		gl.glLightfv(GL3bc.GL_LIGHT0, GL3bc.GL_POSITION, new float[] {-1.0f, -1.0f, 1.0f, 0.0f}, 0);
+
+		gl.glLightfv(GL3bc.GL_LIGHT0, GL3bc.GL_AMBIENT, new float[] { 1.0f, 1.0f, 1.0f, 1.0f }, 0);
+		gl.glLightfv(GL3bc.GL_LIGHT0, GL3bc.GL_DIFFUSE, new float[] { 1.0f, 1.0f, 1.0f, 1.0f }, 0);
+		gl.glLightfv(GL3bc.GL_LIGHT0, GL3bc.GL_SPECULAR, new float[] { 1.0f, 1.0f, 1.0f, 1.0f }, 0);
+
+		gl.glMaterialfv(GL3bc.GL_FRONT, GL3bc.GL_AMBIENT, new float[] { 0.3f, 0.3f, 0.3f, 1.0f }, 0);
+		gl.glMaterialfv(GL3bc.GL_FRONT, GL3bc.GL_DIFFUSE, new float[] { 0.4f, 0.4f, 0.4f, 1.0f }, 0);
+		gl.glMaterialfv(GL3bc.GL_FRONT, GL3bc.GL_SPECULAR, new float[] { 0.0f, 0.0f, 0.0f, 1.0f }, 0);
+
+		gl.glLightfv(GL3bc.GL_LIGHT0, GL3bc.GL_POSITION, new float[] { -1.0f, -1.0f, 1.0f, 0.0f }, 0);
 	}
+
 	@Override
-	public void reshape(GLAutoDrawable arg0, int arg1, int arg2, int arg3,
-			int arg4) {
+	public void reshape(GLAutoDrawable arg0, int arg1, int arg2, int arg3, int arg4) {
 	}
 
 	@Override
@@ -459,6 +473,7 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 	}
 
 	boolean originShift = false;
+
 	@Override
 	public void keyReleased(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_LEFT) {
@@ -517,8 +532,7 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		InputUpdateEvent inputEvent = new InputUpdateEvent(this,
-				new ExtendedMouseEvent(e, new Vector2D(worldX, worldY)));
+		InputUpdateEvent inputEvent = new InputUpdateEvent(this, new ExtendedMouseEvent(e, new Vector2D(worldX, worldY)));
 		updateObservers(inputEvent);
 	}
 
@@ -573,7 +587,7 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 		for (Observer<InputUpdateEvent> observer : observers) {
 			observer.update(inputUpdateEvent);
 		}
-		
+
 	}
 
 	@Override

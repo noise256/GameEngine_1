@@ -10,11 +10,11 @@ public class GroupNode extends SceneNode {
 	@Override
 	public void update(GL3bc gl) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-//	@Override
-//	public void update(GL3bc gl) {
-//		updateChildren(gl);
-//	}
+	// @Override
+	// public void update(GL3bc gl) {
+	// updateChildren(gl);
+	// }
 }

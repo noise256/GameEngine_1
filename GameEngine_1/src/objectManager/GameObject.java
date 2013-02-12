@@ -8,32 +8,32 @@ import sceneManager.SceneNode;
 import eventManager.Observable;
 import eventManager.Observer;
 
-public abstract class GameObject implements EntityView, Observable<ObjectChangeEvent>{
+public abstract class GameObject implements EntityView, Observable<ObjectChangeEvent> {
 	protected GameObject source;
-	
+
 	protected ArrayList<Observer<ObjectChangeEvent>> observers = new ArrayList<Observer<ObjectChangeEvent>>();
-	
+
 	protected ObjectType objectType;
 
 	protected boolean alive = true;
-	
+
 	protected Hashtable<String, SceneNode> sceneNodes = new Hashtable<String, SceneNode>();
-	
+
 	public GameObject(ObjectType objectType, GameObject source) {
 		this.objectType = objectType;
 		this.source = source;
 	}
-	
+
 	public abstract void update();
-	
+
 	public ObjectType getObjectType() {
 		return objectType;
 	}
-	
+
 	public Hashtable<String, SceneNode> getSceneNodes() {
 		return sceneNodes;
 	}
-	
+
 	@Override
 	public void addObserver(Observer<ObjectChangeEvent> observer) {
 		observers.add(observer);
@@ -50,7 +50,7 @@ public abstract class GameObject implements EntityView, Observable<ObjectChangeE
 			observer.update(eventObject);
 		}
 	}
-	
+
 	@Override
 	public ArrayList<SceneNode> getView() {
 		return new ArrayList<SceneNode>(sceneNodes.values());
@@ -59,11 +59,11 @@ public abstract class GameObject implements EntityView, Observable<ObjectChangeE
 	public GameObject getSource() {
 		return source;
 	}
-	
+
 	public boolean isAlive() {
 		return alive;
 	}
-	
+
 	public void setAlive(boolean alive) {
 		this.alive = alive;
 	}

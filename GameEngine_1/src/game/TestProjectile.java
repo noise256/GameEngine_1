@@ -21,8 +21,7 @@ public class TestProjectile extends Agent {
 
 	private boolean exploding = false;
 	private int explosionTimer = 200;
-	
-	
+
 	public TestProjectile(GameObject source, Hashtable<String, Double> values, double lifeDecrement) {
 		super(ObjectType.PROJECTILE, source, values, null, null);
 		this.lifeDecrement = lifeDecrement;
@@ -42,30 +41,30 @@ public class TestProjectile extends Agent {
 					gl.glEnable(GL3bc.GL_BLEND);
 					gl.glEnable(GL3bc.GL_TEXTURE_2D);
 					gl.glDisable(GL3bc.GL_LIGHTING);
-					
+
 					gl.glPushMatrix();
-					
+
 					// translate and rotate
 					gl.glTranslatef((float) position.getX(), (float) position.getY(), 0);
 					gl.glRotatef((float) (orientation * 180 / Math.PI), 0, 0, 1);
-					
+
 					gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 					gl.glBegin(GL3bc.GL_QUADS);
-						gl.glTexCoord3f(1.0f, 1.0f, 0.0f);
-						gl.glVertex3f(10.0f, 10.0f, 0.0f);
-						
-						gl.glTexCoord3f(1.0f, 0.0f, 0.0f);
-						gl.glVertex3f(10.0f, -10.0f, 0.0f);
-						
-						gl.glTexCoord3f(0.0f, 0.0f, 0.0f);
-						gl.glVertex3f(-10.0f, -10.0f, 0.0f);
-						
-						gl.glTexCoord3f(0.0f, 1.0f, 0.0f);
-						gl.glVertex3f(-10.0f, 10.0f, 0.0f);
+					gl.glTexCoord3f(1.0f, 1.0f, 0.0f);
+					gl.glVertex3f(10.0f, 10.0f, 0.0f);
+
+					gl.glTexCoord3f(1.0f, 0.0f, 0.0f);
+					gl.glVertex3f(10.0f, -10.0f, 0.0f);
+
+					gl.glTexCoord3f(0.0f, 0.0f, 0.0f);
+					gl.glVertex3f(-10.0f, -10.0f, 0.0f);
+
+					gl.glTexCoord3f(0.0f, 1.0f, 0.0f);
+					gl.glVertex3f(-10.0f, 10.0f, 0.0f);
 					gl.glEnd();
-					
+
 					gl.glPopMatrix();
-					
+
 					gl.glDisable(GL3bc.GL_BLEND);
 					gl.glDisable(GL3bc.GL_TEXTURE_2D);
 					gl.glEnable(GL3bc.GL_LIGHTING);
@@ -78,73 +77,70 @@ public class TestProjectile extends Agent {
 				SceneNode explosionNode = new SceneNode(null) {
 					private int numParticles = 100;
 					private float[][] particles;
-					
+
 					@Override
 					public void update(GL3bc gl) {
 						if (!TextureLoader.getCurrentTextureName().equals("ProjectileTexture1")) {
 							TextureLoader.loadTexture(gl, "ProjectileTexture1", "ProjectileTexture1.png");
 							TextureLoader.setCurrentTexture(gl, "ProjectileTexture1");
 						}
-						
+
 						if (particles == null) {
 							particles = new float[numParticles][5];
-							
-							//construct initial particles
+
+							// construct initial particles
 							for (int i = 0; i < numParticles; i++) {
-								//initial values
-								particles[i] = new float[] {
-									(float) position.getX(), 
-									(float) position.getY(),
-									MathBox.nextFloat() * 2f * MathBox.nextSign(), 
-									MathBox.nextFloat() * 2f * MathBox.nextSign(),
-									MathBox.nextFloat()
-								};
-								//normalise velocity
-								float magnitude = (float) Math.sqrt(particles[i][2]*particles[i][2] + particles[i][3] * particles[i][3]);
+								// initial values
+								particles[i] = new float[] { (float) position.getX(), (float) position.getY(), MathBox.nextFloat() * 2f * MathBox.nextSign(),
+										MathBox.nextFloat() * 2f * MathBox.nextSign(), MathBox.nextFloat() };
+								// normalise velocity
+								float magnitude = (float) Math.sqrt(particles[i][2] * particles[i][2] + particles[i][3] * particles[i][3]);
 								particles[i][2] = particles[i][2] / magnitude;
 								particles[i][3] = particles[i][3] / magnitude;
 							}
 						}
 						else {
-							//adjust positions of particles
+							// adjust positions of particles
 							for (int i = 0; i < numParticles; i++) {
 								particles[i][0] += particles[i][2];
 								particles[i][1] += particles[i][3];
-								particles[i][2] = Math.abs(particles[i][2] * 0.99f) >= particles[i][2] * 0.1f ? particles[i][2] * 0.99f : particles[i][2] * 0.1f;
-								particles[i][3] = Math.abs(particles[i][3] * 0.99f) >= particles[i][3] * 0.1f ? particles[i][3] * 0.99f : particles[i][3] * 0.1f;
-								particles[i][4] = particles[i][4] - 1/200 > 0.0f ? particles[i][4] - 1/200 : 0.0f;
+								particles[i][2] = Math.abs(particles[i][2] * 0.99f) >= particles[i][2] * 0.1f ? particles[i][2] * 0.99f
+										: particles[i][2] * 0.1f;
+								particles[i][3] = Math.abs(particles[i][3] * 0.99f) >= particles[i][3] * 0.1f ? particles[i][3] * 0.99f
+										: particles[i][3] * 0.1f;
+								particles[i][4] = particles[i][4] - 1 / 200 > 0.0f ? particles[i][4] - 1 / 200 : 0.0f;
 							}
 						}
-						
+
 						gl.glEnable(GL3bc.GL_BLEND);
 						gl.glEnable(GL3bc.GL_TEXTURE_2D);
 						gl.glDisable(GL3bc.GL_LIGHTING);
-						
+
 						for (int i = 0; i < numParticles; i++) {
-							//render particles
+							// render particles
 							gl.glPushMatrix();
-							
+
 							// translate and rotate
 							gl.glTranslatef(particles[i][0], particles[i][1], 0);
-							
+
 							gl.glColor4f(1.0f, 1.0f, 1.0f, particles[i][4]);
 							gl.glBegin(GL3bc.GL_QUADS);
-								gl.glTexCoord3f(1.0f, 1.0f, 0.0f);
-								gl.glVertex3f(2.5f, 2.5f, 0.0f);
-								
-								gl.glTexCoord3f(1.0f, 0.0f, 0.0f);
-								gl.glVertex3f(2.5f, -2.5f, 0.0f);
-								
-								gl.glTexCoord3f(0.0f, 0.0f, 0.0f);
-								gl.glVertex3f(-2.5f, -2.5f, 0.0f);
-								
-								gl.glTexCoord3f(0.0f, 1.0f, 0.0f);
-								gl.glVertex3f(-2.5f, 2.5f, 0.0f);
+							gl.glTexCoord3f(1.0f, 1.0f, 0.0f);
+							gl.glVertex3f(2.5f, 2.5f, 0.0f);
+
+							gl.glTexCoord3f(1.0f, 0.0f, 0.0f);
+							gl.glVertex3f(2.5f, -2.5f, 0.0f);
+
+							gl.glTexCoord3f(0.0f, 0.0f, 0.0f);
+							gl.glVertex3f(-2.5f, -2.5f, 0.0f);
+
+							gl.glTexCoord3f(0.0f, 1.0f, 0.0f);
+							gl.glVertex3f(-2.5f, 2.5f, 0.0f);
 							gl.glEnd();
-							
+
 							gl.glPopMatrix();
 						}
-						
+
 						gl.glDisable(GL3bc.GL_BLEND);
 						gl.glDisable(GL3bc.GL_TEXTURE_2D);
 						gl.glEnable(GL3bc.GL_LIGHTING);
@@ -173,7 +169,7 @@ public class TestProjectile extends Agent {
 		if (life <= 0) {
 			exploding = true;
 			explosionTimer -= 1;
-			
+
 			if (explosionTimer <= 0) {
 				setAlive(false);
 			}
@@ -188,43 +184,32 @@ public class TestProjectile extends Agent {
 	@Override
 	public ArrayList<double[]> getLines() {
 		ArrayList<double[]> lines = new ArrayList<double[]>();
-		
+
 		double x = position.getX();
 		double y = position.getY();
-		
-		//top
-		double[] l1 = new double[] {
-			x - 5, y + 5,
-			x + 5, y + 5,
-		};
-		
-		//right
-		double[] l2 = new double[] {
-			x + 5, y + 5,
-			x + 5, y - 5
-		};
-		
-		//bottom
-		double[] l3 = new double[] {
-			x + 5, y - 5,
-			x - 5, y - 5
-		};
-		
-		//left
-		double[] l4 = new double[] {
-			x - 5, y - 5,
-			x - 5, y + 5
-		};
-		
+
+		// top
+		double[] l1 = new double[] { x - 5, y + 5, x + 5, y + 5, };
+
+		// right
+		double[] l2 = new double[] { x + 5, y + 5, x + 5, y - 5 };
+
+		// bottom
+		double[] l3 = new double[] { x + 5, y - 5, x - 5, y - 5 };
+
+		// left
+		double[] l4 = new double[] { x - 5, y - 5, x - 5, y + 5 };
+
 		lines.add(l1);
 		lines.add(l2);
 		lines.add(l3);
 		lines.add(l4);
-		
+
 		return lines;
-//		ArrayList<double[]> positionLine = new ArrayList<double[]>();
-//		positionLine.add(new double[] {oldPosition.getX(), oldPosition.getY(), position.getX(), position.getY()});
-//		return positionLine;
+		// ArrayList<double[]> positionLine = new ArrayList<double[]>();
+		// positionLine.add(new double[] {oldPosition.getX(),
+		// oldPosition.getY(), position.getX(), position.getY()});
+		// return positionLine;
 	}
 
 	@Override
@@ -236,6 +221,5 @@ public class TestProjectile extends Agent {
 			return false;
 		}
 	}
-	
-	
+
 }

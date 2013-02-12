@@ -32,53 +32,53 @@ public class ObjectManager implements Observable<ObjectEvent>, Observer<ObjectCh
 	 * A collection of observers of this ObjectManager.
 	 */
 	private ArrayList<Observer<ObjectEvent>> observers = new ArrayList<Observer<ObjectEvent>>();
-	
+
 	/**
 	 * Collection of physical objects.
 	 */
 	private ArrayList<PhysicalObject> physicalObjects = new ArrayList<PhysicalObject>();
-	
+
 	/**
 	 * Collection of game objects to add during the current tick.
 	 */
 	private ArrayList<PhysicalObject> objectsToAdd = new ArrayList<PhysicalObject>();
-	
+
 	/**
 	 * Collection of game objects to remove during the current tick.
 	 */
 	private ArrayList<PhysicalObject> objectsToRemove = new ArrayList<PhysicalObject>();
-	
+
 	/**
 	 * Collection of selected game objects.
 	 */
 	private ArrayList<Agent> selectedAgents = new ArrayList<Agent>();
-	
+
 	/**
 	 * Map of the locations of all game objects.
 	 */
 	private EntityHashMap entityHashMap = new EntityHashMap(Constants.entityMapWidth, Constants.entityMapHeight);
-	
+
 	/**
 	 * Increments a time step for each object in the game.
 	 */
-	public void tick() {		
+	public void tick() {
 		/**
 		 * Iterate through current objects.
 		 */
 		for (PhysicalObject physicalObject : physicalObjects) {
 			physicalObject.update();
-			
+
 			PhysicsEngine.update(physicalObject);
-			
+
 			entityHashMap.moveEntity(physicalObject);
-			
+
 			CollisionManager.checkCollisions(physicalObject, entityHashMap);
-			
+
 			if (!physicalObject.isAlive()) {
 				objectsToRemove.add(physicalObject);
 			}
 		}
-		
+
 		/**
 		 * Add new objects.
 		 */
@@ -87,7 +87,7 @@ public class ObjectManager implements Observable<ObjectEvent>, Observer<ObjectCh
 			entityHashMap.addEntity(physicalObject, physicalObject.getPosition().getX(), physicalObject.getPosition().getY());
 		}
 		objectsToAdd.clear();
-		
+
 		/**
 		 * Remove new objects.
 		 */
@@ -95,15 +95,16 @@ public class ObjectManager implements Observable<ObjectEvent>, Observer<ObjectCh
 			physicalObjects.remove(physicalObject);
 			try {
 				entityHashMap.removeEntity(physicalObject, physicalObject.getPosition().getX(), physicalObject.getPosition().getY());
-			} catch (EntityHashMapException e) {
+			}
+			catch (EntityHashMapException e) {
 				e.printStackTrace();
 			}
 		}
 		objectsToRemove.clear();
-		
+
 		updateObservers(getObjectManagerUpdateEvent());
 	}
-	
+
 	/**
 	 * Returns a GameUpdateEvent defining the SceneNode objects to be rendered.
 	 * 
@@ -111,24 +112,25 @@ public class ObjectManager implements Observable<ObjectEvent>, Observer<ObjectCh
 	 */
 	public ObjectEvent getObjectManagerUpdateEvent() {
 		ArrayList<SceneNode> sceneNodes = new ArrayList<SceneNode>();
-		
+
 		for (GameObject gameObject : physicalObjects) {
 			gameObject.updateView();
 			sceneNodes.addAll(gameObject.getView());
 		}
-		
+
 		return new ObjectEvent(UpdateEventType.OBJECT, sceneNodes);
 	}
-	
+
 	/**
 	 * Add a GameObject to be managed.
 	 * 
-	 * @param gameObject The GameObject to added.
+	 * @param gameObject
+	 *            The GameObject to added.
 	 */
 	public void addPhysicalObject(PhysicalObject physicalObject) {
 		objectsToAdd.add(physicalObject);
 	}
-	
+
 	/**
 	 * Returns the map of object locations.
 	 * 
@@ -163,7 +165,7 @@ public class ObjectManager implements Observable<ObjectEvent>, Observer<ObjectCh
 			handleInput((KeyEvent) inputEvent);
 		}
 	}
-	
+
 	private void handleInput(ExtendedMouseEvent mouseEvent) {
 		if (mouseEvent.getEventType() == MouseEvent.EVENT_MOUSE_RELEASED) {
 			if (mouseEvent.getButton() == MouseEvent.BUTTON1) {
@@ -173,10 +175,10 @@ public class ObjectManager implements Observable<ObjectEvent>, Observer<ObjectCh
 					}
 					selectedAgents.clear();
 				}
-				
-				//check for selection
+
+				// check for selection
 				PhysicalObject closest = getClosestPhysicalObject(mouseEvent.getPosition());
-				
+
 				if (closest != null) {
 					if (closest.getObjectType() == ObjectType.AGENT) {
 						((Agent) closest).setSelected(true);
@@ -187,43 +189,46 @@ public class ObjectManager implements Observable<ObjectEvent>, Observer<ObjectCh
 			else if (mouseEvent.getButton() == MouseEvent.BUTTON3) {
 				AgentInput agentInput = null;
 				PhysicalObject closest = getClosestPhysicalObject(mouseEvent.getPosition());
-				
+
 				if (closest != null && !selectedAgents.contains(closest)) {
 					agentInput = new AgentInputAttack(closest);
 				}
 				else {
 					agentInput = new AgentInputMove(new Vector2D(mouseEvent.getPosition().getX(), mouseEvent.getPosition().getY()));
 				}
-				
+
 				for (Agent agent : selectedAgents) {
 					agent.addInput(agentInput);
 				}
 			}
 		}
 	}
-	
+
 	private void handleInput(KeyEvent keyEvent) {
-		
+
 	}
 
 	private PhysicalObject getClosestPhysicalObject(Vector2D position) {
-//		ArrayList<Agent> agentsInRange = entityHashMap.getEntities(ObjectType.AGENT, position.getX()-25, position.getX()+25, position.getY()-25, position.getY()+25);
-//		
-//		Agent closest = null;
-//		if (!agentsInRange.isEmpty()) {
-//			closest = agentsInRange.get(0);
-//			for (Agent agent : agentsInRange) {
-//				if (agent.getPosition().distance(position) < closest.getPosition().distance(position)) {
-//					closest = agent;
-//				}
-//			}
-//		}
+		// ArrayList<Agent> agentsInRange =
+		// entityHashMap.getEntities(ObjectType.AGENT, position.getX()-25,
+		// position.getX()+25, position.getY()-25, position.getY()+25);
+		//
+		// Agent closest = null;
+		// if (!agentsInRange.isEmpty()) {
+		// closest = agentsInRange.get(0);
+		// for (Agent agent : agentsInRange) {
+		// if (agent.getPosition().distance(position) <
+		// closest.getPosition().distance(position)) {
+		// closest = agent;
+		// }
+		// }
+		// }
 
-//		return closest;
-		
+		// return closest;
+
 		return CollisionManager.checkPointCollisions(position, entityHashMap);
 	}
-	
+
 	@Override
 	public void update(ObjectChangeEvent event) {
 		if (event.getChangeType() == ObjectChangeType.CREATION) {

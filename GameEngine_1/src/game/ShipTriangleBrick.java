@@ -15,8 +15,7 @@ import utilityManager.MathBox;
 import brickManager.TriangleBrick;
 
 public class ShipTriangleBrick extends TriangleBrick {
-	public ShipTriangleBrick(int index, Vector2D position,
-			BrickOrientation brickOrientation, float edgeLength, int numSegments) {
+	public ShipTriangleBrick(int index, Vector2D position, BrickOrientation brickOrientation, float edgeLength, int numSegments) {
 		super(index, 10, position, brickOrientation, edgeLength, numSegments);
 	}
 
@@ -30,10 +29,9 @@ public class ShipTriangleBrick extends TriangleBrick {
 						TextureLoader.loadTexture(gl, "BrickTexture1", "BrickTexture1.png");
 						TextureLoader.setCurrentTexture(gl, "BrickTexture1");
 					}
-					
+
 					ArrayList<Float> vertices = getVertices();
-					ArrayList<Float> normals = getNormals((float) parent
-							.getRadius());
+					ArrayList<Float> normals = getNormals((float) parent.getRadius());
 					ArrayList<Float> textureCoords = getTextureCoords();
 
 					gl.glPushMatrix();
@@ -45,34 +43,21 @@ public class ShipTriangleBrick extends TriangleBrick {
 					gl.glColor4f(0.0f, 0.0f, 0.0f, 0.0f);
 					gl.glScalef(1.0f, 1.0f, 1.0f);
 
-					gl.glTranslatef((float) position.getX(),
-							(float) position.getY(), 0.0f);
+					gl.glTranslatef((float) position.getX(), (float) position.getY(), 0.0f);
 
 					gl.glBegin(GL3bc.GL_TRIANGLES);
 					for (int j = 0; j < vertices.size(); j += 9) {
-						gl.glNormal3f(normals.get(j), normals.get(j + 1),
-								normals.get(j + 2));
-						gl.glTexCoord3f(textureCoords.get(j),
-								textureCoords.get(j + 1),
-								textureCoords.get(j + 2));
-						gl.glVertex3f(vertices.get(j), vertices.get(j + 1),
-								vertices.get(j + 2) + 5);
+						gl.glNormal3f(normals.get(j), normals.get(j + 1), normals.get(j + 2));
+						gl.glTexCoord3f(textureCoords.get(j), textureCoords.get(j + 1), textureCoords.get(j + 2));
+						gl.glVertex3f(vertices.get(j), vertices.get(j + 1), vertices.get(j + 2) + 5);
 
-						gl.glNormal3f(normals.get(j + 3), normals.get(j + 4),
-								normals.get(j + 5));
-						gl.glTexCoord3f(textureCoords.get(j + 3),
-								textureCoords.get(j + 4),
-								textureCoords.get(j + 5));
-						gl.glVertex3f(vertices.get(j + 3), vertices.get(j + 4),
-								vertices.get(j + 5) + 5);
+						gl.glNormal3f(normals.get(j + 3), normals.get(j + 4), normals.get(j + 5));
+						gl.glTexCoord3f(textureCoords.get(j + 3), textureCoords.get(j + 4), textureCoords.get(j + 5));
+						gl.glVertex3f(vertices.get(j + 3), vertices.get(j + 4), vertices.get(j + 5) + 5);
 
-						gl.glNormal3f(normals.get(j + 6), normals.get(j + 7),
-								normals.get(j + 8));
-						gl.glTexCoord3f(textureCoords.get(6),
-								textureCoords.get(j + 7),
-								textureCoords.get(j + 8));
-						gl.glVertex3f(vertices.get(j + 6), vertices.get(j + 7),
-								vertices.get(j + 8) + 5);
+						gl.glNormal3f(normals.get(j + 6), normals.get(j + 7), normals.get(j + 8));
+						gl.glTexCoord3f(textureCoords.get(6), textureCoords.get(j + 7), textureCoords.get(j + 8));
+						gl.glVertex3f(vertices.get(j + 6), vertices.get(j + 7), vertices.get(j + 8) + 5);
 					}
 					gl.glEnd();
 
@@ -89,11 +74,8 @@ public class ShipTriangleBrick extends TriangleBrick {
 						gl.glLineWidth(0.5f);
 						gl.glBegin(GL3bc.GL_LINES);
 						for (int j = 0; j < vertices.size(); j += 3) {
-							gl.glVertex3f(vertices.get(j), vertices.get(j + 1),
-									vertices.get(j + 2) + 2);
-							gl.glVertex3f(normals.get(j) * 1.5f,
-									normals.get(j + 1) * 1.5f,
-									normals.get(j + 2) + 10);
+							gl.glVertex3f(vertices.get(j), vertices.get(j + 1), vertices.get(j + 2) + 2);
+							gl.glVertex3f(normals.get(j) * 1.5f, normals.get(j + 1) * 1.5f, normals.get(j + 2) + 10);
 						}
 						gl.glEnd();
 						gl.glEnable(GL3bc.GL_LIGHTING);
@@ -102,7 +84,7 @@ public class ShipTriangleBrick extends TriangleBrick {
 				}
 			};
 			sceneNodes.put("root", root);
-		} 
+		}
 		else if (exploding) {
 			if (sceneNodes.get("explosionNode") == null) {
 				SceneNode explosionNode = new SceneNode(null) {
@@ -119,16 +101,13 @@ public class ShipTriangleBrick extends TriangleBrick {
 
 						if (particles == null) {
 							particles = new float[numParticles][5];
-							
-							//construct initial particles
+
+							// construct initial particles
 							for (int i = 0; i < numParticles; i++) {
-								particles[i] = new float[] {
-									(float) position.getX(), (float) position.getY(),
-									MathBox.nextFloat() * 0.5f * MathBox.nextSign(), MathBox.nextFloat() * 0.5f * MathBox.nextSign(),
-									MathBox.nextFloat()
-								};
-								//normalise velocity
-								float magnitude = (float) Math.sqrt(particles[i][2]*particles[i][2] + particles[i][3] * particles[i][3]);
+								particles[i] = new float[] { (float) position.getX(), (float) position.getY(), MathBox.nextFloat() * 0.5f * MathBox.nextSign(),
+										MathBox.nextFloat() * 0.5f * MathBox.nextSign(), MathBox.nextFloat() };
+								// normalise velocity
+								float magnitude = (float) Math.sqrt(particles[i][2] * particles[i][2] + particles[i][3] * particles[i][3]);
 								particles[i][2] = particles[i][2] / magnitude;
 								particles[i][3] = particles[i][3] / magnitude;
 							}

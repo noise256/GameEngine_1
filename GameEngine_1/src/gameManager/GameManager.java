@@ -12,11 +12,11 @@ import eventManager.Observer;
 
 public abstract class GameManager implements Runnable, Observer<InputUpdateEvent> {
 	protected static GLWindow glWindow;
-	
+
 	protected static SceneRenderer renderer = new SceneRenderer();
 	protected static ObjectManager objectManager = new ObjectManager();
 	protected static InputManager inputManager = new InputManager();
-	
+
 	public GameManager() {
 		GWindow window = new GWindow();
 		glWindow = window.getWindow();
@@ -35,7 +35,7 @@ public abstract class GameManager implements Runnable, Observer<InputUpdateEvent
 	int fps;
 	int lastFpsTime;
 
-	//TODO didn't write this, needs reworking
+	// TODO didn't write this, needs reworking
 	public void run() {
 		long lastLoopTime = System.nanoTime();
 		final int TARGET_FPS = 60;
@@ -62,16 +62,17 @@ public abstract class GameManager implements Runnable, Observer<InputUpdateEvent
 				fps = 0;
 			}
 
-			//update the game logic
+			// update the game logic
 			tick();
 
-			//render
+			// render
 			glWindow.display();
-			
-			//sleep the current thread for the appropriate amount of time
+
+			// sleep the current thread for the appropriate amount of time
 			try {
 				Thread.sleep(Math.max(0, (lastLoopTime - System.nanoTime() + OPTIMAL_TIME) / 1000000));
-			} catch (InterruptedException e) {
+			}
+			catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}

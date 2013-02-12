@@ -6,7 +6,7 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 public class CircleNode extends PrimitiveNode {
 	private float radius;
-	
+
 	public CircleNode(Vector2D position, float radius, float[] colour) {
 		super(SceneNodeType.CIRCLE_NODE, position, 0.0, colour);
 		this.radius = radius;
@@ -29,7 +29,7 @@ public class CircleNode extends PrimitiveNode {
 	public void update(GL3bc gl) {
 		display(gl);
 	}
-	
+
 	public void setRadius(float radius) {
 		this.radius = radius;
 	}

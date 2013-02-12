@@ -11,7 +11,8 @@ public class InputManager {
 	/**
 	 * Used to update the InputReceivers with a new key/mouse events.
 	 * 
-	 * @param inputEvent The JOGL NEWT InputEvent.
+	 * @param inputEvent
+	 *            The JOGL NEWT InputEvent.
 	 */
 	public void update(InputUpdateEvent inputUpdateEvent, ObjectManager objectManager) {
 		InputEvent inputEvent = inputUpdateEvent.getInputEvent();
