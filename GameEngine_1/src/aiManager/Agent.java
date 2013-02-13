@@ -138,8 +138,6 @@ public abstract class Agent extends BrickObject implements Selectable {
 		turnTo(angle);
 	}
 
-	// TODO if destination is above it can only turn one way and if it is bellow
-	// it can only turn another way
 	// TODO what if object can't be turned to, i.e. maxTurningVelocity <
 	// relative radial velocity of location?
 	private void turnTo(double angle) {

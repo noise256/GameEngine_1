@@ -20,7 +20,7 @@ public class TestProjectile extends Agent {
 	private double lifeDecrement;
 
 	private boolean exploding = false;
-	private int explosionTimer = 200;
+	private int explosionTimer = 1000;
 
 	public TestProjectile(GameObject source, Hashtable<String, Double> values, double lifeDecrement) {
 		super(ObjectType.PROJECTILE, source, values, null, null);
@@ -91,8 +91,15 @@ public class TestProjectile extends Agent {
 							// construct initial particles
 							for (int i = 0; i < numParticles; i++) {
 								// initial values
-								particles[i] = new float[] { (float) position.getX(), (float) position.getY(), MathBox.nextFloat() * 2f * MathBox.nextSign(),
-										MathBox.nextFloat() * 2f * MathBox.nextSign(), MathBox.nextFloat() };
+								particles[i] = new float[] { 
+										(float) position.getX(), //x position
+										(float) position.getY(), //y position
+										MathBox.nextFloat() * 0.5f * MathBox.nextSign(), //x velocity
+										MathBox.nextFloat() * 0.5f * MathBox.nextSign(), //y velocity 
+										MathBox.nextFloat(), //alpha
+										MathBox.nextFloat() * 10 + 990 //start time
+								};
+								
 								// normalise velocity
 								float magnitude = (float) Math.sqrt(particles[i][2] * particles[i][2] + particles[i][3] * particles[i][3]);
 								particles[i][2] = particles[i][2] / magnitude;
@@ -101,14 +108,15 @@ public class TestProjectile extends Agent {
 						}
 						else {
 							// adjust positions of particles
+							//TODO rewrite deacceleration to use defined fields
 							for (int i = 0; i < numParticles; i++) {
-								particles[i][0] += particles[i][2];
-								particles[i][1] += particles[i][3];
-								particles[i][2] = Math.abs(particles[i][2] * 0.99f) >= particles[i][2] * 0.1f ? particles[i][2] * 0.99f
-										: particles[i][2] * 0.1f;
-								particles[i][3] = Math.abs(particles[i][3] * 0.99f) >= particles[i][3] * 0.1f ? particles[i][3] * 0.99f
-										: particles[i][3] * 0.1f;
-								particles[i][4] = particles[i][4] - 1 / 200 > 0.0f ? particles[i][4] - 1 / 200 : 0.0f;
+								if (explosionTimer <= particles[i][5]) {
+									particles[i][0] += particles[i][2];
+									particles[i][1] += particles[i][3];
+									particles[i][2] = Math.abs(particles[i][2] * 0.99f) >= particles[i][2] * 0.1f ? particles[i][2] * 0.99f : particles[i][2] * 0.1f;
+									particles[i][3] = Math.abs(particles[i][3] * 0.99f) >= particles[i][3] * 0.1f ? particles[i][3] * 0.99f : particles[i][3] * 0.1f;
+									particles[i][4] = particles[i][4] - 0.001f > 0.0f ? particles[i][4] - 0.001f : 0.0f; //TODO not sure if this is working properly, particles seem to fade at the same time
+								}
 							}
 						}
 
@@ -124,6 +132,7 @@ public class TestProjectile extends Agent {
 							gl.glTranslatef(particles[i][0], particles[i][1], 0);
 
 							gl.glColor4f(1.0f, 1.0f, 1.0f, particles[i][4]);
+							
 							gl.glBegin(GL3bc.GL_QUADS);
 							gl.glTexCoord3f(1.0f, 1.0f, 0.0f);
 							gl.glVertex3f(2.5f, 2.5f, 0.0f);
@@ -168,7 +177,7 @@ public class TestProjectile extends Agent {
 
 		if (life <= 0) {
 			exploding = true;
-			explosionTimer -= 1;
+			explosionTimer--;
 
 			if (explosionTimer <= 0) {
 				setAlive(false);
