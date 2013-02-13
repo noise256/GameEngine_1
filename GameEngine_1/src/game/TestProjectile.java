@@ -20,7 +20,7 @@ public class TestProjectile extends Agent {
 	private double lifeDecrement;
 
 	private boolean exploding = false;
-	private int explosionTimer = 1000;
+	private int explosionTimer = 100;
 
 	public TestProjectile(GameObject source, Hashtable<String, Double> values, double lifeDecrement) {
 		super(ObjectType.PROJECTILE, source, values, null, null);
@@ -75,7 +75,7 @@ public class TestProjectile extends Agent {
 		else if (exploding) {
 			if (sceneNodes.get("explosionNode") == null) {
 				SceneNode explosionNode = new SceneNode(null) {
-					private int numParticles = 100;
+					private int numParticles = 1000;
 					private float[][] particles;
 
 					@Override
@@ -97,7 +97,7 @@ public class TestProjectile extends Agent {
 										MathBox.nextFloat() * 0.5f * MathBox.nextSign(), //x velocity
 										MathBox.nextFloat() * 0.5f * MathBox.nextSign(), //y velocity 
 										MathBox.nextFloat(), //alpha
-										MathBox.nextFloat() * 10 + 990 //start time
+										MathBox.nextFloat() * 10 + 90 //start time
 								};
 								
 								// normalise velocity
@@ -115,7 +115,7 @@ public class TestProjectile extends Agent {
 									particles[i][1] += particles[i][3];
 									particles[i][2] = Math.abs(particles[i][2] * 0.99f) >= particles[i][2] * 0.1f ? particles[i][2] * 0.99f : particles[i][2] * 0.1f;
 									particles[i][3] = Math.abs(particles[i][3] * 0.99f) >= particles[i][3] * 0.1f ? particles[i][3] * 0.99f : particles[i][3] * 0.1f;
-									particles[i][4] = particles[i][4] - 0.001f > 0.0f ? particles[i][4] - 0.001f : 0.0f; //TODO not sure if this is working properly, particles seem to fade at the same time
+									particles[i][4] = particles[i][4] - 0.01f > 0.0f ? particles[i][4] - 0.01f : 0.0f; //TODO not sure if this is working properly, particles seem to fade at the same time
 								}
 							}
 						}
