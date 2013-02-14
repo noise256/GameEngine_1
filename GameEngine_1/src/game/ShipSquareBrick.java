@@ -104,8 +104,12 @@ public class ShipSquareBrick extends SquareBrick {
 
 							// construct initial particles
 							for (int i = 0; i < numParticles; i++) {
-								particles[i] = new float[] { (float) position.getX(), (float) position.getY(), MathBox.nextFloat() * 0.5f * MathBox.nextSign(),
-										MathBox.nextFloat() * 0.5f * MathBox.nextSign(), MathBox.nextFloat() };
+								particles[i] = new float[] { 
+										(float) position.getX(), (float) position.getY(), 
+										MathBox.nextFloat() * 0.5f * MathBox.nextSign(),
+										MathBox.nextFloat() * 0.5f * MathBox.nextSign(), 
+										MathBox.nextFloat()
+								};
 								// normalise velocity
 								float magnitude = (float) Math.sqrt(particles[i][2] * particles[i][2] + particles[i][3] * particles[i][3]);
 								particles[i][2] = particles[i][2] / magnitude;

@@ -10,6 +10,8 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import collisionManager.Collidable;
 
 public abstract class PhysicalObject extends GameObject implements Collidable {
+	protected boolean alive = true;
+	
 	protected Hashtable<String, Double> forces = new Hashtable<String, Double>();
 
 	protected Vector2D position;
@@ -209,5 +211,13 @@ public abstract class PhysicalObject extends GameObject implements Collidable {
 
 	public void setMaxTurningForce(double maxTurningForce) {
 		this.maxTurningForce = maxTurningForce;
+	}
+	
+	public boolean isAlive() {
+		return alive;
+	}
+
+	public void setAlive(boolean alive) {
+		this.alive = alive;
 	}
 }

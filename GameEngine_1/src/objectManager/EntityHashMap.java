@@ -100,8 +100,10 @@ public class EntityHashMap {
 	 * @return
 	 */
 	public int[] translateCoordinates(double x, double y) {
-		return new int[] { Math.min(mapWidth - 1, (int) (x / Constants.modelWidth * mapWidth)),
-				Math.min(mapHeight - 1, (int) (y / Constants.modelHeight * mapHeight)) };
+		return new int[] { 
+				Math.min(mapWidth - 1, (int) (x / Constants.modelWidth * mapWidth)),
+				Math.min(mapHeight - 1, (int) (y / Constants.modelHeight * mapHeight)) 
+		};
 	}
 }
 

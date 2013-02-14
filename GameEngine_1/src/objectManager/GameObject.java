@@ -59,12 +59,4 @@ public abstract class GameObject implements EntityView, Observable<ObjectChangeE
 	public GameObject getSource() {
 		return source;
 	}
-
-	public boolean isAlive() {
-		return alive;
-	}
-
-	public void setAlive(boolean alive) {
-		this.alive = alive;
-	}
 }

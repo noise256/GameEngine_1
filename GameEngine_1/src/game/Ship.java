@@ -70,7 +70,7 @@ public abstract class Ship extends Agent {
 		// update subsystem states
 		ArrayList<SubSystem> subSystemsToRemove = new ArrayList<SubSystem>();
 		for (SubSystem system : subSystems) {
-			if (!system.isAlive()) {
+			if (!system.getSystemBrick().isAlive()) {
 				subSystemsToRemove.add(system);
 				continue;
 			}
