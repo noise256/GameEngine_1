@@ -12,8 +12,8 @@ public class ObjectEvent extends UpdateEvent {
 
 	private ArrayList<SceneNode> sceneNodes;
 
-	public ObjectEvent(Object source, ArrayList<SceneNode> sceneNodes) {
-		super(source, UpdateEventType.OBJECT);
+	public ObjectEvent(Object source, UpdateEventType eventType, ArrayList<SceneNode> sceneNodes) {
+		super(source, eventType);
 		setSceneNodes(sceneNodes);
 	}
 

@@ -1,5 +1,5 @@
 package eventManager;
 
 public enum UpdateEventType {
-	OBJECT, OBJECT_CHANGE, INPUT;
+	OBJECT_DISPLAY, INTERFACE_DISPLAY, OBJECT_CHANGE, INPUT;
 }

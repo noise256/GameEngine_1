@@ -2,6 +2,7 @@ package objectManager;
 
 import graphicsManager.Constants;
 import inputManager.ExtendedMouseEvent;
+import interfaceManager.InterfaceObject;
 
 import java.util.ArrayList;
 
@@ -33,6 +34,10 @@ public class ObjectManager implements Observable<ObjectEvent>, Observer<ObjectCh
 	 */
 	private ArrayList<Observer<ObjectEvent>> observers = new ArrayList<Observer<ObjectEvent>>();
 
+	private ArrayList<InterfaceObject> interfaceObjects = new ArrayList<InterfaceObject>();
+	
+	private ArrayList<InterfaceObject> interfaceObjectsToAdd = new ArrayList<InterfaceObject>();
+	
 	/**
 	 * Collection of physical objects.
 	 */
@@ -89,6 +94,15 @@ public class ObjectManager implements Observable<ObjectEvent>, Observer<ObjectCh
 		objectsToAdd.clear();
 
 		/**
+		 * Add new interface objects.
+		 */
+		for (InterfaceObject interfaceObject : interfaceObjectsToAdd) {
+			interfaceObjects.add(interfaceObject);
+			interfaceObject.setActivated(true);
+		}
+		interfaceObjectsToAdd.clear();
+		
+		/**
 		 * Remove new objects.
 		 */
 		for (PhysicalObject physicalObject : objectsToRemove) {
@@ -102,25 +116,32 @@ public class ObjectManager implements Observable<ObjectEvent>, Observer<ObjectCh
 		}
 		objectsToRemove.clear();
 
-		updateObservers(getObjectManagerUpdateEvent());
+		updateObservers(getObjectDisplayUpdateEvent());
+		updateObservers(getInterfaceDisplayUpdateEvent());
 	}
 
-	/**
-	 * Returns a GameUpdateEvent defining the SceneNode objects to be rendered.
-	 * 
-	 * @return The GameUpdateEvent to be rendered.
-	 */
-	public ObjectEvent getObjectManagerUpdateEvent() {
-		ArrayList<SceneNode> sceneNodes = new ArrayList<SceneNode>();
+	public ObjectEvent getObjectDisplayUpdateEvent() {
+		ArrayList<SceneNode> objectNodes = new ArrayList<SceneNode>();
 
 		for (GameObject gameObject : physicalObjects) {
 			gameObject.updateView();
-			sceneNodes.addAll(gameObject.getView());
+			objectNodes.addAll(gameObject.getView());
 		}
-
-		return new ObjectEvent(UpdateEventType.OBJECT, sceneNodes);
+		
+		return new ObjectEvent(this, UpdateEventType.OBJECT_DISPLAY, objectNodes);
 	}
 
+	public ObjectEvent getInterfaceDisplayUpdateEvent() {
+		ArrayList<SceneNode> interfaceNodes = new ArrayList<SceneNode>();
+		
+		for (InterfaceObject interfaceObject : interfaceObjects) {
+			interfaceObject.updateView();
+			interfaceNodes.addAll(interfaceObject.getView());
+		}
+		
+		return new ObjectEvent(this, UpdateEventType.INTERFACE_DISPLAY, interfaceNodes);
+	}
+	
 	/**
 	 * Add a GameObject to be managed.
 	 * 
@@ -131,6 +152,10 @@ public class ObjectManager implements Observable<ObjectEvent>, Observer<ObjectCh
 		objectsToAdd.add(physicalObject);
 	}
 
+	public void addInterfaceObject(InterfaceObject interfaceObject) {
+		interfaceObjectsToAdd.add(interfaceObject);
+	}
+	
 	/**
 	 * Returns the map of object locations.
 	 * 
