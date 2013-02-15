@@ -40,16 +40,16 @@ public class InterfaceBox extends InterfaceObject {
 					gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 					gl.glBegin(GL3bc.GL_QUADS);
 						gl.glTexCoord2f(1.0f, 1.0f);
-						gl.glVertex3f(width/2, height/2, 10);
+						gl.glVertex3f(width/2, height/2, 1);
 						
 						gl.glTexCoord2f(1.0f, 0.0f);
-						gl.glVertex3f(width/2, -height/2, 10);
+						gl.glVertex3f(width/2, -height/2, 1);
 						
 						gl.glTexCoord2f(0.0f, 0.0f);
-						gl.glVertex3f(-width/2, -height/2, 10);
+						gl.glVertex3f(-width/2, -height/2, 1);
 						
 						gl.glTexCoord2f(0.0f, 1.0f);
-						gl.glVertex3f(-width/2, height/2, 10);
+						gl.glVertex3f(-width/2, height/2, 1);
 					gl.glEnd();
 					
 					gl.glPopMatrix();

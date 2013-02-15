@@ -64,13 +64,13 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 		gl.glMatrixMode(GL3bc.GL_PROJECTION);
 		gl.glLoadIdentity();
 		
-		gl.glOrtho(0,1000,0,1000,-110000,100000);
+		gl.glOrtho(0, Constants.viewWidth, 0, Constants.viewHeight, -1, 1);
 		drawSkybox(gl);
 		
 		gl.glMatrixMode(GL3bc.GL_PROJECTION);
 		gl.glLoadIdentity();
 		
-		glu.gluPerspective(camera.getAngle(), 1.0f, 1.0f, 100000.0f);
+		glu.gluPerspective(camera.getAngle(), 1.0f, 1.0f, 1000.0f);
 		gl.glScalef(1.0f, -1.0f, 1.0f);
 		
 		gl.glMatrixMode(GL3bc.GL_MODELVIEW);
@@ -85,7 +85,7 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 		gl.glMatrixMode(GL3bc.GL_PROJECTION);
 		
 		gl.glLoadIdentity();
-		gl.glOrtho(0,1000,0,1000,-110000,100000);
+		gl.glOrtho(0, Constants.viewWidth, 0, Constants.viewHeight, -1, 1);
 		
 		renderInterfaceDisplayNodes(gl);
 	}
@@ -103,19 +103,19 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 		
 		gl.glPushMatrix();
 		
-		gl.glTranslatef(500.0f, 500.0f, 0.0f);
+		gl.glTranslatef(Constants.viewWidth/2.0f, Constants.viewHeight/2, 0.0f);
 		gl.glColor4f(1, 1, 1, 1);
 
 		// Render the front quad
 		gl.glBegin(GL3bc.GL_QUADS);
 		gl.glTexCoord2f(1, 1);
-		gl.glVertex3f(500.0f, 500.0f, 0.0f);
+		gl.glVertex3f(Constants.viewWidth/2, Constants.viewHeight/2, 0.0f);
 		gl.glTexCoord2f(1, 0);
-		gl.glVertex3f(500.0f, -500.0f, 0.0f);
+		gl.glVertex3f(Constants.viewWidth/2, -Constants.viewHeight/2, 0.0f);
 		gl.glTexCoord2f(0, 0);
-		gl.glVertex3f(-500.0f, -500.0f, 0.0f);
+		gl.glVertex3f(-Constants.viewWidth/2, -Constants.viewHeight/2, 0.0f);
 		gl.glTexCoord2f(0, 1);
-		gl.glVertex3f(-500.0f, 500.0f, 0.0f);
+		gl.glVertex3f(-Constants.viewWidth/2, Constants.viewHeight/2, 0.0f);
 		gl.glEnd();
 		
 		gl.glDisable(GL3bc.GL_TEXTURE_2D);
@@ -168,30 +168,9 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 		if (cameraControlTable.get("down")) {
 			camera.translate(new Vector3D(0, 1, 0), 10);
 		}
-
-		// apply rotation to camera
-		// camera.rotateCamera();
-
-		// get current rotation matrix from camera
-		// double[] rotMatrix = camera.getRotationMatrix();
-
-		// move to camera position
-		// gl.glTranslatef((float) -camera.getCam().getX(), (float)
-		// -camera.getCam().getY(), (float) -camera.getCam().getZ());
-		// rotate the world
-		// gl.glMultMatrixd(rotMatrix, 0);
-		// move to camera viewing position... ?
-		// gl.glTranslatef((float) -camera.getView().getX(), (float)
-		// -camera.getView().getY(), (float) -camera.getView().getZ());
-
-		// test for mouse picking
+		
 		gl.glTranslatef((float) -camera.getView().getX(), (float) -camera.getView().getY(), (float) -camera.getCam().getZ());
-		// gl.glTranslatef(0.0f, 0.0f, (float) -camera.getCam().getZ());
-		// gl.glTranslatef(0.0f, 0.0f, (float) -camera.getCam().getZ());
-		// gl.glMultMatrixd(rotMatrix, 0);
-
-		// update the world coordinates to correspond to the current mouse
-		// position and camera rotation
+		
 		setWorldCoordinates(gl, mouseX, mouseY);
 	}
 
@@ -251,7 +230,7 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 		gl.glMatrixMode(GL3bc.GL_PROJECTION);
 		gl.glLoadIdentity();
 
-		gl.glOrtho(0f, 1000f, 0f, 1000f, 0f, 1f);
+		gl.glOrtho(0f, Constants.viewWidth/2, 0f, Constants.viewHeight, 0f, 1f);
 
 		gl.glMatrixMode(GL3bc.GL_MODELVIEW);
 		gl.glLoadIdentity();
@@ -476,28 +455,16 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// if (e.isButtonDown(MouseEvent.BUTTON3)) {
-		// camera.setMouseStart(e.getX(), e.getY());
-		// }
-		// else {
-		InputUpdateEvent inputEvent = new InputUpdateEvent(this, new ExtendedMouseEvent(e, new Vector2D(worldX, worldY)));
-		updateObservers(inputEvent);
-		// }
+		updateObservers(new InputUpdateEvent(this, new ExtendedMouseEvent(e, new Vector2D(worldX, worldY))));
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		InputUpdateEvent inputEvent = new InputUpdateEvent(this, new ExtendedMouseEvent(e, new Vector2D(worldX, worldY)));
-		updateObservers(inputEvent);
+		updateObservers(new InputUpdateEvent(this, new ExtendedMouseEvent(e, new Vector2D(worldX, worldY))));
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		// if (e.isButtonDown(MouseEvent.BUTTON3)) {
-		// camera.setMouseEnd(e.getX(), e.getY());
-		// camera.setRotation(1);
-		// camera.setMouseRotation(true);
-		// }
 	}
 
 	@Override
