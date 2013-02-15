@@ -2,6 +2,8 @@ package game;
 
 import gameManager.GameManager;
 
+import interfaceManager.InterfaceBox;
+
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -692,6 +694,10 @@ public class PhysicsTest extends GameManager {
 			objectManager.addPhysicalObject(testShip2);
 			testShip2.addObserver(objectManager);
 		}
+		
+		//set up the UI
+		InterfaceBox interfaceBox = new InterfaceBox(new Vector2D(25000, 25000), 1000, 250);
+		objectManager.addInterfaceObject(interfaceBox);
 	}
 
 	private void loadBuffers() {

@@ -31,11 +31,16 @@ import com.jogamp.opengl.util.gl2.GLUT;
 
 import eventManager.Observable;
 import eventManager.Observer;
+import eventManager.UpdateEventType;
 
 public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Observable<InputUpdateEvent>, KeyListener, MouseListener {
 	private ArrayList<Observer<InputUpdateEvent>> observers = new ArrayList<Observer<InputUpdateEvent>>();
-	private ArrayList<ObjectEvent> renderQueue = new ArrayList<ObjectEvent>();
-	private ObjectEvent currentEvent;
+	
+	private ArrayList<ObjectEvent> interfaceDisplayQueue = new ArrayList<ObjectEvent>();
+	private ArrayList<ObjectEvent> objectDisplayQueue = new ArrayList<ObjectEvent>();
+	
+	private ObjectEvent currentInterfaceDisplayEvent;
+	private ObjectEvent currentObjectDisplayEvent;
 
 	private GL3bc gl;
 	private GLU glu = new GLU();
@@ -58,25 +63,31 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 
 		gl.glMatrixMode(GL3bc.GL_PROJECTION);
 		gl.glLoadIdentity();
-
+		
+		gl.glOrtho(0,1000,0,1000,-110000,100000);
+		drawSkybox(gl);
+		
+		gl.glMatrixMode(GL3bc.GL_PROJECTION);
+		gl.glLoadIdentity();
+		
 		glu.gluPerspective(camera.getAngle(), 1.0f, 1.0f, 100000.0f);
 		gl.glScalef(1.0f, -1.0f, 1.0f);
-
+		
 		gl.glMatrixMode(GL3bc.GL_MODELVIEW);
 		gl.glLoadIdentity();
 
 		updateCamera(gl);
 
-		gl.glPushMatrix();
-		gl.glTranslatef(0.0f, 0.0f, 0.0f);
-		// gl.glLightfv(GL3bc.GL_LIGHT0, GL3bc.GL_POSITION, new float[] {-1.0f,
-		// -1.0f, 1.0f, 0.0f}, 0);
-		gl.glPopMatrix();
-
-		drawSkybox(gl);
-		drawSceneNodes(gl);
+		renderObjectDisplayNodes(gl);
 		drawDebugCube(gl, (float) camera.getView().getX(), (float) camera.getView().getY(), (float) camera.getView().getZ());
 		drawText(gl);
+		
+		gl.glMatrixMode(GL3bc.GL_PROJECTION);
+		
+		gl.glLoadIdentity();
+		gl.glOrtho(0,1000,0,1000,-110000,100000);
+		
+		renderInterfaceDisplayNodes(gl);
 	}
 
 	private void drawSkybox(GL3bc gl) {
@@ -85,95 +96,32 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 			TextureLoader.setCurrentTexture(gl, "SkyBox1");
 		}
 
-		gl.glPushMatrix();
-		gl.glLoadIdentity();
-
-		glu.gluLookAt(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, camera.getCam().getZ(), 0, 1, 0);
-
 		gl.glEnable(GL3bc.GL_TEXTURE_2D);
-		gl.glDisable(GL3bc.GL_DEPTH_TEST);
+		gl.glEnable(GL3bc.GL_DEPTH_TEST);
 		gl.glDisable(GL3bc.GL_LIGHTING);
 		gl.glDisable(GL3bc.GL_BLEND);
-
+		
+		gl.glPushMatrix();
+		
+		gl.glTranslatef(500.0f, 500.0f, 0.0f);
 		gl.glColor4f(1, 1, 1, 1);
 
 		// Render the front quad
 		gl.glBegin(GL3bc.GL_QUADS);
-		gl.glTexCoord2f(0, 0);
-		gl.glVertex3f(1.0f, -1.0f, -1.0f);
-		gl.glTexCoord2f(1, 0);
-		gl.glVertex3f(-1.0f, -1.0f, -1.0f);
 		gl.glTexCoord2f(1, 1);
-		gl.glVertex3f(-1.0f, 1.0f, -1.0f);
-		gl.glTexCoord2f(0, 1);
-		gl.glVertex3f(1.0f, 1.0f, -1.0f);
-		gl.glEnd();
-
-		// Render the left quad
-		gl.glBegin(GL3bc.GL_QUADS);
-		gl.glTexCoord2f(0, 0);
-		gl.glVertex3f(1.0f, -1.0f, 1.0f);
+		gl.glVertex3f(500.0f, 500.0f, 0.0f);
 		gl.glTexCoord2f(1, 0);
-		gl.glVertex3f(1.0f, -1.0f, -1.0f);
-		gl.glTexCoord2f(1, 1);
-		gl.glVertex3f(1.0f, 1.0f, -1.0f);
-		gl.glTexCoord2f(0, 1);
-		gl.glVertex3f(1.0f, 1.0f, 1.0f);
-		gl.glEnd();
-
-		// Render the back quad
-		gl.glBegin(GL3bc.GL_QUADS);
+		gl.glVertex3f(500.0f, -500.0f, 0.0f);
 		gl.glTexCoord2f(0, 0);
-		gl.glVertex3f(-1.0f, -1.0f, 1.0f);
-		gl.glTexCoord2f(1, 0);
-		gl.glVertex3f(1.0f, -1.0f, 1.0f);
-		gl.glTexCoord2f(1, 1);
-		gl.glVertex3f(1.0f, 1.0f, 1.0f);
+		gl.glVertex3f(-500.0f, -500.0f, 0.0f);
 		gl.glTexCoord2f(0, 1);
-		gl.glVertex3f(-1.0f, 1.0f, 1.0f);
+		gl.glVertex3f(-500.0f, 500.0f, 0.0f);
 		gl.glEnd();
-
-		// Render the right quad
-		gl.glBegin(GL3bc.GL_QUADS);
-		gl.glTexCoord2f(0, 0);
-		gl.glVertex3f(-1.0f, -1.0f, -1.0f);
-		gl.glTexCoord2f(1, 0);
-		gl.glVertex3f(-1.0f, -1.0f, 1.0f);
-		gl.glTexCoord2f(1, 1);
-		gl.glVertex3f(-1.0f, 1.0f, 1.0f);
-		gl.glTexCoord2f(0, 1);
-		gl.glVertex3f(-1.0f, 1.0f, -1.0f);
-		gl.glEnd();
-
-		// Render the top quad
-		gl.glBegin(GL3bc.GL_QUADS);
-		gl.glTexCoord2f(0, 1);
-		gl.glVertex3f(-1.0f, 1.0f, -1.0f);
-		gl.glTexCoord2f(0, 0);
-		gl.glVertex3f(-1.0f, 1.0f, 1.0f);
-		gl.glTexCoord2f(1, 0);
-		gl.glVertex3f(1.0f, 1.0f, 1.0f);
-		gl.glTexCoord2f(1, 1);
-		gl.glVertex3f(1.0f, 1.0f, -1.0f);
-		gl.glEnd();
-
-		// Render the bottom quad
-		gl.glBegin(GL3bc.GL_QUADS);
-		gl.glTexCoord2f(0, 0);
-		gl.glVertex3f(-1.0f, -1.0f, -1.0f);
-		gl.glTexCoord2f(0, 1);
-		gl.glVertex3f(-1.0f, -1.0f, 1.0f);
-		gl.glTexCoord2f(1, 1);
-		gl.glVertex3f(1.0f, -1.0f, 1.0f);
-		gl.glTexCoord2f(1, 0);
-		gl.glVertex3f(1.0f, -1.0f, -1.0f);
-		gl.glEnd();
-
+		
 		gl.glDisable(GL3bc.GL_TEXTURE_2D);
-		gl.glEnable(GL3bc.GL_DEPTH_TEST);
+		gl.glDisable(GL3bc.GL_DEPTH_TEST);
 		gl.glEnable(GL3bc.GL_LIGHTING);
 		gl.glEnable(GL3bc.GL_BLEND);
-		gl.glPopMatrix();
 	}
 
 	private void updateCamera(GL3bc gl) {
@@ -273,22 +221,29 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 		worldY = outPoint[1] * camera.getCam().getZ() + camera.getView().getY();
 	}
 
-	private void drawSceneNodes(GL3bc gl) {
-		if (currentEvent != null) {
-			gl.glDisable(GL3bc.GL_LIGHTING);
-			gl.glDisable(GL3bc.GL_BLEND);
-
-			ArrayList<SceneNode> sceneNodes = currentEvent.getSceneNodes();
+	private void renderObjectDisplayNodes(GL3bc gl) {
+		if (currentObjectDisplayEvent != null) {
+			ArrayList<SceneNode> sceneNodes = currentObjectDisplayEvent.getSceneNodes();
 			for (SceneNode sceneNode : sceneNodes) {
 				sceneNode.update(gl);
 			}
-
-			gl.glEnable(GL3bc.GL_LIGHTING);
-			gl.glEnable(GL3bc.GL_BLEND);
 		}
-
-		if (renderQueue.size() > 0) {
-			currentEvent = renderQueue.remove(0);
+		
+		if (objectDisplayQueue.size() > 0) {
+			currentObjectDisplayEvent = objectDisplayQueue.remove(0);
+		}
+	}
+	
+	private void renderInterfaceDisplayNodes(GL3bc gl) {
+		if (currentInterfaceDisplayEvent != null) {
+			ArrayList<SceneNode> sceneNodes = currentInterfaceDisplayEvent.getSceneNodes();
+			for (SceneNode sceneNode : sceneNodes) {
+				sceneNode.update(gl);
+			}
+		}
+		
+		if (interfaceDisplayQueue.size() > 0) {
+			currentInterfaceDisplayEvent = interfaceDisplayQueue.remove(0);
 		}
 	}
 
@@ -592,6 +547,11 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 
 	@Override
 	public void update(ObjectEvent objectEvent) {
-		renderQueue.add(objectEvent);
+		if (objectEvent.getEventType() == UpdateEventType.OBJECT_DISPLAY) {
+			objectDisplayQueue.add(objectEvent);
+		}
+		else if (objectEvent.getEventType() == UpdateEventType.INTERFACE_DISPLAY) {
+			interfaceDisplayQueue.add(objectEvent);
+		}
 	}
 }
