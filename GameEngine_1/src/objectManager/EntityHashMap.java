@@ -81,9 +81,9 @@ public class EntityHashMap {
 		int[] tc = translateCoordinates(position.getX(), position.getY());
 
 		int iMin = Math.max(tc[0] - 1, 0);
-		int iMax = Math.min(tc[0] + 1, objectMap.size());
+		int iMax = Math.min(tc[0] + 1, mapWidth);
 		int jMin = Math.max(tc[1] - 1, 0);
-		int jMax = Math.min(tc[1] + 1, objectMap.get(0).size());
+		int jMax = Math.min(tc[1] + 1, mapHeight);
 
 		for (int i = iMin; i <= iMax; i++) {
 			for (int j = jMin; j <= jMax; j++) {

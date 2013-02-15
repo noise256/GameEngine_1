@@ -1,8 +1,8 @@
 package game;
 
+import game.ui.InterfaceBox;
 import gameManager.GameManager;
 
-import interfaceManager.InterfaceBox;
 
 import java.nio.FloatBuffer;
 import java.util.ArrayList;

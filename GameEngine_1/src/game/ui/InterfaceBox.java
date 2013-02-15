@@ -1,4 +1,6 @@
-package interfaceManager;
+package game.ui;
+
+import interfaceManager.InterfaceObject;
 
 import javax.media.opengl.GL3bc;
 
@@ -24,9 +26,9 @@ public class InterfaceBox extends InterfaceObject {
 						return;
 					}
 					
-					if (!TextureLoader.getCurrentTextureName().equals("InterfaceBox1")) {
-						TextureLoader.loadTexture(gl, "InterfaceBox1", "InterfaceBox1.png");
-						TextureLoader.setCurrentTexture(gl, "InterfaceBox1");
+					if (!TextureLoader.getCurrentTextureName().equals("InterfaceBottomPanel1")) {
+						TextureLoader.loadTexture(gl, "InterfaceBottomPanel1", "InterfaceBottomPanel1.png");
+						TextureLoader.setCurrentTexture(gl, "InterfaceBottomPanel1");
 					}
 					
 					gl.glDisable(GL3bc.GL_LIGHTING);
