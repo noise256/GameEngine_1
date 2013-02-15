@@ -70,7 +70,7 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 		gl.glMatrixMode(GL3bc.GL_PROJECTION);
 		gl.glLoadIdentity();
 		
-		glu.gluPerspective(camera.getAngle(), 1.0f, 1.0f, 1000.0f);
+		glu.gluPerspective(camera.getAngle(), 1.0f, 1.0f, 10000.0f);
 		gl.glScalef(1.0f, -1.0f, 1.0f);
 		
 		gl.glMatrixMode(GL3bc.GL_MODELVIEW);
@@ -117,6 +117,8 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 		gl.glTexCoord2f(0, 1);
 		gl.glVertex3f(-Constants.viewWidth/2, Constants.viewHeight/2, 0.0f);
 		gl.glEnd();
+		
+		gl.glPopMatrix();
 		
 		gl.glDisable(GL3bc.GL_TEXTURE_2D);
 		gl.glDisable(GL3bc.GL_DEPTH_TEST);
