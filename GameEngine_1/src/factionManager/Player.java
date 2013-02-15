@@ -10,22 +10,25 @@ import objectManager.ObjectType;
  *
  */
 public class Player extends GameObject {
-
+	private Faction faction;
+	
 	public Player(ObjectType objectType, GameObject source) {
 		super(objectType, source);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void updateView() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void update() {
-		// TODO Auto-generated method stub
-		
 	}
-
+	
+	public void setFaction(Faction faction) {
+		this.faction = faction;
+	}
+	
+	public Faction getFaction() {
+		return faction;
+	}
 }

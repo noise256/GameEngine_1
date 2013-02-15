@@ -1,5 +1,6 @@
 package game;
 
+import factionManager.Faction;
 import game.ui.InterfaceBox;
 import gameManager.GameManager;
 
@@ -370,6 +371,15 @@ public class PhysicsTest extends GameManager {
 		objectManager.addPhysicalObject(testShip1);
 		testShip1.addObserver(objectManager);
 
+		Faction goodGuys = new Faction();
+		goodGuys.addFactionObject(testShip1);
+		testShip1.setFaction(goodGuys);
+		
+		/**
+		 * CREATE ENEMY SHIPS
+		 */
+		Faction badGuys = new Faction();
+		
 		for (int i = 0; i < 5; i++) {
 			ArrayList<Brick> bricks2 = new ArrayList<Brick>();
 
@@ -693,6 +703,9 @@ public class PhysicsTest extends GameManager {
 
 			objectManager.addPhysicalObject(testShip2);
 			testShip2.addObserver(objectManager);
+			
+			badGuys.addFactionObject(testShip2);
+			testShip2.setFaction(badGuys);
 		}
 		
 		//set up the UI

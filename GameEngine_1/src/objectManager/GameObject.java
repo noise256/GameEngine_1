@@ -7,16 +7,19 @@ import sceneManager.EntityView;
 import sceneManager.SceneNode;
 import eventManager.Observable;
 import eventManager.Observer;
+import factionManager.Faction;
 
 public abstract class GameObject implements EntityView, Observable<ObjectChangeEvent> {
-	protected GameObject source;
-
 	protected ArrayList<Observer<ObjectChangeEvent>> observers = new ArrayList<Observer<ObjectChangeEvent>>();
-
+	
+	protected GameObject source;
+	
 	protected ObjectType objectType;
-
+	
+	protected Faction faction;
+	
 	protected boolean alive = true;
-
+	
 	protected Hashtable<String, SceneNode> sceneNodes = new Hashtable<String, SceneNode>();
 
 	public GameObject(ObjectType objectType, GameObject source) {
@@ -25,14 +28,6 @@ public abstract class GameObject implements EntityView, Observable<ObjectChangeE
 	}
 
 	public abstract void update();
-
-	public ObjectType getObjectType() {
-		return objectType;
-	}
-
-	public Hashtable<String, SceneNode> getSceneNodes() {
-		return sceneNodes;
-	}
 
 	@Override
 	public void addObserver(Observer<ObjectChangeEvent> observer) {
@@ -56,7 +51,27 @@ public abstract class GameObject implements EntityView, Observable<ObjectChangeE
 		return new ArrayList<SceneNode>(sceneNodes.values());
 	}
 
+	public ObjectType getObjectType() {
+		return objectType;
+	}
+	
 	public GameObject getSource() {
 		return source;
+	}
+	
+	public boolean isAlive() {
+		return alive;
+	}
+
+	public void setAlive(boolean alive) {
+		this.alive = alive;
+	}
+	
+	public void setFaction(Faction faction) {
+		this.faction = faction;
+	}
+	
+	public Faction getFaction() {
+		return faction;
 	}
 }

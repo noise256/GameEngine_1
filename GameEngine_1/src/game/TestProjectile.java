@@ -75,7 +75,7 @@ public class TestProjectile extends Agent {
 		else if (exploding) {
 			if (sceneNodes.get("explosionNode") == null) {
 				SceneNode explosionNode = new SceneNode(null) {
-					private int numParticles = 1000;
+					private int numParticles = 250;
 					private float[][] particles;
 
 					@Override
