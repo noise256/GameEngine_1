@@ -1,5 +1,6 @@
 package factionManager;
 
+import objectManager.EntityHashMap;
 import objectManager.GameObject;
 import objectManager.ObjectType;
 
@@ -21,7 +22,7 @@ public class Player extends GameObject {
 	}
 
 	@Override
-	public void update() {
+	public void update(EntityHashMap entityHashMap) {
 	}
 	
 	public void setFaction(Faction faction) {

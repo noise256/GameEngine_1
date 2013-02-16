@@ -27,7 +27,7 @@ public abstract class GameObject implements EntityView, Observable<ObjectChangeE
 		this.source = source;
 	}
 
-	public abstract void update();
+	public abstract void update(EntityHashMap entityHashMap);
 
 	@Override
 	public void addObserver(Observer<ObjectChangeEvent> observer) {

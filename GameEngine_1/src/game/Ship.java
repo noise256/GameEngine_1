@@ -8,6 +8,7 @@ import java.util.Hashtable;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
+import objectManager.EntityHashMap;
 import objectManager.ObjectChangeEvent;
 import objectManager.ObjectType;
 import objectManager.ObjectChangeEvent.ObjectChangeType;
@@ -30,7 +31,7 @@ public abstract class Ship extends Agent {
 	}
 
 	@Override
-	public void update() {
+	public void update(EntityHashMap entityHashMap) {
 		ArrayList<PhysicalObject> newGameObjects = new ArrayList<PhysicalObject>();
 
 		// check alive state
@@ -91,7 +92,7 @@ public abstract class Ship extends Agent {
 				system.setActivated(false);
 			}
 
-			system.update();
+			system.update(entityHashMap);
 
 			if (system.getSubSystemType() == SubSystemType.weapon) {
 				newGameObjects.addAll(((TestWeapon) system).getProjectiles());

@@ -5,6 +5,7 @@ import gameManager.GameManager;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
+import objectManager.EntityHashMap;
 import objectManager.GameObject;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
@@ -69,7 +70,7 @@ public class TestWeapon extends SubSystem {
 		projectiles.add(newProjectile);
 	}
 
-	public void update() {
+	public void update(EntityHashMap entityHashMap) {
 		if (!systemBrick.isAlive()) {
 			alive = false;
 			return;

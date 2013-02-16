@@ -6,6 +6,8 @@ import javax.media.opengl.GL3bc;
 
 import modelManager.TextureLoader;
 
+import objectManager.EntityHashMap;
+
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import sceneManager.SceneNode;
@@ -67,7 +69,7 @@ public class InterfaceBox extends InterfaceObject {
 	}
 
 	@Override
-	public void update() {
+	public void update(EntityHashMap entityHashMap) {
 		// TODO Auto-generated method stub
 		
 	}

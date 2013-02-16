@@ -7,6 +7,7 @@ import java.util.Hashtable;
 
 import javax.media.opengl.GL3bc;
 
+import objectManager.EntityHashMap;
 import objectManager.GameObject;
 import objectManager.ObjectType;
 
@@ -92,7 +93,7 @@ public class TestShipFragment extends BrickObject {
 	}
 
 	@Override
-	public void update() {
+	public void update(EntityHashMap entityHashMap) {
 		if (getBrickFromIndex(0) == null) {
 			setAlive(false);
 		}

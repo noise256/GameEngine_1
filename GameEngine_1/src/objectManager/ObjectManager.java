@@ -71,7 +71,7 @@ public class ObjectManager implements Observable<ObjectEvent>, Observer<ObjectCh
 		 * Iterate through current objects.
 		 */
 		for (PhysicalObject physicalObject : physicalObjects) {
-			physicalObject.update();
+			physicalObject.update(entityHashMap);
 
 			PhysicsEngine.update(physicalObject);
 

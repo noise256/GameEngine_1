@@ -6,6 +6,7 @@ import java.util.Hashtable;
 import javax.media.opengl.GL3bc;
 
 import modelManager.TextureLoader;
+import objectManager.EntityHashMap;
 import objectManager.GameObject;
 import objectManager.ObjectType;
 import physicsManager.PhysicalObject;
@@ -172,7 +173,7 @@ public class TestProjectile extends Agent {
 	}
 
 	@Override
-	public void update() {
+	public void update(EntityHashMap entityHashMap) {
 		life -= lifeDecrement;
 
 		if (life <= 0) {
