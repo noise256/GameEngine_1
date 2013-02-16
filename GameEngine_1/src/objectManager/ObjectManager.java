@@ -73,6 +73,10 @@ public class ObjectManager implements Observable<ObjectEvent>, Observer<ObjectCh
 	 * Increments a time step for each object in the game.
 	 */
 	public void tick() {
+		if (player != null) {
+			player.update(entityHashMap);
+		}
+		
 		/**
 		 * Iterate through current objects.
 		 */
@@ -89,7 +93,7 @@ public class ObjectManager implements Observable<ObjectEvent>, Observer<ObjectCh
 				objectsToRemove.add(physicalObject);
 			}
 		}
-
+		
 		/**
 		 * Add new objects.
 		 */

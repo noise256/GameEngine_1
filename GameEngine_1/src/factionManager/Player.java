@@ -1,5 +1,7 @@
 package factionManager;
 
+import java.util.ArrayList;
+
 import game.ui.InterfaceBox;
 import graphicsManager.Constants;
 
@@ -11,6 +13,8 @@ import objectManager.ObjectType;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
+import physicsManager.PhysicalObject;
+
 import sceneManager.SceneNode;
 
 /**
@@ -21,6 +25,9 @@ import sceneManager.SceneNode;
  */
 public class Player extends GameObject {
 	private Faction faction;
+	
+	//TODO radar should probably be defined in a separate clas
+	private ArrayList<Float[]> radarObjectLocations = new ArrayList<Float[]>();
 	
 	public Player(ObjectType objectType, GameObject source) {
 		super(objectType, source);
@@ -35,6 +42,24 @@ public class Player extends GameObject {
 
 	@Override
 	public void update(EntityHashMap entityHashMap) {
+		ArrayList<PhysicalObject> nearbyObjects = entityHashMap.getEntities(
+				ObjectType.AGENT, 
+				Constants.cameraX - Constants.viewWidth * 5, Constants.cameraX + Constants.viewWidth * 5, 
+				Constants.cameraY - Constants.viewHeight * 5, Constants.cameraY + Constants.viewHeight * 5
+		);
+		
+		radarObjectLocations.clear();
+		
+		for (PhysicalObject nearbyObject : nearbyObjects) {
+			if (nearbyObject.getFaction().equals(faction)) {
+				//something
+			}
+			else if (!nearbyObject.getFaction().equals(faction)) {
+				//something
+			}
+			radarObjectLocations.add(new Float[] {(float) nearbyObject.getPosition().getX(), (float) nearbyObject.getPosition().getY()});
+		}
+		System.out.println("Nearby object count = " + nearbyObjects.size());
 	}
 	
 	public void setFaction(Faction faction) {
@@ -65,6 +90,7 @@ public class Player extends GameObject {
 			gl.glDisable(GL3bc.GL_LIGHTING);
 			gl.glDisable(GL3bc.GL_TEXTURE_2D);
 			gl.glDisable(GL3bc.GL_BLEND);
+			gl.glDisable(GL3bc.GL_DEPTH_TEST);
 			
 			gl.glPushMatrix();
 			
@@ -78,11 +104,32 @@ public class Player extends GameObject {
 				gl.glVertex3f(-90, 90, 0);
 			gl.glEnd();
 			
+			gl.glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
+			for (Float[] radarPosition : radarObjectLocations) {
+				//TODO check this:
+				float x = (radarPosition[0] - Constants.cameraX) / 5000 * 200;
+				float y = (radarPosition[1] - Constants.cameraY) / 5000 * 200;
+				
+				gl.glPushMatrix();
+				
+				gl.glTranslatef(x, y * -1, 0.0f);
+				
+				gl.glBegin(GL3bc.GL_QUADS);
+				gl.glVertex3f(2, 2, 0);
+				gl.glVertex3f(2, -2, 0);
+				gl.glVertex3f(-2, -2, 0);
+				gl.glVertex3f(-2, 2, 0);
+				gl.glEnd();
+				
+				gl.glPopMatrix();
+			}
+			
 			gl.glPopMatrix();
 			
 			gl.glEnable(GL3bc.GL_LIGHTING);
 			gl.glEnable(GL3bc.GL_TEXTURE_2D);
 			gl.glEnable(GL3bc.GL_BLEND);
+			gl.glEnable(GL3bc.GL_DEPTH_TEST);
 		}
 	};
 }

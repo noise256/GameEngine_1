@@ -176,6 +176,9 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 		gl.glTranslatef((float) -camera.getView().getX(), (float) -camera.getView().getY(), (float) -camera.getCam().getZ());
 		
 		setWorldCoordinates(gl, mouseX, mouseY);
+		
+		Constants.cameraX = (int) camera.getView().getX();
+		Constants.cameraY = (int) camera.getView().getY();
 	}
 
 	private void setWorldCoordinates(GL3bc gl, int screenX, int screenY) {

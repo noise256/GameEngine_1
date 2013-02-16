@@ -55,11 +55,13 @@ public abstract class Ship extends Agent {
 
 				PhysicalObject target = currentAttackOrder.getTarget();
 
-				if (target.isAlive() && !target.getFaction().equals(faction)) {
-					attack(((AgentInputAttack) currentOrder).getTarget());
-				}
-				else {
-					currentOrder = null;
+				if (target != null) {
+					if (target.isAlive() && !target.getFaction().equals(faction)) {
+						attack(((AgentInputAttack) currentOrder).getTarget());
+					}
+					else {
+						currentOrder = null;
+					}
 				}
 			}
 		}

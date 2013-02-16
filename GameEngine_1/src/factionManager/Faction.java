@@ -11,6 +11,10 @@ import objectManager.GameObject;
  *
  */
 public class Faction {
+	//TODO list enemy factions
+	
+	//TODO list friendly factions
+	
 	ArrayList<GameObject> factionObjects = new ArrayList<GameObject>();
 	
 	public void update() {

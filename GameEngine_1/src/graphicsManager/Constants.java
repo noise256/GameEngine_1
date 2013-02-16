@@ -9,6 +9,9 @@ public class Constants {
 
 	public static int viewWidth = 1000;
 	public static int viewHeight = 1000;
+	
+	public static int cameraX;
+	public static int cameraY;
 
 	public static boolean displayNormals = false;
 }
