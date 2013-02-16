@@ -21,7 +21,7 @@ public abstract class SubSystem extends GameObject {
 	protected double orientation;
 
 	public SubSystem(GameObject source, SystemBrick systemBrick, SubSystemType subSystemType, Vector2D position, double orientation) {
-		super(ObjectType.SUBSYSTEM, source);
+		super(ObjectType.SUBSYSTEM, source, null);
 		this.systemBrick = systemBrick;
 		this.subSystemType = subSystemType;
 	}

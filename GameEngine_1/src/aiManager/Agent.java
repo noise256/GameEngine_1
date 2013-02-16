@@ -1,5 +1,6 @@
 package aiManager;
 
+import factionManager.Faction;
 import inputManager.Selectable;
 
 import java.util.ArrayList;
@@ -22,9 +23,8 @@ public abstract class Agent extends BrickObject implements Selectable {
 	protected ArrayList<AgentInput> inputQueue = new ArrayList<AgentInput>();
 	protected boolean selected;
 
-	public Agent(ObjectType objectType, GameObject source, Hashtable<String, Double> values, ArrayList<Brick> bricks,
-			ArrayList<ArrayList<Integer>> adjacencyList) {
-		super(objectType, source, values, bricks, adjacencyList);
+	public Agent(ObjectType objectType, GameObject source, Hashtable<String, Double> values, ArrayList<Brick> bricks, ArrayList<ArrayList<Integer>> adjacencyList, Faction faction) {
+		super(objectType, source, values, bricks, adjacencyList, faction);
 	}
 
 	protected void attack(PhysicalObject target) {

@@ -24,7 +24,7 @@ public class TestProjectile extends Agent {
 	private int explosionTimer = 100;
 
 	public TestProjectile(GameObject source, Hashtable<String, Double> values, double lifeDecrement) {
-		super(ObjectType.PROJECTILE, source, values, null, null);
+		super(ObjectType.PROJECTILE, source, values, null, null, null);
 		this.lifeDecrement = lifeDecrement;
 	}
 

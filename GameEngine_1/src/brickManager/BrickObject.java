@@ -10,6 +10,8 @@ import objectManager.ObjectChangeEvent.ObjectChangeType;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
+import factionManager.Faction;
+
 import physicsManager.PhysicalObject;
 import utilityManager.MathBox;
 
@@ -19,9 +21,8 @@ public abstract class BrickObject extends PhysicalObject {
 
 	protected boolean bricksChange = false;
 
-	public BrickObject(ObjectType objectType, GameObject source, Hashtable<String, Double> values, ArrayList<Brick> bricks,
-			ArrayList<ArrayList<Integer>> adjacencyList) {
-		super(objectType, source, values);
+	public BrickObject(ObjectType objectType, GameObject source, Hashtable<String, Double> values, ArrayList<Brick> bricks, ArrayList<ArrayList<Integer>> adjacencyList, Faction faction) {
+		super(objectType, source, values, faction);
 		this.bricks = bricks;
 		this.adjacencyList = adjacencyList;
 

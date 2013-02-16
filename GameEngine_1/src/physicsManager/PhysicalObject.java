@@ -8,6 +8,7 @@ import objectManager.ObjectType;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import collisionManager.Collidable;
+import factionManager.Faction;
 
 public abstract class PhysicalObject extends GameObject implements Collidable {
 	protected Hashtable<String, Double> forces = new Hashtable<String, Double>();
@@ -36,8 +37,8 @@ public abstract class PhysicalObject extends GameObject implements Collidable {
 	protected double turningForce;
 	protected double maxTurningForce;
 
-	public PhysicalObject(ObjectType objectType, GameObject source, Hashtable<String, Double> values) {
-		super(objectType, source);
+	public PhysicalObject(ObjectType objectType, GameObject source, Hashtable<String, Double> values, Faction faction) {
+		super(objectType, source, faction);
 
 		position = new Vector2D(values.get("positionX"), values.get("positionY"));
 		oldPosition = new Vector2D(values.get("positionX"), values.get("positionY"));

@@ -13,10 +13,11 @@ import aiManager.AgentInputAttack;
 import aiManager.AgentInputMove;
 import brickManager.Brick;
 import collisionManager.Collidable;
+import factionManager.Faction;
 
 public class TestShip extends Ship {
-	public TestShip(Hashtable<String, Double> values, ArrayList<Brick> bricks, ArrayList<ArrayList<Integer>> adjacencyList) {
-		super(values, bricks, adjacencyList);
+	public TestShip(Hashtable<String, Double> values, ArrayList<Brick> bricks, ArrayList<ArrayList<Integer>> adjacencyList, Faction faction) {
+		super(values, bricks, adjacencyList, faction);
 	}
 
 	@Override

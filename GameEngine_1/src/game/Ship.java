@@ -1,5 +1,6 @@
 package game;
 
+import factionManager.Faction;
 import game.SubSystem.SubSystemType;
 import gameManager.GameManager;
 
@@ -26,8 +27,8 @@ import aiManager.AgentInput.AgentInputType;
 public abstract class Ship extends Agent {
 	private ArrayList<SubSystem> subSystems = new ArrayList<SubSystem>();
 
-	public Ship(Hashtable<String, Double> values, ArrayList<Brick> bricks, ArrayList<ArrayList<Integer>> adjacencyList) {
-		super(ObjectType.AGENT, null, values, bricks, adjacencyList);
+	public Ship(Hashtable<String, Double> values, ArrayList<Brick> bricks, ArrayList<ArrayList<Integer>> adjacencyList, Faction faction) {
+		super(ObjectType.AGENT, null, values, bricks, adjacencyList, faction);
 	}
 
 	@Override
@@ -198,7 +199,7 @@ public abstract class Ship extends Agent {
 		values.put("maxForce", 1.0);
 		values.put("maxTurningForce", 1.0);
 
-		TestShipFragment fragment = new TestShipFragment(this, values, fragmentBricks, adjacencyList);
+		TestShipFragment fragment = new TestShipFragment(this, values, fragmentBricks, adjacencyList, faction);
 		fragment.addObserver(GameManager.getObjectManager());
 		return fragment;
 	}

@@ -14,7 +14,7 @@ public abstract class InterfaceObject extends GameObject {
 	protected float height;
 	
 	public InterfaceObject(Vector2D position, float width, float height) {
-		super(ObjectType.INTERFACE_OBJECT, null);
+		super(ObjectType.INTERFACE_OBJECT, null, null);
 		this.position = position;
 		this.width = width;
 		this.height = height;

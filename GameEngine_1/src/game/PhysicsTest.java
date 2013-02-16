@@ -29,6 +29,9 @@ public class PhysicsTest extends GameManager {
 	public PhysicsTest() {
 		super();
 
+		Faction goodGuys = new Faction();
+		Faction badGuys = new Faction();
+		
 		loadBuffers();
 
 		Hashtable<String, Double> values = new Hashtable<String, Double>();
@@ -363,7 +366,7 @@ public class PhysicsTest extends GameManager {
 		 * End construct bricks for test ship 1.
 		 */
 
-		TestShip testShip1 = new TestShip(values, bricks1, adjacencyList1);
+		TestShip testShip1 = new TestShip(values, bricks1, adjacencyList1, goodGuys);
 
 		TestWeapon testWeapon = new TestWeapon(testShip1, systemBrick1, testShip1.getPosition(), testShip1.getOrientation(), 0.1, 0.01);
 		testShip1.addSubSystem(testWeapon);
@@ -371,14 +374,12 @@ public class PhysicsTest extends GameManager {
 		objectManager.addPhysicalObject(testShip1);
 		testShip1.addObserver(objectManager);
 
-		Faction goodGuys = new Faction();
 		goodGuys.addFactionObject(testShip1);
 		testShip1.setFaction(goodGuys);
 		
 		/**
 		 * CREATE ENEMY SHIPS
 		 */
-		Faction badGuys = new Faction();
 		
 		for (int i = 0; i < 5; i++) {
 			ArrayList<Brick> bricks2 = new ArrayList<Brick>();
@@ -697,7 +698,7 @@ public class PhysicsTest extends GameManager {
 			values.put("positionY", Math.random() * 2000.0 * MathBox.nextSign() + 25000.0);
 			values.put("orientation", 0.0);
 
-			TestShip testShip2 = new TestShip(values, bricks2, adjacencyList2);
+			TestShip testShip2 = new TestShip(values, bricks2, adjacencyList2, badGuys);
 			testShip2.addSubSystem(new TestWeapon(testShip2, systemBrick2, testShip2.getPosition(), testShip2.getOrientation(), 0.05, 0.01));
 			testShip2.addInput(new AgentInputAttack(testShip1));
 
@@ -709,7 +710,7 @@ public class PhysicsTest extends GameManager {
 		}
 		
 		//set up the UI
-		objectManager.setPlayer(new Player(ObjectType.PLAYER, null));
+		objectManager.setPlayer(new Player(ObjectType.PLAYER, null, goodGuys));
 //		InterfaceBox interfaceBox = new InterfaceBox(new Vector2D(Constants.viewWidth/2, 150/2), Constants.viewWidth, 150);
 //		objectManager.addInterfaceObject(interfaceBox);
 	}

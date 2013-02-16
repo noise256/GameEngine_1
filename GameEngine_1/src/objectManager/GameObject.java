@@ -22,9 +22,10 @@ public abstract class GameObject implements EntityView, Observable<ObjectChangeE
 	
 	protected Hashtable<String, SceneNode> sceneNodes = new Hashtable<String, SceneNode>();
 
-	public GameObject(ObjectType objectType, GameObject source) {
+	public GameObject(ObjectType objectType, GameObject source, Faction faction) {
 		this.objectType = objectType;
 		this.source = source;
+		this.faction = faction;
 	}
 
 	public abstract void update(EntityHashMap entityHashMap);

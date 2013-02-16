@@ -1,5 +1,6 @@
 package game;
 
+import factionManager.Faction;
 import gameManager.GameManager;
 
 import java.util.ArrayList;
@@ -23,8 +24,8 @@ import collisionManager.Collidable;
 
 public class TestShipFragment extends BrickObject {
 
-	public TestShipFragment(GameObject source, Hashtable<String, Double> values, ArrayList<Brick> bricks, ArrayList<ArrayList<Integer>> adjacencyList) {
-		super(ObjectType.FRAGMENT, source, values, bricks, adjacencyList);
+	public TestShipFragment(GameObject source, Hashtable<String, Double> values, ArrayList<Brick> bricks, ArrayList<ArrayList<Integer>> adjacencyList, Faction faction) {
+		super(ObjectType.FRAGMENT, source, values, bricks, adjacencyList, faction);
 	}
 
 	@Override
@@ -148,7 +149,7 @@ public class TestShipFragment extends BrickObject {
 		values.put("maxForce", 1.0);
 		values.put("maxTurningForce", 1.0);
 
-		TestShipFragment fragment = new TestShipFragment(this, values, fragmentBricks, adjacencyList);
+		TestShipFragment fragment = new TestShipFragment(this, values, fragmentBricks, adjacencyList, faction);
 		fragment.addObserver(GameManager.getObjectManager());
 		return fragment;
 	}
