@@ -1,15 +1,15 @@
 package game;
 
 import factionManager.Faction;
-import game.ui.InterfaceBox;
+import factionManager.Player;
 import gameManager.GameManager;
-
 
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
 import modelManager.ModelLoader;
+import objectManager.ObjectType;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
@@ -709,8 +709,9 @@ public class PhysicsTest extends GameManager {
 		}
 		
 		//set up the UI
-		InterfaceBox interfaceBox = new InterfaceBox(new Vector2D(25000, 25000), 1000, 250);
-		objectManager.addInterfaceObject(interfaceBox);
+		objectManager.setPlayer(new Player(ObjectType.PLAYER, null));
+//		InterfaceBox interfaceBox = new InterfaceBox(new Vector2D(Constants.viewWidth/2, 150/2), Constants.viewWidth, 150);
+//		objectManager.addInterfaceObject(interfaceBox);
 	}
 
 	private void loadBuffers() {

@@ -1,5 +1,6 @@
 package objectManager;
 
+import factionManager.Player;
 import graphicsManager.Constants;
 import inputManager.ExtendedMouseEvent;
 import interfaceManager.InterfaceObject;
@@ -37,6 +38,11 @@ public class ObjectManager implements Observable<ObjectEvent>, Observer<ObjectCh
 	private ArrayList<InterfaceObject> interfaceObjects = new ArrayList<InterfaceObject>();
 	
 	private ArrayList<InterfaceObject> interfaceObjectsToAdd = new ArrayList<InterfaceObject>();
+	
+	/**
+	 * Object representing the player.
+	 */
+	private Player player;
 	
 	/**
 	 * Collection of physical objects.
@@ -139,6 +145,10 @@ public class ObjectManager implements Observable<ObjectEvent>, Observer<ObjectCh
 			interfaceNodes.addAll(interfaceObject.getView());
 		}
 		
+		if (player != null) {
+			player.updateView();
+			interfaceNodes.addAll(player.getView());
+		}
 		return new ObjectEvent(this, UpdateEventType.INTERFACE_DISPLAY, interfaceNodes);
 	}
 	
@@ -262,5 +272,9 @@ public class ObjectManager implements Observable<ObjectEvent>, Observer<ObjectCh
 		else if (event.getChangeType() == ObjectChangeType.REMOVAL) {
 			objectsToRemove.addAll(event.getChangedObjects());
 		}
+	}
+
+	public void setPlayer(Player player) {
+		this.player = player;
 	}
 }

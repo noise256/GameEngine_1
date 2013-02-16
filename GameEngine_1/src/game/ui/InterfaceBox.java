@@ -40,7 +40,7 @@ public class InterfaceBox extends InterfaceObject {
 					
 					gl.glPushMatrix();
 					
-					gl.glTranslatef(width/2.0f, height/2.0f, 0.0f);
+					gl.glTranslatef((float) position.getX(), (float) position.getY(), 0.0f);
 					gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 					gl.glBegin(GL3bc.GL_QUADS);
 						gl.glTexCoord2f(1.0f, 1.0f);

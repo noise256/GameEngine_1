@@ -80,12 +80,14 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 
 		renderObjectDisplayNodes(gl);
 		drawDebugCube(gl, (float) camera.getView().getX(), (float) camera.getView().getY(), (float) camera.getView().getZ());
-		drawText(gl);
 		
 		gl.glMatrixMode(GL3bc.GL_PROJECTION);
 		
 		gl.glLoadIdentity();
 		gl.glOrtho(0, Constants.viewWidth, 0, Constants.viewHeight, -1, 1);
+		
+		gl.glMatrixMode(GL3bc.GL_MODELVIEW);
+		gl.glLoadIdentity();
 		
 		renderInterfaceDisplayNodes(gl);
 	}
@@ -228,38 +230,40 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 		}
 	}
 
-	private void drawText(GL3bc gl) {
-		gl.glMatrixMode(GL3bc.GL_PROJECTION);
-		gl.glLoadIdentity();
-
-		gl.glOrtho(0f, Constants.viewWidth/2, 0f, Constants.viewHeight, 0f, 1f);
-
-		gl.glMatrixMode(GL3bc.GL_MODELVIEW);
-		gl.glLoadIdentity();
-
-		gl.glDisable(GL3bc.GL_DEPTH_TEST);
-		gl.glDisable(GL3bc.GL_TEXTURE);
-		gl.glDisable(GL3bc.GL_TEXTURE_2D);
-		gl.glDisable(GL3bc.GL_LIGHTING);
-
-		gl.glPushMatrix();
-		GLUT glut = new GLUT();
-		gl.glRasterPos2i(30, 30);
-		gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-		glut.glutBitmapString(GLUT.BITMAP_HELVETICA_18, "Mouse position = " + worldX + ", " + worldY);
-		gl.glPopMatrix();
-
-		gl.glEnable(GL3bc.GL_TEXTURE);
-		gl.glEnable(GL3bc.GL_TEXTURE_2D);
-		gl.glEnable(GL3bc.GL_DEPTH_TEST);
-		gl.glEnable(GL3bc.GL_LIGHTING);
-	}
+//	private void drawText(GL3bc gl) {
+//		gl.glMatrixMode(GL3bc.GL_PROJECTION);
+//		gl.glLoadIdentity();
+//
+//		gl.glOrtho(0f, Constants.viewWidth/2, 0f, Constants.viewHeight, 0f, 1f);
+//
+//		gl.glMatrixMode(GL3bc.GL_MODELVIEW);
+//		gl.glLoadIdentity();
+//
+//		gl.glDisable(GL3bc.GL_DEPTH_TEST);
+//		gl.glDisable(GL3bc.GL_TEXTURE);
+//		gl.glDisable(GL3bc.GL_TEXTURE_2D);
+//		gl.glDisable(GL3bc.GL_LIGHTING);
+//
+//		gl.glPushMatrix();
+//		GLUT glut = new GLUT();
+//		gl.glRasterPos2i(30, 30);
+//		gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+//		glut.glutBitmapString(GLUT.BITMAP_HELVETICA_18, "Mouse position = " + worldX + ", " + worldY);
+//		gl.glPopMatrix();
+//
+//		gl.glEnable(GL3bc.GL_TEXTURE);
+//		gl.glEnable(GL3bc.GL_TEXTURE_2D);
+//		gl.glEnable(GL3bc.GL_DEPTH_TEST);
+//		gl.glEnable(GL3bc.GL_LIGHTING);
+//	}
 
 	private void drawDebugCube(GL3bc gl, float x, float y, float z) {
 		GLUT glut = new GLUT();
 
-		gl.glPushMatrix();
 		gl.glDisable(GL3bc.GL_LIGHTING);
+		
+		gl.glPushMatrix();
+		
 		gl.glLineWidth(1.0f);
 		gl.glTranslatef(x, y, z);
 
@@ -297,8 +301,9 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 		glut.glutWireCube(10f);
 		gl.glPopMatrix();
 
-		gl.glEnable(GL3bc.GL_LIGHTING);
 		gl.glPopMatrix();
+
+		gl.glEnable(GL3bc.GL_LIGHTING);
 	}
 
 	@Override
