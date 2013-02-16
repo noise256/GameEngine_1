@@ -25,8 +25,7 @@ import sceneManager.SceneNode;
  */
 public class Player extends GameObject {
 	//TODO radar should probably be defined in a separate clas
-	private ArrayList<Float[]> radarFriendlyLocations = new ArrayList<Float[]>();
-	private ArrayList<Float[]> radarEnemyLocations = new ArrayList<Float[]>();
+	private int[][] radarLocations;
 	
 	public Player(ObjectType objectType, GameObject source, Faction faction) {
 		super(objectType, source, faction);
@@ -47,15 +46,17 @@ public class Player extends GameObject {
 				Constants.cameraY - Constants.viewHeight * 5, Constants.cameraY + Constants.viewHeight * 5
 		);
 		
-		radarFriendlyLocations.clear();
-		radarEnemyLocations.clear();
+		radarLocations = new int[nearbyObjects.size()][3];
 		
-		for (PhysicalObject nearbyObject : nearbyObjects) {
-			if (nearbyObject.getFaction().equals(faction)) {
-				radarFriendlyLocations.add(new Float[] {(float) nearbyObject.getPosition().getX(), (float) nearbyObject.getPosition().getY()});
+		for (int i = 0; i < nearbyObjects.size(); i++) {
+			radarLocations[i][0] = (int) nearbyObjects.get(i).getPosition().getX();
+			radarLocations[i][1] = (int) nearbyObjects.get(i).getPosition().getY();
+			
+			if (nearbyObjects.get(i).getFaction().equals(faction)) {
+				radarLocations[i][2] = 1;
 			}
-			else if (!nearbyObject.getFaction().equals(faction)) {
-				radarEnemyLocations.add(new Float[] {(float) nearbyObject.getPosition().getX(), (float) nearbyObject.getPosition().getY()});
+			else if (!nearbyObjects.get(i).getFaction().equals(faction)) {
+				radarLocations[i][2] = 0;
 			}
 		}
 	}
@@ -102,35 +103,14 @@ public class Player extends GameObject {
 				gl.glVertex3f(-90, 90, 0);
 			gl.glEnd();
 			
-			gl.glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
-			for (Float[] radarPosition : radarFriendlyLocations) {
-				//TODO check this:
-				float x = (radarPosition[0] - Constants.cameraX) / 5000 * 200;
-				float y = (radarPosition[1] - Constants.cameraY) / 5000 * 200;
+			for (int i = 0; i < radarLocations.length; i++) {
+				float x = (radarLocations[i][0] - Constants.cameraX) / 5000.0f * 200.0f;
+				float y = (radarLocations[i][1] - Constants.cameraY) / 5000.0f * 200.0f;
 				
 				gl.glPushMatrix();
 				
 				gl.glTranslatef(x, y * -1, 0.0f);
-				
-				gl.glBegin(GL3bc.GL_QUADS);
-				gl.glVertex3f(2, 2, 0);
-				gl.glVertex3f(2, -2, 0);
-				gl.glVertex3f(-2, -2, 0);
-				gl.glVertex3f(-2, 2, 0);
-				gl.glEnd();
-				
-				gl.glPopMatrix();
-			}
-			
-			gl.glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
-			for (Float[] radarPosition : radarEnemyLocations) {
-				//TODO check this:
-				float x = (radarPosition[0] - Constants.cameraX) / 5000 * 200;
-				float y = (radarPosition[1] - Constants.cameraY) / 5000 * 200;
-				
-				gl.glPushMatrix();
-				
-				gl.glTranslatef(x, y * -1, 0.0f);
+				gl.glColor4f(radarLocations[i][2], 1 - radarLocations[i][2], 0.0f, 1.0f);
 				
 				gl.glBegin(GL3bc.GL_QUADS);
 				gl.glVertex3f(2, 2, 0);
