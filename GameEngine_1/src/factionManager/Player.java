@@ -26,6 +26,9 @@ import sceneManager.SceneNode;
 public class Player extends GameObject {
 	//TODO radar should probably be defined in a separate clas
 	private int[][] radarLocations;
+	private float maxRadarRange = 2000;
+	private float radarScreenWidth = 500;
+	private float radarScreenHeight = 500;
 	
 	public Player(ObjectType objectType, GameObject source, Faction faction) {
 		super(objectType, source, faction);
@@ -42,21 +45,25 @@ public class Player extends GameObject {
 	public void update(EntityHashMap entityHashMap) {
 		ArrayList<PhysicalObject> nearbyObjects = entityHashMap.getEntities(
 				ObjectType.AGENT, 
-				Constants.cameraX - Constants.viewWidth * 5, Constants.cameraX + Constants.viewWidth * 5, 
-				Constants.cameraY - Constants.viewHeight * 5, Constants.cameraY + Constants.viewHeight * 5
+				Constants.cameraX - maxRadarRange, Constants.cameraX + maxRadarRange, 
+				Constants.cameraY - maxRadarRange, Constants.cameraY + maxRadarRange
 		);
 		
 		radarLocations = new int[nearbyObjects.size()][3];
 		
 		for (int i = 0; i < nearbyObjects.size(); i++) {
+			double dist = Math.sqrt(Math.pow(Constants.cameraX - nearbyObjects.get(i).getPosition().getX(), 2) + Math.pow(Constants.cameraY - nearbyObjects.get(i).getPosition().getY(), 2));
+			System.out.println("dist = " + dist + " x = " + nearbyObjects.get(i).getPosition().getX() + " y = " + nearbyObjects.get(i).getPosition().getY());
+			
+			
 			radarLocations[i][0] = (int) nearbyObjects.get(i).getPosition().getX();
 			radarLocations[i][1] = (int) nearbyObjects.get(i).getPosition().getY();
 			
 			if (nearbyObjects.get(i).getFaction().equals(faction)) {
-				radarLocations[i][2] = 1;
+				radarLocations[i][2] = 0;
 			}
 			else if (!nearbyObjects.get(i).getFaction().equals(faction)) {
-				radarLocations[i][2] = 0;
+				radarLocations[i][2] = 1;
 			}
 		}
 	}
@@ -80,11 +87,11 @@ public class Player extends GameObject {
 		
 		@Override
 		public void update(GL3bc gl) {
-			interfaceBox.updateView();
+//			interfaceBox.updateView();
 			
-			for (SceneNode interfaceNode : interfaceBox.getView()) {
-				interfaceNode.update(gl);
-			}
+//			for (SceneNode interfaceNode : interfaceBox.getView()) {
+//				interfaceNode.update(gl);
+//			}
 			
 			gl.glDisable(GL3bc.GL_LIGHTING);
 			gl.glDisable(GL3bc.GL_TEXTURE_2D);
@@ -93,19 +100,19 @@ public class Player extends GameObject {
 			
 			gl.glPushMatrix();
 			
-			gl.glTranslatef(Constants.viewWidth/2, 200/2, 0.0f);
+			gl.glTranslatef(Constants.viewWidth/2, Constants.viewHeight/2, 0.0f);
 			gl.glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
 			
-			gl.glBegin(GL3bc.GL_QUADS);
-				gl.glVertex3f(90, 90, 0);
-				gl.glVertex3f(90, -90, 0);
-				gl.glVertex3f(-90, -90, 0);
-				gl.glVertex3f(-90, 90, 0);
-			gl.glEnd();
+//			gl.glBegin(GL3bc.GL_QUADS);
+//				gl.glVertex3f(radarScreenWidth/2, radarScreenHeight/2, 0);
+//				gl.glVertex3f(radarScreenWidth/2, -radarScreenHeight/2, 0);
+//				gl.glVertex3f(-radarScreenWidth/2, -radarScreenHeight/2, 0);
+//				gl.glVertex3f(-radarScreenWidth/2, radarScreenHeight/2, 0);
+//			gl.glEnd();
 			
 			for (int i = 0; i < radarLocations.length; i++) {
-				float x = (radarLocations[i][0] - Constants.cameraX) / 5000.0f * 200.0f;
-				float y = (radarLocations[i][1] - Constants.cameraY) / 5000.0f * 200.0f;
+				float x = (radarLocations[i][0] - Constants.cameraX) / maxRadarRange * radarScreenWidth/2;
+				float y = (radarLocations[i][1] - Constants.cameraY) / maxRadarRange * radarScreenHeight/2;
 				
 				gl.glPushMatrix();
 				

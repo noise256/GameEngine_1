@@ -54,10 +54,7 @@ public class EntityHashMap {
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T extends PhysicalObject> ArrayList<T> getEntities(ObjectType objectType, double minX, double maxX, double minY, double maxY) {// ,
-																																			// ObjectType
-																																			// type)
-																																			// {
+	public <T extends PhysicalObject> ArrayList<T> getEntities(ObjectType objectType, double minX, double maxX, double minY, double maxY) {
 		ArrayList<T> entities = new ArrayList<T>();
 
 		int[] tC1 = translateCoordinates(minX, minY);
@@ -66,7 +63,10 @@ public class EntityHashMap {
 		for (int i = tC1[0]; i <= tC2[0]; i++) {
 			for (int j = tC1[1]; j <= tC2[1]; j++) {
 				for (PhysicalObject match : objectMap.get(i).get(j)) {
-					if (match.getObjectType() == objectType) {
+					if (match.getObjectType() == objectType &&
+						match.getPosition().getX() > minX && match.getPosition().getY() < maxX &&
+						match.getPosition().getY() > minY && match.getPosition().getY() < maxY) 
+					{
 						entities.add((T) match);
 					}
 				}
