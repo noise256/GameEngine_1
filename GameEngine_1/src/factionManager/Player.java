@@ -52,10 +52,6 @@ public class Player extends GameObject {
 		radarLocations = new int[nearbyObjects.size()][3];
 		
 		for (int i = 0; i < nearbyObjects.size(); i++) {
-			double dist = Math.sqrt(Math.pow(Constants.cameraX - nearbyObjects.get(i).getPosition().getX(), 2) + Math.pow(Constants.cameraY - nearbyObjects.get(i).getPosition().getY(), 2));
-			System.out.println("dist = " + dist + " x = " + nearbyObjects.get(i).getPosition().getX() + " y = " + nearbyObjects.get(i).getPosition().getY());
-			
-			
 			radarLocations[i][0] = (int) nearbyObjects.get(i).getPosition().getX();
 			radarLocations[i][1] = (int) nearbyObjects.get(i).getPosition().getY();
 			
@@ -95,8 +91,8 @@ public class Player extends GameObject {
 			
 			gl.glDisable(GL3bc.GL_LIGHTING);
 			gl.glDisable(GL3bc.GL_TEXTURE_2D);
-			gl.glDisable(GL3bc.GL_BLEND);
 			gl.glDisable(GL3bc.GL_DEPTH_TEST);
+			gl.glEnable(GL3bc.GL_BLEND);
 			
 			gl.glPushMatrix();
 			
@@ -117,7 +113,7 @@ public class Player extends GameObject {
 				gl.glPushMatrix();
 				
 				gl.glTranslatef(x, y * -1, 0.0f);
-				gl.glColor4f(radarLocations[i][2], 1 - radarLocations[i][2], 0.0f, 1.0f);
+				gl.glColor4f(radarLocations[i][2], 1 - radarLocations[i][2], 0.0f, 0.6f);
 				
 				gl.glBegin(GL3bc.GL_QUADS);
 				gl.glVertex3f(2, 2, 0);
@@ -133,8 +129,8 @@ public class Player extends GameObject {
 			
 			gl.glEnable(GL3bc.GL_LIGHTING);
 			gl.glEnable(GL3bc.GL_TEXTURE_2D);
-			gl.glEnable(GL3bc.GL_BLEND);
 			gl.glEnable(GL3bc.GL_DEPTH_TEST);
+			gl.glDisable(GL3bc.GL_BLEND);
 		}
 	};
 }
