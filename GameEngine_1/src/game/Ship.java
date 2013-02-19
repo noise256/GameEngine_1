@@ -82,13 +82,23 @@ public abstract class Ship extends Agent {
 			system.setPosition(position);
 			system.setOrientation(orientation);
 
-			if (system.getSubSystemType() == SubSystemType.weapon && currentOrder != null) {
-				if (currentOrder.getAgentInputType() == AgentInputType.ATTACK
-						&& ((TestWeapon) system).isValidTarget(((AgentInputAttack) currentOrder).getTarget())) {
-					system.setActivated(true);
+			if (currentOrder != null) {
+				if (system.getSubSystemType() == SubSystemType.GUN) {
+					if (currentOrder.getAgentInputType() == AgentInputType.ATTACK && ((TestWeapon) system).isValidTarget(((AgentInputAttack) currentOrder).getTarget())) {
+						system.setActivated(true);
+					}
+					else {
+						system.setActivated(false);
+					}
 				}
-				else {
-					system.setActivated(false);
+				else if (system.getSubSystemType() == SubSystemType.TURRET) {
+					if (currentOrder.getAgentInputType() == AgentInputType.ATTACK && ((TestTurret) system).isValidTarget(((AgentInputAttack) currentOrder).getTarget())) {
+						system.setActivated(true);
+						((TestTurret) system).setTarget(((AgentInputAttack) currentOrder).getTarget());
+					}
+					else {
+						system.setActivated(false);
+					}
 				}
 			}
 			else {
@@ -97,9 +107,13 @@ public abstract class Ship extends Agent {
 
 			system.update(entityHashMap);
 
-			if (system.getSubSystemType() == SubSystemType.weapon) {
+			if (system.getSubSystemType() == SubSystemType.GUN ) {
 				newGameObjects.addAll(((TestWeapon) system).getProjectiles());
 				((TestWeapon) system).clearProjectiles();
+			}
+			else if (system.getSubSystemType() == SubSystemType.TURRET) {
+				newGameObjects.addAll(((TestTurret) system).getProjectiles());
+				((TestTurret) system).clearProjectiles();
 			}
 		}
 

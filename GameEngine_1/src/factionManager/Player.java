@@ -24,7 +24,7 @@ import sceneManager.SceneNode;
  *
  */
 public class Player extends GameObject {
-	//TODO radar should probably be defined in a separate clas
+	//TODO radar should probably be defined in a separate class
 	private int[][] radarLocations;
 	private float maxRadarRange = 2000;
 	private float radarScreenWidth = 500;

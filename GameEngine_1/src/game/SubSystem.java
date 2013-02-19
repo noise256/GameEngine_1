@@ -9,7 +9,7 @@ import objectManager.ObjectType;
 
 public abstract class SubSystem extends GameObject {
 	public enum SubSystemType {
-		weapon;
+		GUN, TURRET;
 	}
 
 	protected SubSystemType subSystemType;
