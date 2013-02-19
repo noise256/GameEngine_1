@@ -2,6 +2,11 @@ package game;
 
 import factionManager.Faction;
 import factionManager.Player;
+import game.brick.ShipSquareBrick;
+import game.brick.ShipSystemBrick;
+import game.brick.ShipTriangleBrick;
+import game.ship.TestShip;
+import game.subsystem.TestTurret;
 import gameManager.GameManager;
 
 import java.nio.FloatBuffer;
