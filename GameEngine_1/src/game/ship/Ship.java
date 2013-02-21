@@ -29,7 +29,7 @@ import aiManager.AgentInputMove;
 import aiManager.AgentInput.AgentInputType;
 
 public abstract class Ship extends Agent {
-	private ArrayList<SubSystem> subSystems = new ArrayList<SubSystem>();
+	protected ArrayList<SubSystem> subSystems = new ArrayList<SubSystem>();
 
 	public Ship(Hashtable<String, Double> values, ArrayList<Brick> bricks, ArrayList<ArrayList<Integer>> adjacencyList, Faction faction) {
 		super(ObjectType.AGENT, null, values, bricks, adjacencyList, faction);

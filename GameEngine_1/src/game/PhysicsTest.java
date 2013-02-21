@@ -6,6 +6,7 @@ import game.brick.ShipSquareBrick;
 import game.brick.ShipSystemBrick;
 import game.brick.ShipTriangleBrick;
 import game.ship.TestShip;
+import game.subsystem.TestEngine;
 import game.subsystem.TestTurret;
 import gameManager.GameManager;
 
@@ -84,7 +85,7 @@ public class PhysicsTest extends GameManager {
 		bricks1.add(new ShipSquareBrick(18, new Vector2D(-20.0, -30.0), 10.0f, 1));
 
 		// row4
-		bricks1.add(new ShipSquareBrick(19, new Vector2D(-30.0, 0.0), 10.0f, 1));
+//		bricks1.add(new ShipSquareBrick(19, new Vector2D(-30.0, 0.0), 10.0f, 1));
 		bricks1.add(new ShipSquareBrick(20, new Vector2D(-30.0, 10.0), 10.0f, 1));
 		bricks1.add(new ShipSquareBrick(21, new Vector2D(-30.0, -10.0), 10.0f, 1));
 		bricks1.add(new ShipTriangleBrick(22, new Vector2D(-30.0, 30.0), BrickOrientation.ONE, 10.0f, 1));
@@ -121,6 +122,12 @@ public class PhysicsTest extends GameManager {
 		SystemBrick systemBrick1 = new ShipSystemBrick(41, new Vector2D(40.0, 0.0), 10.0f, 1);
 		bricks1.add(systemBrick1);
 
+		//engine brick
+		SystemBrick systemBrick2 = new ShipSystemBrick(19, new Vector2D(-30.0, 0.0), 10.0f, 1);
+		bricks1.add(systemBrick2);
+		
+		
+		//adjacency list
 		ArrayList<ArrayList<Integer>> adjacencyList1 = new ArrayList<ArrayList<Integer>>();
 
 		ArrayList<Integer> adjacencyBrick0 = new ArrayList<Integer>();
@@ -379,6 +386,9 @@ public class PhysicsTest extends GameManager {
 		TestTurret testTurret = new TestTurret(testShip1, systemBrick1, testShip1.getPosition(), testShip1.getOrientation(), 0.1, 0.01);
 		testShip1.addSubSystem(testTurret);
 		
+		TestEngine testEngine = new TestEngine(testShip1, systemBrick2, testShip1.getPosition(), testShip1.getOrientation(), 1);
+		testShip1.addSubSystem(testEngine);
+		
 		objectManager.addPhysicalObject(testShip1);
 		testShip1.addObserver(objectManager);
 
@@ -450,10 +460,6 @@ public class PhysicsTest extends GameManager {
 			// row9
 			bricks2.add(new ShipTriangleBrick(39, new Vector2D(40.0, 10.0), BrickOrientation.TWO, 10.0f, 1));
 			bricks2.add(new ShipTriangleBrick(40, new Vector2D(40.0, -10.0), BrickOrientation.THREE, 10.0f, 1));
-
-			// weapon brick : row10
-			SystemBrick systemBrick2 = new ShipSystemBrick(41, new Vector2D(40.0, 0.0), 10.0f, 1);
-			bricks2.add(systemBrick2);
 
 			ArrayList<ArrayList<Integer>> adjacencyList2 = new ArrayList<ArrayList<Integer>>();
 

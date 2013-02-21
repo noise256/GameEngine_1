@@ -14,6 +14,7 @@ import aiManager.AgentInputMove;
 import brickManager.Brick;
 import collisionManager.Collidable;
 import factionManager.Faction;
+import game.subsystem.SubSystem;
 
 public class TestShip extends Ship {
 	public TestShip(Hashtable<String, Double> values, ArrayList<Brick> bricks, ArrayList<ArrayList<Integer>> adjacencyList, Faction faction) {
@@ -41,6 +42,14 @@ public class TestShip extends Ship {
 
 		@Override
 		public void update(GL3bc gl) {
+			for (SubSystem subSystem : subSystems) {
+				subSystem.updateView();
+				
+				for (SceneNode systemView : subSystem.getView()) {
+					systemView.update(gl);
+				}
+			}
+			
 			gl.glPushMatrix();
 
 			// translate and rotate
@@ -74,7 +83,10 @@ public class TestShip extends Ship {
 					target = ((AgentInputAttack) currentOrder).getTarget().getPosition();
 				}
 
+				gl.glDisable(GL3bc.GL_LIGHTING);
 				gl.glEnable(GL3bc.GL_BLEND);
+				gl.glEnable(GL3bc.GL_LINE_SMOOTH);
+				gl.glHint(GL3bc.GL_LINE_SMOOTH_HINT, GL3bc.GL_NICEST);
 				gl.glLineWidth(1.0f);
 
 				gl.glPushMatrix();
@@ -85,6 +97,14 @@ public class TestShip extends Ship {
 				gl.glEnd();
 				gl.glPopMatrix();
 
+				gl.glDisable(GL3bc.GL_LINE_SMOOTH);
+				gl.glDisable(GL3bc.GL_BLEND);
+				
+				//TODO change this to a cross
+				gl.glEnable(GL3bc.GL_BLEND);
+				gl.glEnable(GL3bc.GL_POLYGON_SMOOTH);
+				gl.glHint(GL3bc.GL_POLYGON_SMOOTH_HINT, GL3bc.GL_NICEST);
+				
 				gl.glPushMatrix();
 				gl.glTranslated(target.getX(), target.getY(), 0.0d);
 				double r = 0;
@@ -97,10 +117,15 @@ public class TestShip extends Ship {
 				gl.glPopMatrix();
 
 				gl.glDisable(GL3bc.GL_BLEND);
+				gl.glDisable(GL3bc.GL_POLYGON_SMOOTH);
+				gl.glEnable(GL3bc.GL_LIGHTING);
 			}
 			
 			if (selected) {
+				gl.glDisable(GL3bc.GL_LIGHTING);
 				gl.glEnable(GL3bc.GL_BLEND);
+				gl.glEnable(GL3bc.GL_LINE_SMOOTH);
+				gl.glHint(GL3bc.GL_LINE_SMOOTH_HINT, GL3bc.GL_NICEST);
 				gl.glLineWidth(3f);
 				
 				gl.glPushMatrix();
@@ -118,7 +143,9 @@ public class TestShip extends Ship {
 				
 				gl.glPopMatrix();
 
+				gl.glDisable(GL3bc.GL_LINE_SMOOTH);
 				gl.glDisable(GL3bc.GL_BLEND);
+				gl.glEnable(GL3bc.GL_LIGHTING);
 			}
 		}
 	};
