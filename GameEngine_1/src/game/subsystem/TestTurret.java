@@ -13,8 +13,8 @@ public class TestTurret extends Weapon {
 	private double targetOrientation;
 	private PhysicalObject target;
 	
-	public TestTurret(GameObject source, SystemBrick systemBrick, Vector2D position, double orientation, double fireIncrement, double lifeDecrement) {
-		super(source, systemBrick, SubSystemType.TURRET, position, orientation, fireIncrement, lifeDecrement);
+	public TestTurret(GameObject source, SystemBrick systemBrick, Vector2D position, double orientation, double fireIncrement, double lifeDecrement, double firingArc) {
+		super(source, systemBrick, SubSystemType.TURRET, position, orientation, fireIncrement, lifeDecrement, firingArc);
 		
 		projectileValues.put("mass", 5.0);
 		projectileValues.put("maxVelocity", 5.0);

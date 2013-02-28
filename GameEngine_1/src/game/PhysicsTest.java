@@ -384,7 +384,7 @@ public class PhysicsTest extends GameManager {
 //		TestWeapon testWeapon = new TestWeapon(testShip1, systemBrick1, testShip1.getPosition(), testShip1.getOrientation(), 0.1, 0.01);
 //		testShip1.addSubSystem(testWeapon);
 		
-		TestTurret testTurret = new TestTurret(testShip1, systemBrick1, testShip1.getPosition(), testShip1.getOrientation(), 0.1, 0.01);
+		TestTurret testTurret = new TestTurret(testShip1, systemBrick1, testShip1.getPosition(), testShip1.getOrientation(), 0.1, 0.01, Math.PI*2);
 		testShip1.addSubSystem(testTurret);
 		
 		TestEngine testEngine = new TestEngine(testShip1, systemBrick2, testShip1.getPosition(), testShip1.getOrientation(), 1);
@@ -723,7 +723,7 @@ public class PhysicsTest extends GameManager {
 
 			TestShip testShip2 = new TestShip(values, bricks2, adjacencyList2, badGuys);
 			
-			TestWeapon testWeapon21 = new TestWeapon(testShip2, systemBrick3, testShip2.getPosition(), testShip2.getOrientation(), 0.05, 0.01);
+			TestWeapon testWeapon21 = new TestWeapon(testShip2, systemBrick3, testShip2.getPosition(), testShip2.getOrientation(), 0.05, 0.01, Math.PI/12);
 			testShip2.addSubSystem(testWeapon21);
 			
 			TestEngine testEngine21 = new TestEngine(testShip2, systemBrick4, testShip2.getPosition(), testShip2.getOrientation(), 1);

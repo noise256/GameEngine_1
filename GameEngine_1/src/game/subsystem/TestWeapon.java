@@ -9,8 +9,8 @@ import utilityManager.MathBox;
 import brickManager.SystemBrick;
 
 public class TestWeapon extends Weapon {
-	public TestWeapon(GameObject source, SystemBrick systemBrick, Vector2D position, double orientation, double fireIncrement, double lifeDecrement) {
-		super(source, systemBrick, SubSystemType.GUN, position, orientation, fireIncrement, lifeDecrement);
+	public TestWeapon(GameObject source, SystemBrick systemBrick, Vector2D position, double orientation, double fireIncrement, double lifeDecrement, double firingArc) {
+		super(source, systemBrick, SubSystemType.GUN, position, orientation, fireIncrement, lifeDecrement, firingArc);
 
 		projectileValues.put("mass", 5.0);
 		projectileValues.put("maxVelocity", 5.0);

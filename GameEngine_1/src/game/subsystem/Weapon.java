@@ -1,5 +1,6 @@
 package game.subsystem;
 
+import factionManager.Faction;
 import gameManager.GameManager;
 
 import java.util.ArrayList;
@@ -26,11 +27,12 @@ public abstract class Weapon extends SubSystem {
 	
 	private ArrayList<TestProjectile> projectiles = new ArrayList<TestProjectile>();
 	
-	public Weapon(GameObject source, SystemBrick systemBrick, SubSystemType subSystemType, Vector2D position, double orientation, double fireIncrement, double lifeDecrement) {
+	public Weapon(GameObject source, SystemBrick systemBrick, SubSystemType subSystemType, Vector2D position, double orientation, double fireIncrement, double lifeDecrement, double firingArc) {
 		super(source, systemBrick, subSystemType, position, orientation);
 		this.fireIncrement = fireIncrement;
 		this.lifeDecrement = lifeDecrement;
 		this.maxRange = 5 * (1 / lifeDecrement);
+		this.firingArc = firingArc;
 	}
 	
 	protected void fire() {
@@ -53,13 +55,14 @@ public abstract class Weapon extends SubSystem {
 	}
 	
 	private boolean isInRange(PhysicalObject target) {
-		return position.add(systemBrick.getPosition()).distance(target.getPosition()) > maxRange ? true : false;
+		return position.add(systemBrick.getPosition()).distance(target.getPosition()) > maxRange ? false : true;
 	}
 	
 	private boolean isInFiringArc(PhysicalObject target) {
 		double angleToTarget = MathBox.getAngleBetweenVectors(target.getPosition().subtract(position), MathBox.angleToVector(orientation));
 		
-		return angleToTarget <= firingArc ? true : false;
+		System.out.println(angleToTarget);
+		return Math.abs(angleToTarget) <= firingArc ? true : false;
 	}
 	
 	public ArrayList<TestProjectile> getProjectiles() {
