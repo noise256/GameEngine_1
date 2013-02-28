@@ -26,7 +26,14 @@ public class TestEngine extends Engine {
 
 	@Override
 	public void update(EntityHashMap entityHashMap) {
-		float[] rotatedBrickPosition = MathBox.rotatePoint(new float[] {(float) systemBrick.getPosition().getX(),  (float) systemBrick.getPosition().getY()}, (float) orientation);
+		float[] rotatedBrickPosition = MathBox.rotatePoint(
+			new float[] {
+				(float) systemBrick.getPosition().getX() - 5,  
+				(float) systemBrick.getPosition().getY()
+			}, 
+			(float) orientation
+		);
+		
 		positionBuffer.add(new Float[] {(float) position.getX() + rotatedBrickPosition[0], (float) position.getY() + rotatedBrickPosition[1]});
 	}
 	
@@ -48,19 +55,24 @@ public class TestEngine extends Engine {
 //			gl.glTranslatef(0, 0, 0);
 			
 			Object[] positionBufferAsArray = positionBuffer.toArray();
+			
+			gl.glBegin(GL3bc.GL_POINTS);
 			for (int i = 0; i < positionBufferAsArray.length; i++) {
+				float alpha = (1 - (float) (positionBufferAsArray.length - i) / (float) positionBufferAsArray.length) / 5;
+				
 				Float[] enginePosition = (Float[]) positionBufferAsArray[i];
-				float alpha = 1 - (float) (positionBufferAsArray.length - i) / (float) positionBufferAsArray.length;
 				
 				gl.glColor4f(1.0f, 1.0f, 1.0f, alpha);
+				gl.glVertex3f(enginePosition[0] + 2, enginePosition[1] + 2, 0);
 				
-				gl.glBegin(GL3bc.GL_QUADS);
-					gl.glVertex3f(enginePosition[0] + 2, enginePosition[1] + 2, 0);
-					gl.glVertex3f(enginePosition[0] + 2, enginePosition[1] - 2, 0);
-					gl.glVertex3f(enginePosition[0] - 2, enginePosition[1] - 2, 0);
-					gl.glVertex3f(enginePosition[0] - 2, enginePosition[1] + 2, 0);
-				gl.glEnd();
+//				gl.glBegin(GL3bc.GL_QUADS);
+//					gl.glVertex3f(enginePosition[0] + 2, enginePosition[1] + 2, 0);
+//					gl.glVertex3f(enginePosition[0] + 2, enginePosition[1] - 2, 0);
+//					gl.glVertex3f(enginePosition[0] - 2, enginePosition[1] - 2, 0);
+//					gl.glVertex3f(enginePosition[0] - 2, enginePosition[1] + 2, 0);
+//				gl.glEnd();
 			}
+			gl.glEnd();
 			
 
 			gl.glDisable(GL3bc.GL_BLEND);

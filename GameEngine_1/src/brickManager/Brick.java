@@ -9,6 +9,10 @@ import sceneManager.EntityView;
 import sceneManager.SceneNode;
 
 public abstract class Brick implements EntityView {
+	public enum BrickState {
+		OK, FIRE, DAMAGED, DESTROYED;
+	}
+	
 	public enum BrickType {
 		SQUARE, TRIANGLE, SYSTEM;
 	}

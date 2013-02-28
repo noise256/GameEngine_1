@@ -8,6 +8,10 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 public class MathBox {
 	private static Random rand = new Random();
 
+	public static Vector2D angleToVector(double angle) {
+		return new Vector2D(Math.cos(angle), Math.sin(angle));
+	}
+	
 	public static int nextSign() {
 		return (rand.nextBoolean() ? 1 : -1);
 	}

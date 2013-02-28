@@ -8,6 +8,7 @@ import game.brick.ShipTriangleBrick;
 import game.ship.TestShip;
 import game.subsystem.TestEngine;
 import game.subsystem.TestTurret;
+import game.subsystem.TestWeapon;
 import gameManager.GameManager;
 
 import java.nio.FloatBuffer;
@@ -428,7 +429,7 @@ public class PhysicsTest extends GameManager {
 			bricks2.add(new ShipSquareBrick(18, new Vector2D(-20.0, -30.0), 10.0f, 1));
 
 			// row4
-			bricks2.add(new ShipSquareBrick(19, new Vector2D(-30.0, 0.0), 10.0f, 1));
+//			bricks2.add(new ShipSquareBrick(19, new Vector2D(-30.0, 0.0), 10.0f, 1));
 			bricks2.add(new ShipSquareBrick(20, new Vector2D(-30.0, 10.0), 10.0f, 1));
 			bricks2.add(new ShipSquareBrick(21, new Vector2D(-30.0, -10.0), 10.0f, 1));
 			bricks2.add(new ShipTriangleBrick(22, new Vector2D(-30.0, 30.0), BrickOrientation.ONE, 10.0f, 1));
@@ -460,7 +461,15 @@ public class PhysicsTest extends GameManager {
 			// row9
 			bricks2.add(new ShipTriangleBrick(39, new Vector2D(40.0, 10.0), BrickOrientation.TWO, 10.0f, 1));
 			bricks2.add(new ShipTriangleBrick(40, new Vector2D(40.0, -10.0), BrickOrientation.THREE, 10.0f, 1));
+			
+			// weapon brick : row10
+			SystemBrick systemBrick3 = new ShipSystemBrick(41, new Vector2D(40.0, 0.0), 10.0f, 1);
+			bricks2.add(systemBrick3);
 
+			//engine brick
+			SystemBrick systemBrick4 = new ShipSystemBrick(19, new Vector2D(-30.0, 0.0), 10.0f, 1);
+			bricks2.add(systemBrick4);
+			
 			ArrayList<ArrayList<Integer>> adjacencyList2 = new ArrayList<ArrayList<Integer>>();
 
 			ArrayList<Integer> adjacency2Brick0 = new ArrayList<Integer>();
@@ -713,7 +722,13 @@ public class PhysicsTest extends GameManager {
 			values.put("orientation", 0.0);
 
 			TestShip testShip2 = new TestShip(values, bricks2, adjacencyList2, badGuys);
-//			testShip2.addSubSystem(new TestWeapon(testShip2, systemBrick2, testShip2.getPosition(), testShip2.getOrientation(), 0.05, 0.01));
+			
+			TestWeapon testWeapon21 = new TestWeapon(testShip2, systemBrick3, testShip2.getPosition(), testShip2.getOrientation(), 0.05, 0.01);
+			testShip2.addSubSystem(testWeapon21);
+			
+			TestEngine testEngine21 = new TestEngine(testShip2, systemBrick4, testShip2.getPosition(), testShip2.getOrientation(), 1);
+			testShip2.addSubSystem(testEngine21);
+			
 			testShip2.addInput(new AgentInputAttack(testShip1));
 
 			objectManager.addPhysicalObject(testShip2);
