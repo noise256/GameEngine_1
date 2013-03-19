@@ -12,7 +12,6 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 
-import modelManager.TextureLoader;
 import objectManager.ObjectEvent;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
@@ -21,6 +20,7 @@ import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.LUDecomposition;
 
 import sceneManager.SceneNode;
+import textureManager.TextureLoader;
 import utilityManager.MathBox;
 
 import com.jogamp.newt.event.KeyEvent;
@@ -94,7 +94,7 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 
 	private void drawSkybox(GL3bc gl) {
 		if (!TextureLoader.getCurrentTextureName().equals("SkyBox1")) {
-			TextureLoader.loadTexture(gl, "SkyBox1", "stars1.png");
+			TextureLoader.loadTexture("SkyBox1", "stars1.png");
 			TextureLoader.setCurrentTexture(gl, "SkyBox1");
 		}
 
@@ -315,6 +315,8 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 	public void init(GLAutoDrawable drawable) {
 		GL3bc gl = drawable.getGL().getGL3bc();
 
+		loadTextures();
+		
 		gl.glEnable(GL.GL_DEPTH_TEST);
 
 		gl.glEnable(GL3bc.GL_BLEND);
@@ -324,8 +326,8 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 		initLighting(gl);
 
 		gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-
-		camera = new Camera(new Vector3D(0, 0, 1000), new Vector3D(Constants.modelWidth / 2, Constants.modelHeight / 2, 0), 70);
+		
+		camera = new Camera(new Vector3D(0, 0, 500), new Vector3D(Constants.modelWidth / 2, Constants.modelHeight / 2, 0), 70);
 
 		cameraControlTable.put("left", false);
 		cameraControlTable.put("right", false);
@@ -532,5 +534,25 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 		else if (objectEvent.getEventType() == UpdateEventType.INTERFACE_DISPLAY) {
 			interfaceDisplayQueue.add(objectEvent);
 		}
+	}
+	
+	private void loadTextures() {
+		TextureLoader.loadTexture("front_hull_left", "front_hull_left.png");
+		TextureLoader.loadTexture("front_hull_right", "front_hull_right.png");
+		
+		TextureLoader.loadTexture("tail_hull_left", "tail_hull_left.png");
+		TextureLoader.loadTexture("tail_hull_right", "tail_hull_right.png");
+		
+		TextureLoader.loadTexture("front_armour_left", "front_armour_left.png");
+		TextureLoader.loadTexture("front_armour_right", "front_armour_right.png");
+		
+		TextureLoader.loadTexture("tail_armour_left", "tail_armour_left.png");
+		TextureLoader.loadTexture("tail_armour_right", "tail_armour_right.png");
+		
+		TextureLoader.loadTexture("tail_engine_left", "tail_engine_left.png");
+		TextureLoader.loadTexture("tail_engine_right", "tail_engine_right.png");
+		
+		TextureLoader.loadTexture("front_gun_left", "front_gun_left.png");
+		TextureLoader.loadTexture("front_gun_right", "front_gun_right.png");
 	}
 }

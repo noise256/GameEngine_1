@@ -52,8 +52,8 @@ public class Player extends GameObject {
 		radarLocations = new int[nearbyObjects.size()][3];
 		
 		for (int i = 0; i < nearbyObjects.size(); i++) {
-			radarLocations[i][0] = (int) nearbyObjects.get(i).getPosition().getX();
-			radarLocations[i][1] = (int) nearbyObjects.get(i).getPosition().getY();
+			radarLocations[i][0] = (int) nearbyObjects.get(i).getObjectPosition().getX();
+			radarLocations[i][1] = (int) nearbyObjects.get(i).getObjectPosition().getY();
 			
 			if (nearbyObjects.get(i).getFaction().equals(faction)) {
 				radarLocations[i][2] = 0;

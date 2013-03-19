@@ -4,13 +4,13 @@ import interfaceManager.InterfaceObject;
 
 import javax.media.opengl.GL3bc;
 
-import modelManager.TextureLoader;
 
 import objectManager.EntityHashMap;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import sceneManager.SceneNode;
+import textureManager.TextureLoader;
 
 public class InterfaceBox extends InterfaceObject {
 	
@@ -29,7 +29,7 @@ public class InterfaceBox extends InterfaceObject {
 					}
 					
 					if (!TextureLoader.getCurrentTextureName().equals("InterfaceBottomPanel1")) {
-						TextureLoader.loadTexture(gl, "InterfaceBottomPanel1", "InterfaceBottomPanel1.png");
+						TextureLoader.loadTexture("InterfaceBottomPanel1", "InterfaceBottomPanel1.png");
 						TextureLoader.setCurrentTexture(gl, "InterfaceBottomPanel1");
 					}
 					

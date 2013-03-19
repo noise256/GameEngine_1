@@ -13,8 +13,8 @@ import factionManager.Faction;
 public abstract class PhysicalObject extends GameObject implements Collidable {
 	protected Hashtable<String, Double> forces = new Hashtable<String, Double>();
 
-	protected Vector2D position;
-	protected Vector2D oldPosition;
+	protected Vector2D objectPosition;
+	protected Vector2D oldObjectPosition;
 
 	protected double orientation;
 
@@ -40,8 +40,8 @@ public abstract class PhysicalObject extends GameObject implements Collidable {
 	public PhysicalObject(ObjectType objectType, GameObject source, Hashtable<String, Double> values, Faction faction) {
 		super(objectType, source, faction);
 
-		position = new Vector2D(values.get("positionX"), values.get("positionY"));
-		oldPosition = new Vector2D(values.get("positionX"), values.get("positionY"));
+		objectPosition = new Vector2D(values.get("positionX"), values.get("positionY"));
+		oldObjectPosition = new Vector2D(values.get("positionX"), values.get("positionY"));
 
 		orientation = values.get("orientation");
 
@@ -91,21 +91,21 @@ public abstract class PhysicalObject extends GameObject implements Collidable {
 		forces.put(name, value);
 	}
 
-	public Vector2D getPosition() {
-		return position;
+	public Vector2D getObjectPosition() {
+		return objectPosition;
 	}
 
-	public void setPosition(Vector2D position) {
-		setOldPosition(this.position);
-		this.position = position;
+	public void setObjectPosition(Vector2D objectPosition) {
+		setOldObjectPosition(this.objectPosition);
+		this.objectPosition = objectPosition;
 	}
 
-	public Vector2D getOldPosition() {
-		return oldPosition;
+	public Vector2D getOldObjectPosition() {
+		return oldObjectPosition;
 	}
 
-	private void setOldPosition(Vector2D oldPosition) {
-		this.oldPosition = oldPosition;
+	private void setOldObjectPosition(Vector2D oldObjectPosition) {
+		this.oldObjectPosition = oldObjectPosition;
 	}
 
 	public Vector2D getVelocityVec() {
@@ -210,5 +210,10 @@ public abstract class PhysicalObject extends GameObject implements Collidable {
 
 	public void setMaxTurningForce(double maxTurningForce) {
 		this.maxTurningForce = maxTurningForce;
+	}
+	
+	@Override
+	public Vector2D getCollidablePosition() {
+		return objectPosition;
 	}
 }

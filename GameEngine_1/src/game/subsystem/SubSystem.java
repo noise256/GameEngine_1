@@ -1,11 +1,12 @@
 package game.subsystem;
 
-import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
-
-import brickManager.SystemBrick;
-
 import objectManager.GameObject;
 import objectManager.ObjectType;
+
+import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+
+import sectionManager.Section;
+import utilityManager.MathBox;
 
 public abstract class SubSystem extends GameObject {
 	public enum SubSystemType {
@@ -13,45 +14,52 @@ public abstract class SubSystem extends GameObject {
 	}
 
 	protected SubSystemType subSystemType;
-	protected SystemBrick systemBrick;
+	protected Section systemSection;
 
 	protected boolean activated;
 
-	protected Vector2D position;
-	protected double orientation;
+	protected Vector2D systemPosition;
+	protected double systemOrientation;
 
-	public SubSystem(GameObject source, SystemBrick systemBrick, SubSystemType subSystemType, Vector2D position, double orientation) {
+	public SubSystem(GameObject source, Section systemSection, SubSystemType subSystemType, Vector2D systemPosition, double systemOrientation) {
 		super(ObjectType.SUBSYSTEM, source, null);
-		this.systemBrick = systemBrick;
+		this.systemSection = systemSection;
 		this.subSystemType = subSystemType;
+		this.systemPosition = systemPosition;
+		this.systemOrientation = systemOrientation;
 	}
 
-	public SystemBrick getSystemBrick() {
-		return systemBrick;
+	public Vector2D getAbsolutePosition() {
+		Vector2D absolutePosition = MathBox.rotatePoint(systemPosition.add(systemSection.getSectionPosition()), systemSection.getParent().getOrientation()).add(systemSection.getParent().getObjectPosition());
+		return absolutePosition;
+	}
+	
+	public Section getSystemSection() {
+		return systemSection;
 	}
 
-	public void setSystemBrick(SystemBrick systemBrick) {
-		this.systemBrick = systemBrick;
+	public void setSystemSection(Section systemSection) {
+		this.systemSection = systemSection;
 	}
 
 	public SubSystemType getSubSystemType() {
 		return subSystemType;
 	}
 
-	public Vector2D getPosition() {
-		return position;
+	public Vector2D getSystemPosition() {
+		return systemPosition;
 	}
 
-	public void setPosition(Vector2D position) {
-		this.position = position;
+	public void setSystemPosition(Vector2D systemPosition) {
+		this.systemPosition = systemPosition;
 	}
 
-	public double getOrientation() {
-		return orientation;
+	public double getSystemOrientation() {
+		return systemOrientation;
 	}
 
-	public void setOrientation(double orientation) {
-		this.orientation = orientation;
+	public void setSystemOrientation(double systemOrientation) {
+		this.systemOrientation = systemOrientation;
 	}
 
 	public boolean isActivated() {

@@ -13,36 +13,32 @@ import org.apache.commons.math3.exception.MathArithmeticException;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import physicsManager.PhysicalObject;
+import sectionManager.Section;
+import sectionManager.SectionObject;
 
-import brickManager.Brick;
-import brickManager.BrickObject;
-
-public abstract class Agent extends BrickObject implements Selectable {
+public abstract class Agent extends SectionObject implements Selectable {
 	protected AgentInput currentOrder;
 
 	protected ArrayList<AgentInput> inputQueue = new ArrayList<AgentInput>();
 	protected boolean selected;
 
-	public Agent(ObjectType objectType, GameObject source, Hashtable<String, Double> values, ArrayList<Brick> bricks, ArrayList<ArrayList<Integer>> adjacencyList, Faction faction) {
-		super(objectType, source, values, bricks, adjacencyList, faction);
+	public Agent(ObjectType objectType, GameObject source, Hashtable<String, Double> values, ArrayList<Section> sections, ArrayList<ArrayList<Integer>> adjacencyList, Faction faction) {
+		super(objectType, source, values, sections, adjacencyList, faction);
 	}
 
-	protected void attack(PhysicalObject target) {
-		Vector2D dest = target.getPosition().subtract(position);
+	protected void attack(PhysicalObject objectTarget, Section sectionTarget, double weaponRange) {
+		Vector2D dest = objectTarget.getObjectPosition().add(sectionTarget.getSectionPosition()).subtract(objectPosition);
 
-		// attempt to stay at appropriate range
-		double weaponRange = 300.0; // TODO need to caculate this based on
-									// actual weapon characteristics
-
+		//attempt to stay at max range
 		if (dest.getNorm() < weaponRange) {
 			// attempt to 'lead' target
 			Vector2D targetTravelVector = null;
 			try {
-				double projectileVelocity = 2.5; // TODO need to calculate this
+				double projectileVelocity = 5; // TODO need to calculate this
 													// based on actual weapon
 													// characteristics
-				targetTravelVector = target.getVelocityVec().normalize()
-						.scalarMultiply(target.getVelocityVec().getNorm() * dest.getNorm() / projectileVelocity);
+				targetTravelVector = objectTarget.getVelocityVec().normalize()
+						.scalarMultiply(objectTarget.getVelocityVec().getNorm() * dest.getNorm() / projectileVelocity);
 			}
 			catch (MathArithmeticException e) {
 				targetTravelVector = new Vector2D(0.0, 0.0);
@@ -53,8 +49,15 @@ public abstract class Agent extends BrickObject implements Selectable {
 
 		// turn agent
 		turnTo(dest);
-
-		dest = dest.scalarMultiply(1 - weaponRange / dest.getNorm());
+		
+		if (dest.getNorm() > weaponRange) {
+			//if outside of range: move towards target
+			dest = dest.scalarMultiply(1 - weaponRange / dest.getNorm());
+		}
+		else {
+			//if inside of range: stay still
+			dest = new Vector2D(0.0, 0.0);
+		}
 
 		double posAcc = maxForce / mass;
 		double reqAcc = dest.getNorm() - velocityVec.getNorm() * mass;
@@ -69,14 +72,14 @@ public abstract class Agent extends BrickObject implements Selectable {
 	}
 
 	protected void follow(PhysicalObject object) {
-		moveTo(object.getPosition());
+		moveTo(object.getObjectPosition());
 	}
 
 	protected void moveTo(Vector2D destination) {
 		// curent relative destination vec
 		Vector2D dest = null;
 		try {
-			dest = getDestinationVec(destination).normalize();
+			dest = destination.subtract(objectPosition).normalize();
 		}
 		catch (MathArithmeticException e) {
 			dest = new Vector2D(0.0, 0.0);
@@ -95,7 +98,7 @@ public abstract class Agent extends BrickObject implements Selectable {
 		Vector2D move = dest.add(dest.subtract(vel));
 
 		// check to see if in range of destination
-		if (getDestinationVec(destination).getNorm() > 50.0) {
+		if (destination.subtract(objectPosition).getNorm() > 50.0) {
 			turnTo(move);
 			setForce(move);
 			setForceMagnitude(maxForce);
@@ -108,9 +111,9 @@ public abstract class Agent extends BrickObject implements Selectable {
 
 	}
 
-	private Vector2D getDestinationVec(Vector2D destination) {
-		return destination.subtract(position);
-	}
+//	private Vector2D getDestinationVec(Vector2D destination) {
+//		return destination.subtract(objectPosition);
+//	}
 
 	public void stop() {
 		Vector2D dest = new Vector2D(0.0, 0.0);

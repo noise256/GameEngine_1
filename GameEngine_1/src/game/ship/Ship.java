@@ -2,37 +2,36 @@ package game.ship;
 
 import factionManager.Faction;
 import game.subsystem.SubSystem;
+import game.subsystem.SubSystem.SubSystemType;
 import game.subsystem.TestTurret;
 import game.subsystem.TestWeapon;
-import game.subsystem.SubSystem.SubSystemType;
 import game.subsystem.Weapon;
 import gameManager.GameManager;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
 
-import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
-
 import objectManager.EntityHashMap;
 import objectManager.ObjectChangeEvent;
-import objectManager.ObjectType;
 import objectManager.ObjectChangeEvent.ObjectChangeType;
+import objectManager.ObjectType;
+
+import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+
 import physicsManager.PhysicalObject;
+import sectionManager.Section;
+import textureManager.TextureLoader;
 import utilityManager.MathBox;
-
-import brickManager.Brick;
-import brickManager.Brick.BrickType;
-
 import aiManager.Agent;
+import aiManager.AgentInput.AgentInputType;
 import aiManager.AgentInputAttack;
 import aiManager.AgentInputMove;
-import aiManager.AgentInput.AgentInputType;
 
 public abstract class Ship extends Agent {
 	protected ArrayList<SubSystem> subSystems = new ArrayList<SubSystem>();
 
-	public Ship(Hashtable<String, Double> values, ArrayList<Brick> bricks, ArrayList<ArrayList<Integer>> adjacencyList, Faction faction) {
-		super(ObjectType.AGENT, null, values, bricks, adjacencyList, faction);
+	public Ship(Hashtable<String, Double> values, ArrayList<Section> sections, ArrayList<ArrayList<Integer>> adjacencyList, Faction faction) {
+		super(ObjectType.AGENT, null, values, sections, adjacencyList, faction);
 	}
 
 	@Override
@@ -40,17 +39,18 @@ public abstract class Ship extends Agent {
 		ArrayList<PhysicalObject> newGameObjects = new ArrayList<PhysicalObject>();
 
 		// check alive state
-		if (getBrickFromIndex(0) == null) {
+		if (getSectionFromIndex(0) == null) {
 			setAlive(false);
 		}
 
-		// update brick states, remove dead bricks, generate fragments
-		updateBricks();
+		// update brick states, remove dead sections, generate fragments
+		updateSections();
 
 		// update behaviour
 		if (!inputQueue.isEmpty()) {
 			currentOrder = inputQueue.remove(0);
 		}
+		
 		if (currentOrder != null) {
 			if (currentOrder.getAgentInputType() == AgentInputType.MOVE) {
 				moveTo(((AgentInputMove) currentOrder).getDestination());
@@ -58,11 +58,12 @@ public abstract class Ship extends Agent {
 			else if (currentOrder.getAgentInputType() == AgentInputType.ATTACK) {
 				AgentInputAttack currentAttackOrder = (AgentInputAttack) currentOrder;
 
-				PhysicalObject target = currentAttackOrder.getTarget();
-
-				if (target != null) {
-					if (target.isAlive() && !target.getFaction().equals(faction)) {
-						attack(((AgentInputAttack) currentOrder).getTarget());
+				PhysicalObject objectTarget = currentAttackOrder.getObjectTarget();
+				Section sectionTarget = currentAttackOrder.getSectionTarget();
+				
+				if (objectTarget != null) {
+					if (objectTarget.isAlive() && !objectTarget.getFaction().equals(faction)) {
+						attack(((AgentInputAttack) currentOrder).getObjectTarget(), sectionTarget, 5000); //TODO get range from where?
 					}
 					else {
 						currentOrder = null;
@@ -78,17 +79,16 @@ public abstract class Ship extends Agent {
 		// update subsystem states
 		ArrayList<SubSystem> subSystemsToRemove = new ArrayList<SubSystem>();
 		for (SubSystem system : subSystems) {
-			if (!system.getSystemBrick().isAlive()) {
+			if (!system.getSystemSection().isAlive()) {
 				subSystemsToRemove.add(system);
 				continue;
 			}
 
-			system.setPosition(position);
-			system.setOrientation(orientation);
+			system.setSystemOrientation(orientation);
 
 			if (currentOrder != null) {
 				if (system.getSubSystemType() == SubSystemType.GUN) {
-					if (currentOrder.getAgentInputType() == AgentInputType.ATTACK && ((Weapon) system).isValidTarget(((AgentInputAttack) currentOrder).getTarget())) {
+					if (currentOrder.getAgentInputType() == AgentInputType.ATTACK && ((Weapon) system).isValidTarget(((AgentInputAttack) currentOrder).getObjectTarget())) {
 						system.setActivated(true);
 					}
 					else {
@@ -96,9 +96,10 @@ public abstract class Ship extends Agent {
 					}
 				}
 				else if (system.getSubSystemType() == SubSystemType.TURRET) {
-					if (currentOrder.getAgentInputType() == AgentInputType.ATTACK && ((Weapon) system).isValidTarget(((AgentInputAttack) currentOrder).getTarget())) {
+					if (currentOrder.getAgentInputType() == AgentInputType.ATTACK && ((Weapon) system).isValidTarget(((AgentInputAttack) currentOrder).getObjectTarget())) {
 						system.setActivated(true);
-						((TestTurret) system).setTarget(((AgentInputAttack) currentOrder).getTarget());
+						((TestTurret) system).setObjectTarget(((AgentInputAttack) currentOrder).getObjectTarget());
+						((TestTurret) system).setSectionTarget(((AgentInputAttack) currentOrder).getSectionTarget());
 					}
 					else {
 						system.setActivated(false);
@@ -147,57 +148,50 @@ public abstract class Ship extends Agent {
 
 	@Override
 	public double getRadius() {
-		if (bricks.isEmpty()) {
+		if (sections.isEmpty()) {
 			return 0.0;
 		}
 
-		Brick max = bricks.get(0);
-		for (Brick brick : bricks) {
-			if (!brick.isExploding() && brick.isAlive() && brick.getPosition().getNorm() > max.getPosition().getNorm()) {
-				max = brick;
+		Section max = sections.get(0);
+		for (Section section : sections) {
+			if (!section.isExploding() && section.isAlive() && section.getSectionPosition().getNorm() > max.getSectionPosition().getNorm()) {
+				max = section;
 			}
 		}
 
-		if (max.getBrickType() == BrickType.SQUARE) {
-			return max.getPosition().getNorm() + Math.sqrt(max.getEdgeLength() * 2 + max.getEdgeLength() * 2);
-		}
-		else if (max.getBrickType() == BrickType.TRIANGLE) {
-			return max.getPosition().getNorm();
-		}
-		else {
-			return -1;
-		}
+		return Math.max(Math.abs(max.getSectionPosition().getX()), Math.abs(max.getSectionPosition().getY())) + 
+			   Math.max(TextureLoader.getTexture(max.getTextureName()).getWidth(), TextureLoader.getTexture(max.getTextureName()).getHeight())/2;
 	}
 
 	@Override
-	protected PhysicalObject createFragment(ArrayList<Brick> fragmentBricks, ArrayList<ArrayList<Integer>> adjacencyList) {
-		// get average position of fragment bricks
+	protected PhysicalObject createFragment(ArrayList<Section> fragmentSections, ArrayList<ArrayList<Integer>> adjacencyList) {
+		// get average position of fragment sections
 		Vector2D averagePosition = new Vector2D(0.0, 0.0);
-		for (Brick brick : fragmentBricks) {
-			averagePosition = averagePosition.add(brick.getPosition());
+		for (Section section : fragmentSections) {
+			averagePosition = averagePosition.add(section.getSectionPosition());
 		}
-		averagePosition = averagePosition.scalarMultiply(1.0 / fragmentBricks.size());
+		averagePosition = averagePosition.scalarMultiply(1.0 / fragmentSections.size());
 
-		// adjust position of bricks to be relative to new average position
-		for (Brick brick : fragmentBricks) {
-			brick.setPosition(brick.getPosition().subtract(averagePosition));
+		// adjust position of sections to be relative to new average position
+		for (Section section : fragmentSections) {
+			section.setPosition(section.getSectionPosition().subtract(averagePosition));
 		}
 
 		// update brick indices
-		for (int i = 0; i < fragmentBricks.size(); i++) {
+		for (int i = 0; i < fragmentSections.size(); i++) {
 			// change adjacency list
 			for (int j = 0; j < adjacencyList.size(); j++) {
-				if (adjacencyList.get(j).contains(new Integer(fragmentBricks.get(i).getIndex()))) {
-					adjacencyList.get(j).remove(new Integer(fragmentBricks.get(i).getIndex()));
+				if (adjacencyList.get(j).contains(new Integer(fragmentSections.get(i).getIndex()))) {
+					adjacencyList.get(j).remove(new Integer(fragmentSections.get(i).getIndex()));
 					adjacencyList.get(j).add(new Integer(i));
 				}
 			}
 			// change brick index
-			fragmentBricks.get(i).setIndex(i);
+			fragmentSections.get(i).setIndex(i);
 		}
 
-		// set averagePosition of bricks to an absolute position
-		averagePosition = MathBox.rotatePoint(averagePosition, orientation).add(position);
+		// set averagePosition of sections to an absolute position
+		averagePosition = MathBox.rotatePoint(averagePosition, orientation).add(objectPosition);
 
 		// generate new values
 		Hashtable<String, Double> values = new Hashtable<String, Double>();
@@ -207,8 +201,8 @@ public abstract class Ship extends Agent {
 		values.put("orientation", orientation);
 		values.put("forceX", Math.random() * MathBox.nextSign());
 		values.put("forceY", Math.random() * MathBox.nextSign());
-		values.put("forceMagnitude", Math.random() * 100.0);
-		values.put("turningForce", Math.random() * 0.1 * MathBox.nextSign());
+		values.put("forceMagnitude", Math.random() * 20.0);
+		values.put("turningForce", Math.random() * 0.05 * MathBox.nextSign());
 		values.put("velocityX", 0.0);
 		values.put("velocityY", 0.0);
 		values.put("turningVelocity", 0.0);
@@ -217,7 +211,7 @@ public abstract class Ship extends Agent {
 		values.put("maxForce", 1.0);
 		values.put("maxTurningForce", 1.0);
 
-		TestShipFragment fragment = new TestShipFragment(this, values, fragmentBricks, adjacencyList, faction);
+		TestShipFragment fragment = new TestShipFragment(this, values, fragmentSections, adjacencyList, faction);
 		fragment.addObserver(GameManager.getObjectManager());
 		return fragment;
 	}

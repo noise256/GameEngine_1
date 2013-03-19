@@ -14,6 +14,7 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import physicsManager.PhysicalObject;
 import physicsManager.PhysicsEngine;
 import sceneManager.SceneNode;
+import sectionManager.SectionObject;
 import aiManager.Agent;
 import aiManager.AgentInput;
 import aiManager.AgentInputAttack;
@@ -99,7 +100,7 @@ public class ObjectManager implements Observable<ObjectEvent>, Observer<ObjectCh
 		 */
 		for (PhysicalObject physicalObject : objectsToAdd) {
 			physicalObjects.add(physicalObject);
-			entityHashMap.addEntity(physicalObject, physicalObject.getPosition().getX(), physicalObject.getPosition().getY());
+			entityHashMap.addEntity(physicalObject, physicalObject.getObjectPosition().getX(), physicalObject.getObjectPosition().getY());
 		}
 		objectsToAdd.clear();
 
@@ -118,7 +119,7 @@ public class ObjectManager implements Observable<ObjectEvent>, Observer<ObjectCh
 		for (PhysicalObject physicalObject : objectsToRemove) {
 			physicalObjects.remove(physicalObject);
 			try {
-				entityHashMap.removeEntity(physicalObject, physicalObject.getPosition().getX(), physicalObject.getPosition().getY());
+				entityHashMap.removeEntity(physicalObject, physicalObject.getObjectPosition().getX(), physicalObject.getObjectPosition().getY());
 			}
 			catch (EntityHashMapException e) {
 				e.printStackTrace();
@@ -227,10 +228,10 @@ public class ObjectManager implements Observable<ObjectEvent>, Observer<ObjectCh
 			}
 			else if (mouseEvent.getButton() == MouseEvent.BUTTON3) {
 				AgentInput agentInput = null;
-				PhysicalObject closest = getClosestPhysicalObject(mouseEvent.getPosition());
+				SectionObject closest = (SectionObject) getClosestPhysicalObject(mouseEvent.getPosition());
 
 				if (closest != null && !selectedAgents.contains(closest)) {
-					agentInput = new AgentInputAttack(closest);
+					agentInput = new AgentInputAttack(closest, closest.getClosestSection(mouseEvent.getPosition()));
 				}
 				else {
 					agentInput = new AgentInputMove(new Vector2D(mouseEvent.getPosition().getX(), mouseEvent.getPosition().getY()));

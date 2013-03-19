@@ -5,7 +5,7 @@ import objectManager.GameObject;
 import org.apache.commons.collections.buffer.CircularFifoBuffer;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
-import brickManager.SystemBrick;
+import sectionManager.Section;
 
 public abstract class Engine extends SubSystem {
 	private double maxForce;
@@ -13,8 +13,8 @@ public abstract class Engine extends SubSystem {
 	
 	protected CircularFifoBuffer positionBuffer = new CircularFifoBuffer(128);
 	
-	public Engine(GameObject source, SystemBrick systemBrick, Vector2D position, double orientation, double maxForce) {
-		super(source, systemBrick, SubSystemType.ENGINE, position, orientation);
+	public Engine(GameObject source, Section systemSection, Vector2D systemPosition, double orientation, double maxForce) {
+		super(source, systemSection, SubSystemType.ENGINE, systemPosition, orientation);
 		this.maxForce = maxForce;
 	}
 	

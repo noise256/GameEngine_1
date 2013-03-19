@@ -10,16 +10,16 @@ import physicsManager.PhysicalObject;
 
 public class CollisionManager {
 	public static void checkCollisions(PhysicalObject collidable, EntityHashMap entityHashMap) {
-		ArrayList<PhysicalObject> nearbyObjects = entityHashMap.getNearbyEntities(collidable.getPosition());
+		ArrayList<PhysicalObject> nearbyObjects = entityHashMap.getNearbyEntities(collidable.getCollidablePosition());
 
 		for (PhysicalObject object : nearbyObjects) {
 			if (object.canCollide() && collidable.canCollide()) {
 				if (!collidable.equals(object) && !isParent(collidable, object) && !isSameParent(collidable, object)) {
 					if (compareCircleBounds(collidable, object)) {
-						if (compareLineBounds(collidable, object)) {
+//						if (compareLineBounds(collidable, object)) {
 							collidable.collide(object);
 							object.collide(collidable);
-						}
+//						}
 					}
 				}
 			}
@@ -30,7 +30,7 @@ public class CollisionManager {
 		ArrayList<PhysicalObject> nearbyObjects = entityHashMap.getNearbyEntities(point);
 
 		for (PhysicalObject object : nearbyObjects) {
-			if (compareCircleBounds(1, object.getRadius(), point.distance(object.getPosition()))) {
+			if (compareCircleBounds(1, object.getRadius(), point.distance(object.getCollidablePosition()))) {
 				return object;
 			}
 		}
@@ -38,7 +38,7 @@ public class CollisionManager {
 	}
 
 	public static boolean compareCircleBounds(Collidable first, Collidable second) {
-		double dist = first.getPosition().distance(second.getPosition());
+		double dist = first.getCollidablePosition().distance(second.getCollidablePosition());
 		return compareCircleBounds(first.getRadius(), second.getRadius(), dist);
 	}
 

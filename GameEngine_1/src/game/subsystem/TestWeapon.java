@@ -5,12 +5,11 @@ import objectManager.GameObject;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
-import utilityManager.MathBox;
-import brickManager.SystemBrick;
+import sectionManager.Section;
 
 public class TestWeapon extends Weapon {
-	public TestWeapon(GameObject source, SystemBrick systemBrick, Vector2D position, double orientation, double fireIncrement, double lifeDecrement, double firingArc) {
-		super(source, systemBrick, SubSystemType.GUN, position, orientation, fireIncrement, lifeDecrement, firingArc);
+	public TestWeapon(GameObject source, Section systemSection, Vector2D systemPosition, double systemOrientation, double fireIncrement, double lifeDecrement, double firingArc) {
+		super(source, systemSection, SubSystemType.GUN, systemPosition, systemOrientation, fireIncrement, lifeDecrement, firingArc);
 
 		projectileValues.put("mass", 5.0);
 		projectileValues.put("maxVelocity", 5.0);
@@ -23,21 +22,23 @@ public class TestWeapon extends Weapon {
 		projectileValues.put("velocityY", 0.0);
 		projectileValues.put("turningVelocity", 0.0);
 		projectileValues.put("damage", 1.0);
-		projectileValues.put("orientation", orientation);
+		projectileValues.put("orientation", systemOrientation);
 	}
 
 	@Override
 	public void update(EntityHashMap entityHashMap) {
-		if (!systemBrick.isAlive()) {
+		if (!systemSection.isAlive()) {
 			alive = false;
 			return;
 		}
 
 		if (fireCount <= 0.0 && activated) {
-			projectileValues.put("forceX", Math.cos(orientation));
-			projectileValues.put("forceY", Math.sin(orientation));
-			projectileValues.put("positionX", position.getX() + MathBox.rotatePoint(systemBrick.getPosition(), orientation).getX());
-			projectileValues.put("positionY", position.getY() + MathBox.rotatePoint(systemBrick.getPosition(), orientation).getY());
+			Vector2D absolutePosition = getAbsolutePosition();
+			
+			projectileValues.put("forceX", Math.cos(systemOrientation));
+			projectileValues.put("forceY", Math.sin(systemOrientation));
+			projectileValues.put("positionX", absolutePosition.getX());
+			projectileValues.put("positionY", absolutePosition.getY());
 			
 			fire();
 			fireCount = 1.0;

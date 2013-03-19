@@ -8,13 +8,12 @@ import objectManager.GameObject;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import sceneManager.SceneNode;
-import utilityManager.MathBox;
-import brickManager.SystemBrick;
+import sectionManager.Section;
 
 public class TestEngine extends Engine {
 	
-	public TestEngine(GameObject source, SystemBrick systemBrick, Vector2D position, double orientation, double maxForce) {
-		super(source, systemBrick, position, orientation, maxForce);
+	public TestEngine(GameObject source, Section systemSection, Vector2D sectionPosition, double orientation, double maxForce) {
+		super(source, systemSection, sectionPosition, orientation, maxForce);
 	}
 
 	@Override
@@ -26,15 +25,18 @@ public class TestEngine extends Engine {
 
 	@Override
 	public void update(EntityHashMap entityHashMap) {
-		float[] rotatedBrickPosition = MathBox.rotatePoint(
-			new float[] {
-				(float) systemBrick.getPosition().getX() - 5,  
-				(float) systemBrick.getPosition().getY()
-			}, 
-			(float) orientation
-		);
+		//add new particle at absolute position of this engine
+		Vector2D absolutePosition = getAbsolutePosition();
 		
-		positionBuffer.add(new Float[] {(float) position.getX() + rotatedBrickPosition[0], (float) position.getY() + rotatedBrickPosition[1]});
+		positionBuffer.add(new Float[] {(float) absolutePosition.getX(), (float) absolutePosition.getY()});
+//		float[] rotatedSectionPosition = MathBox.rotatePoint(
+//			new float[] {
+//				(float) systemSection.getSectionPosition().getX() - 100,  
+//				(float) systemSection.getSectionPosition().getY()
+//			}, 
+//			(float) orientation
+//		);
+//		positionBuffer.add(new Float[] {(float) position.getX() + rotatedBrickPosition[0], (float) position.getY() + rotatedBrickPosition[1]});
 	}
 	
 	private class TestEngineSceneNode extends SceneNode {

@@ -44,13 +44,13 @@ public class EntityHashMap {
 
 	public void moveEntity(PhysicalObject physicalObject) {
 		try {
-			removeEntity(physicalObject, physicalObject.getOldPosition().getX(), physicalObject.getOldPosition().getY());
+			removeEntity(physicalObject, physicalObject.getOldObjectPosition().getX(), physicalObject.getOldObjectPosition().getY());
 		}
 		catch (EntityHashMapException e) {
 			e.printStackTrace();
 		}
 
-		addEntity(physicalObject, physicalObject.getPosition().getX(), physicalObject.getPosition().getY());
+		addEntity(physicalObject, physicalObject.getObjectPosition().getX(), physicalObject.getObjectPosition().getY());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -64,8 +64,8 @@ public class EntityHashMap {
 			for (int j = tC1[1]; j <= tC2[1]; j++) {
 				for (PhysicalObject match : objectMap.get(i).get(j)) {
 					if (match.getObjectType() == objectType &&
-						match.getPosition().getX() > minX && match.getPosition().getY() < maxX &&
-						match.getPosition().getY() > minY && match.getPosition().getY() < maxY) 
+						match.getObjectPosition().getX() > minX && match.getObjectPosition().getY() < maxX &&
+						match.getObjectPosition().getY() > minY && match.getObjectPosition().getY() < maxY) 
 					{
 						entities.add((T) match);
 					}

@@ -1,8 +1,5 @@
 package game.ship;
 
-import factionManager.Faction;
-import gameManager.GameManager;
-
 import java.util.ArrayList;
 import java.util.Hashtable;
 
@@ -16,47 +13,47 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import physicsManager.PhysicalObject;
 import sceneManager.SceneNode;
+import sectionManager.Section;
+import sectionManager.SectionObject;
+import textureManager.TextureLoader;
 import utilityManager.MathBox;
-import brickManager.Brick;
-import brickManager.Brick.BrickType;
-import brickManager.BrickObject;
 import collisionManager.Collidable;
+import factionManager.Faction;
+import gameManager.GameManager;
 
-public class TestShipFragment extends BrickObject {
+public class TestShipFragment extends SectionObject {
 
-	public TestShipFragment(GameObject source, Hashtable<String, Double> values, ArrayList<Brick> bricks, ArrayList<ArrayList<Integer>> adjacencyList, Faction faction) {
-		super(ObjectType.FRAGMENT, source, values, bricks, adjacencyList, faction);
+	public TestShipFragment(GameObject source, Hashtable<String, Double> values, ArrayList<Section> sections, ArrayList<ArrayList<Integer>> adjacencyList, Faction faction) {
+		super(ObjectType.FRAGMENT, source, values, sections, adjacencyList, faction);
 	}
 
 	@Override
 	public void collide(Collidable collider) {
-		Brick brick = getClosestBrick(collider.getPosition());
+		Section section = getClosestSection(collider.getCollidablePosition());
 
-		brick.setHealth(brick.getHealth() - 10);
+		try {
+			section.setHealth(section.getHealth() - 1);
+		}
+		catch (NullPointerException e) {
+			System.err.println("Attempted to collide collider: " + collider + " into " + this + " however the closest section to the collider position was null.");
+		}
 	}
 
 	@Override
 	public double getRadius() {
-		if (bricks.isEmpty()) {
+		if (sections.isEmpty()) {
 			return 0.0;
 		}
 
-		Brick max = bricks.get(0);
-		for (Brick brick : bricks) {
-			if (brick.getPosition().getNorm() > max.getPosition().getNorm()) {
-				max = brick;
+		Section max = sections.get(0);
+		for (Section section : sections) {
+			if (section.getSectionPosition().getNorm() > max.getSectionPosition().getNorm()) {
+				max = section;
 			}
 		}
 
-		if (max.getBrickType() == BrickType.SQUARE) {
-			return max.getPosition().getNorm() + Math.sqrt(max.getEdgeLength() * 2 + max.getEdgeLength() * 2);
-		}
-		else if (max.getBrickType() == BrickType.TRIANGLE) {
-			return max.getPosition().getNorm();
-		}
-		else {
-			return -1;
-		}
+		return Math.max(max.getSectionPosition().getX(), max.getSectionPosition().getY()) + 
+				   Math.max(TextureLoader.getTexture(max.getTextureName()).getWidth(), TextureLoader.getTexture(max.getTextureName()).getHeight())/2;
 	}
 
 	@Override
@@ -69,20 +66,15 @@ public class TestShipFragment extends BrickObject {
 					gl.glPushMatrix();
 
 					// translate and rotate
-					gl.glTranslatef((float) position.getX(), (float) position.getY(), 0);
+					gl.glTranslatef((float) objectPosition.getX(), (float) objectPosition.getY(), 0);
 					gl.glRotatef((float) (orientation * 180 / Math.PI), 0, 0, 1);
 
-					for (int i = 0; i < bricks.size(); i++) {
-						Brick brick = bricks.get(i);
-						brick.updateView();
+					for (int i = 0; i < sections.size(); i++) {
+						Section section = sections.get(i);
+						section.updateView();
 
-						for (SceneNode brickView : brick.getView()) {
-							gl.glPushMatrix();
-							if (brick.isExploding()) {
-								gl.glRotatef((float) -(orientation * 180 / Math.PI), 0, 0, 1);
-							}
+						for (SceneNode brickView : section.getView()) {
 							brickView.update(gl);
-							gl.glPopMatrix();
 						}
 					}
 
@@ -95,28 +87,28 @@ public class TestShipFragment extends BrickObject {
 
 	@Override
 	public void update(EntityHashMap entityHashMap) {
-		if (getBrickFromIndex(0) == null) {
+		if (getSectionFromIndex(0) == null) {
 			setAlive(false);
 		}
 
-		updateBricks();
+		updateSections();
 	}
 
 	@Override
-	protected PhysicalObject createFragment(ArrayList<Brick> fragmentBricks, ArrayList<ArrayList<Integer>> adjacencyList) {
-		// get average position of fragment bricks
+	protected PhysicalObject createFragment(ArrayList<Section> fragmentBricks, ArrayList<ArrayList<Integer>> adjacencyList) {
+		// get average position of fragment sections
 		Vector2D averagePosition = new Vector2D(0.0, 0.0);
-		for (Brick brick : fragmentBricks) {
-			averagePosition = averagePosition.add(brick.getPosition());
+		for (Section section : fragmentBricks) {
+			averagePosition = averagePosition.add(section.getSectionPosition());
 		}
 		averagePosition = averagePosition.scalarMultiply(1.0 / fragmentBricks.size());
 
-		// adjust position of bricks to be relative to new average position
-		for (Brick brick : fragmentBricks) {
-			brick.setPosition(brick.getPosition().subtract(averagePosition));
+		// adjust position of sections to be relative to new average position
+		for (Section section : fragmentBricks) {
+			section.setPosition(section.getSectionPosition().subtract(averagePosition));
 		}
 
-		// update brick indices
+		// update section indices
 		for (int i = 0; i < fragmentBricks.size(); i++) {
 			// change adjacency list
 			for (int j = 0; j < adjacencyList.size(); j++) {
@@ -125,12 +117,12 @@ public class TestShipFragment extends BrickObject {
 					adjacencyList.get(j).add(new Integer(i));
 				}
 			}
-			// change brick index
+			// change section index
 			fragmentBricks.get(i).setIndex(i);
 		}
 
-		// set averagePosition of bricks to an absolute position
-		averagePosition = MathBox.rotatePoint(averagePosition, orientation).add(position);
+		// set averagePosition of sections to an absolute position
+		averagePosition = MathBox.rotatePoint(averagePosition, orientation).add(objectPosition);
 
 		Hashtable<String, Double> values = new Hashtable<String, Double>();
 		values.put("mass", 5000.0);

@@ -5,15 +5,15 @@ import java.util.Hashtable;
 
 import javax.media.opengl.GL3bc;
 
-import modelManager.TextureLoader;
 import objectManager.EntityHashMap;
 import objectManager.GameObject;
 import objectManager.ObjectType;
 import physicsManager.PhysicalObject;
 import sceneManager.SceneNode;
+import sectionManager.Section;
+import textureManager.TextureLoader;
 import utilityManager.MathBox;
 import aiManager.Agent;
-import brickManager.Brick;
 import collisionManager.Collidable;
 
 public class TestProjectile extends Agent {
@@ -35,7 +35,7 @@ public class TestProjectile extends Agent {
 				@Override
 				public void update(GL3bc gl) {
 					if (!TextureLoader.getCurrentTextureName().equals("ProjectileTexture1")) {
-						TextureLoader.loadTexture(gl, "ProjectileTexture1", "ProjectileTexture1.png");
+						TextureLoader.loadTexture("ProjectileTexture1", "ProjectileTexture1.png");
 						TextureLoader.setCurrentTexture(gl, "ProjectileTexture1");
 					}
 
@@ -46,7 +46,7 @@ public class TestProjectile extends Agent {
 					gl.glPushMatrix();
 
 					// translate and rotate
-					gl.glTranslatef((float) position.getX(), (float) position.getY(), 0);
+					gl.glTranslatef((float) objectPosition.getX(), (float) objectPosition.getY(), 0);
 					gl.glRotatef((float) (orientation * 180 / Math.PI), 0, 0, 1);
 
 					gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
@@ -82,7 +82,7 @@ public class TestProjectile extends Agent {
 					@Override
 					public void update(GL3bc gl) {
 						if (!TextureLoader.getCurrentTextureName().equals("ProjectileTexture1")) {
-							TextureLoader.loadTexture(gl, "ProjectileTexture1", "ProjectileTexture1.png");
+							TextureLoader.loadTexture("ProjectileTexture1", "ProjectileTexture1.png");
 							TextureLoader.setCurrentTexture(gl, "ProjectileTexture1");
 						}
 
@@ -93,8 +93,8 @@ public class TestProjectile extends Agent {
 							for (int i = 0; i < numParticles; i++) {
 								// initial values
 								particles[i] = new float[] { 
-										(float) position.getX(), //x position
-										(float) position.getY(), //y position
+										(float) objectPosition.getX(), //x position
+										(float) objectPosition.getY(), //y position
 										MathBox.nextFloat() * 0.5f * MathBox.nextSign(), //x velocity
 										MathBox.nextFloat() * 0.5f * MathBox.nextSign(), //y velocity 
 										MathBox.nextFloat(), //alpha
@@ -187,7 +187,7 @@ public class TestProjectile extends Agent {
 	}
 
 	@Override
-	protected PhysicalObject createFragment(ArrayList<Brick> bricks, ArrayList<ArrayList<Integer>> adjacencyList) {
+	protected PhysicalObject createFragment(ArrayList<Section> sections, ArrayList<ArrayList<Integer>> adjacencyList) {
 		return null;
 	}
 
@@ -195,8 +195,8 @@ public class TestProjectile extends Agent {
 	public ArrayList<double[]> getLines() {
 		ArrayList<double[]> lines = new ArrayList<double[]>();
 
-		double x = position.getX();
-		double y = position.getY();
+		double x = objectPosition.getX();
+		double y = objectPosition.getY();
 
 		// top
 		double[] l1 = new double[] { x - 5, y + 5, x + 5, y + 5, };

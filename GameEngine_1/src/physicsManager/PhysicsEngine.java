@@ -63,6 +63,6 @@ public class PhysicsEngine {
 		}
 
 		// set new position using pi+1 = pi + v
-		object.setPosition(object.getPosition().add(object.getVelocityVec()));
+		object.setObjectPosition(object.getObjectPosition().add(object.getVelocityVec()));
 	}
 }

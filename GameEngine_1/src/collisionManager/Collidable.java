@@ -11,7 +11,7 @@ public interface Collidable {
 
 	public ArrayList<double[]> getLines();
 
-	public Vector2D getPosition();
+	public Vector2D getCollidablePosition();
 
 	public boolean canCollide();
 }

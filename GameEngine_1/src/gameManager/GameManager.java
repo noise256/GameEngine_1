@@ -1,5 +1,7 @@
 package gameManager;
 
+import javax.media.opengl.GL3bc;
+
 import graphicsManager.GWindow;
 import graphicsManager.SceneRenderer;
 import inputManager.InputManager;
@@ -17,11 +19,13 @@ public abstract class GameManager implements Runnable, Observer<InputUpdateEvent
 	protected static ObjectManager objectManager = new ObjectManager();
 	protected static InputManager inputManager = new InputManager();
 
+	protected static GL3bc gl;
+	
 	public GameManager() {
 		GWindow window = new GWindow();
 		glWindow = window.getWindow();
 		glWindow.addGLEventListener(renderer);
-
+		
 		// start game and add observers
 		objectManager.addObserver(renderer);
 
@@ -30,6 +34,8 @@ public abstract class GameManager implements Runnable, Observer<InputUpdateEvent
 		// start gwindow and renderer
 		glWindow.addKeyListener(renderer);
 		glWindow.addMouseListener(renderer);
+		
+		glWindow.display();
 	}
 
 	int fps;

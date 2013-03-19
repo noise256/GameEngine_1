@@ -1,6 +1,5 @@
 package game.subsystem;
 
-import factionManager.Faction;
 import gameManager.GameManager;
 
 import java.util.ArrayList;
@@ -11,8 +10,8 @@ import objectManager.GameObject;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import physicsManager.PhysicalObject;
+import sectionManager.Section;
 import utilityManager.MathBox;
-import brickManager.SystemBrick;
 
 public abstract class Weapon extends SubSystem {
 	protected double fireCount;
@@ -27,8 +26,8 @@ public abstract class Weapon extends SubSystem {
 	
 	private ArrayList<TestProjectile> projectiles = new ArrayList<TestProjectile>();
 	
-	public Weapon(GameObject source, SystemBrick systemBrick, SubSystemType subSystemType, Vector2D position, double orientation, double fireIncrement, double lifeDecrement, double firingArc) {
-		super(source, systemBrick, subSystemType, position, orientation);
+	public Weapon(GameObject source, Section systemSection, SubSystemType subSystemType, Vector2D systemPosition, double orientation, double fireIncrement, double lifeDecrement, double firingArc) {
+		super(source, systemSection, subSystemType, systemPosition, orientation);
 		this.fireIncrement = fireIncrement;
 		this.lifeDecrement = lifeDecrement;
 		this.maxRange = 5 * (1 / lifeDecrement);
@@ -55,13 +54,12 @@ public abstract class Weapon extends SubSystem {
 	}
 	
 	private boolean isInRange(PhysicalObject target) {
-		return position.add(systemBrick.getPosition()).distance(target.getPosition()) > maxRange ? false : true;
+		return getAbsolutePosition().distance(target.getObjectPosition()) > maxRange ? false : true;
 	}
 	
 	private boolean isInFiringArc(PhysicalObject target) {
-		double angleToTarget = MathBox.getAngleBetweenVectors(target.getPosition().subtract(position), MathBox.angleToVector(orientation));
-		
-		System.out.println(angleToTarget);
+		double angleToTarget = MathBox.getAngleBetweenVectors(target.getObjectPosition().subtract(getAbsolutePosition()), MathBox.angleToVector(systemOrientation));
+
 		return Math.abs(angleToTarget) <= firingArc ? true : false;
 	}
 	

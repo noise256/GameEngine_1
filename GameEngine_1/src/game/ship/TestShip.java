@@ -8,17 +8,17 @@ import javax.media.opengl.GL3bc;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import sceneManager.SceneNode;
+import sectionManager.Section;
 import aiManager.AgentInput.AgentInputType;
 import aiManager.AgentInputAttack;
 import aiManager.AgentInputMove;
-import brickManager.Brick;
 import collisionManager.Collidable;
 import factionManager.Faction;
 import game.subsystem.SubSystem;
 
 public class TestShip extends Ship {
-	public TestShip(Hashtable<String, Double> values, ArrayList<Brick> bricks, ArrayList<ArrayList<Integer>> adjacencyList, Faction faction) {
-		super(values, bricks, adjacencyList, faction);
+	public TestShip(Hashtable<String, Double> values, ArrayList<Section> sections, ArrayList<ArrayList<Integer>> adjacencyList, Faction faction) {
+		super(values, sections, adjacencyList, faction);
 	}
 
 	@Override
@@ -30,9 +30,21 @@ public class TestShip extends Ship {
 
 	@Override
 	public void collide(Collidable collider) {
-		Brick closest = getClosestBrick(collider.getPosition());
+		Section section = getClosestSection(collider.getCollidablePosition());
 
-		closest.setHealth(closest.getHealth() - 10);
+		try {
+			section.setHealth(section.getHealth() - 2);
+			
+			if (section.getHealth() <= 0) {
+				ArrayList<Section> adjacentSections = getAdjacentSections(section.getIndex());
+				for (Section adjacent : adjacentSections) {
+					adjacent.setHealth(-1);
+				}
+			}
+		}
+		catch (NullPointerException e) {
+			System.err.println("Attempted to collide collider: " + collider + " into " + this + " however the closest section to the collider position was null.");
+		}
 	}
 	
 	private class TestShipSceneNode extends SceneNode { 
@@ -53,23 +65,28 @@ public class TestShip extends Ship {
 			gl.glPushMatrix();
 
 			// translate and rotate
-			gl.glTranslatef((float) position.getX(), (float) position.getY(), 0);
+			gl.glTranslatef((float) objectPosition.getX(), (float) objectPosition.getY(), 0);
 			gl.glRotatef((float) (orientation * 180 / Math.PI), 0, 0, 1);
+			
+			for (int i = 0; i < sections.size(); i++) {
+				Section section = sections.get(i);
+				section.updateView();
 
-			for (int i = 0; i < bricks.size(); i++) {
-				Brick brick = bricks.get(i);
-				brick.updateView();
-
-				for (SceneNode brickView : brick.getView()) {
-					gl.glPushMatrix();
-					if (brick.isExploding()) {
-						gl.glRotatef((float) -(orientation * 180 / Math.PI), 0, 0, 1);
-					}
-					brickView.update(gl);
-					gl.glPopMatrix();
+				for (SceneNode sectionView : section.getView()) {
+					sectionView.update(gl);
 				}
 			}
 
+			
+			for (int i = 0; i < subSystems.size(); i++) {
+				SubSystem system = subSystems.get(i);
+				system.updateView();
+				
+				for (SceneNode systemView : system.getView()) {
+					systemView.update(gl);
+				}
+			}
+			
 			gl.glPopMatrix();
 
 			if (selected && currentOrder != null) {
@@ -80,7 +97,7 @@ public class TestShip extends Ship {
 				}
 				else if (currentOrder.getAgentInputType() == AgentInputType.ATTACK) {
 					gl.glColor4f(1.0f, 0.0f, 0.0f, 0.4f);
-					target = ((AgentInputAttack) currentOrder).getTarget().getPosition();
+					target = ((AgentInputAttack) currentOrder).getSectionTarget().getAbsolutePosition();
 				}
 
 				gl.glDisable(GL3bc.GL_LIGHTING);
@@ -92,7 +109,7 @@ public class TestShip extends Ship {
 				gl.glPushMatrix();
 				gl.glTranslatef(0.0f, 0.0f, 0.0f);
 				gl.glBegin(GL3bc.GL_LINES);
-				gl.glVertex3d(position.getX(), position.getY(), 0.0d);
+				gl.glVertex3d(objectPosition.getX(), objectPosition.getY(), 0.0d);
 				gl.glVertex3d(target.getX(), target.getY(), 0.0d);
 				gl.glEnd();
 				gl.glPopMatrix();
@@ -130,7 +147,7 @@ public class TestShip extends Ship {
 				
 				gl.glPushMatrix();
 				
-				gl.glTranslatef((float) position.getX(), (float) position.getY(), 0.0f);
+				gl.glTranslatef((float) objectPosition.getX(), (float) objectPosition.getY(), 0.0f);
 				gl.glColor4f(0.0f, 0.0f, 1.0f, 0.5f);
 				
 				double r = 0;
@@ -148,5 +165,5 @@ public class TestShip extends Ship {
 				gl.glEnable(GL3bc.GL_LIGHTING);
 			}
 		}
-	};
+	}
 }

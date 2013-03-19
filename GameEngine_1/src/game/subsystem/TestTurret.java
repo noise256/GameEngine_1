@@ -6,15 +6,16 @@ import objectManager.GameObject;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import physicsManager.PhysicalObject;
-import utilityManager.MathBox;
-import brickManager.SystemBrick;
+import sectionManager.Section;
 
 public class TestTurret extends Weapon {
 	private double targetOrientation;
-	private PhysicalObject target;
 	
-	public TestTurret(GameObject source, SystemBrick systemBrick, Vector2D position, double orientation, double fireIncrement, double lifeDecrement, double firingArc) {
-		super(source, systemBrick, SubSystemType.TURRET, position, orientation, fireIncrement, lifeDecrement, firingArc);
+	private PhysicalObject objectTarget;
+	private Section sectionTarget;
+	
+	public TestTurret(GameObject source, Section systemSection, Vector2D systemPosition, double orientation, double fireIncrement, double lifeDecrement, double firingArc) {
+		super(source, systemSection, SubSystemType.TURRET, systemPosition, orientation, fireIncrement, lifeDecrement, firingArc);
 		
 		projectileValues.put("mass", 5.0);
 		projectileValues.put("maxVelocity", 5.0);
@@ -36,16 +37,17 @@ public class TestTurret extends Weapon {
 
 	@Override
 	public void update(EntityHashMap entityHashMap) {
-		if (!systemBrick.isAlive()) {
+		if (!systemSection.isAlive()) {
 			setAlive(false);
 			return;
 		}
 		
-		if (target == null) {
+		if (objectTarget == null) {
 			return;
 		}
 		
-		Vector2D dir = target.getPosition().subtract(position);
+		Vector2D absolutePosition = getAbsolutePosition();
+		Vector2D dir = sectionTarget.getAbsolutePosition().subtract(absolutePosition);
 		Vector2D zeroVec = new Vector2D(1.0, 0.0);
 		
 		targetOrientation = Math.acos(dir.dotProduct(zeroVec) / dir.getNorm() * zeroVec.getNorm());; 
@@ -57,8 +59,8 @@ public class TestTurret extends Weapon {
 		if (fireCount <= 0.0 && activated) {
 			projectileValues.put("forceX", Math.cos(targetOrientation));
 			projectileValues.put("forceY", Math.sin(targetOrientation));
-			projectileValues.put("positionX", position.getX() + MathBox.rotatePoint(systemBrick.getPosition(), orientation).getX());
-			projectileValues.put("positionY", position.getY() + MathBox.rotatePoint(systemBrick.getPosition(), orientation).getY());
+			projectileValues.put("positionX", absolutePosition.getX());
+			projectileValues.put("positionY", absolutePosition.getY());
 			
 			fire();
 			fireCount = 1.0;
@@ -68,7 +70,11 @@ public class TestTurret extends Weapon {
 		}
 	}
 	
-	public void setTarget(PhysicalObject target) {
-		this.target = target;
+	public void setObjectTarget(PhysicalObject objectTarget) {
+		this.objectTarget = objectTarget;
+	}
+	
+	public void setSectionTarget(Section sectionTarget) {
+		this.sectionTarget = sectionTarget;
 	}
 }
