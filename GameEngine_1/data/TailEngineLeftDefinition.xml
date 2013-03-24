@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sd:section_definition xmlns:sd="sd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="sd SectionDefinition.xsd ">
+	<sd:health>100</sd:health>
+	<sd:section_name>tail_engine_left</sd:section_name>
+	<sd:texture_path>tail_engine_left.png</sd:texture_path>
+	<sd:section_position>
+		<sd:position>
+			<sd:x>-172.0</sd:x>
+			<sd:y>53.0</sd:y>
+		</sd:position>
+	</sd:section_position>
+	<sd:texture_dimensions>
+		<sd:dimension>
+			<sd:width>7</sd:width>
+			<sd:height>27</sd:height>
+		</sd:dimension>
+	</sd:texture_dimensions>
+	<sd:vertices>
+		<sd:vertex>
+			<sd:x>0.0</sd:x>
+			<sd:y>0.0</sd:y>
+		</sd:vertex>
+		<sd:vertex>
+			<sd:x>0.0</sd:x>
+			<sd:y>27.0</sd:y>
+		</sd:vertex>
+		<sd:vertex>
+			<sd:x>7.0</sd:x>
+			<sd:y>27.0</sd:y>
+		</sd:vertex>
+		<sd:vertex>
+			<sd:x>7.0</sd:x>
+			<sd:y>0.0</sd:y>
+		</sd:vertex>
+	</sd:vertices>
+</sd:section_definition>

@@ -70,7 +70,7 @@ public abstract class SectionObject extends PhysicalObject {
 		}
 
 		for (Section section : toRemove) {
-			// register change to sections for updating the view of this
+			// register change to sections for updating the view of this section object
 			sectionChange = true;
 
 			// get the indices of the sections connected to the section being removed
@@ -83,7 +83,12 @@ public abstract class SectionObject extends PhysicalObject {
 			adjacencyList.get(section.getIndex()).clear();
 
 			for (Integer indexToRemove : indicesToRemove) {
-				adjacencyList.get(indexToRemove).remove((Integer) section.getIndex());
+				try {
+					adjacencyList.get(indexToRemove).remove((Integer) section.getIndex());
+				}
+				catch (IndexOutOfBoundsException e) {
+					e.printStackTrace();
+				}
 			}
 
 			sections.remove(section);

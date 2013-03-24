@@ -14,8 +14,8 @@ import textureManager.TextureLoader;
 public class ShipSection extends Section {
 	public boolean takingDamage;
 	
-	public ShipSection(SectionObject parent, int index, Vector2D position, String textureName, String texturePath) {
-		super(parent, index, 100, position, textureName, texturePath);
+	public ShipSection(SectionObject parent, int index, int health, String sectionName, String texturePath, Vector2D sectionPosition, int textureWidth, int textureHeight, ArrayList<Float> textureVertices) {
+		super(parent, index, health, sectionName, texturePath, sectionPosition, textureWidth, textureHeight, textureVertices);
 	}
 
 	@Override
@@ -24,9 +24,9 @@ public class ShipSection extends Section {
 			SceneNode root = new SceneNode(null) {
 				@Override
 				public void update(GL3bc gl) {
-					if (!TextureLoader.getCurrentTextureName().equals(getTextureName())) {
-						TextureLoader.loadTexture(getTextureName(), getTexturePath());
-						TextureLoader.setCurrentTexture(gl, getTextureName());
+					if (!TextureLoader.getCurrentTextureName().equals(getTexturePath())) {
+						TextureLoader.loadTexture(getTexturePath(), getTexturePath());
+						TextureLoader.setCurrentTexture(gl, getTexturePath());
 					}
 					
 					gl.glPushMatrix();

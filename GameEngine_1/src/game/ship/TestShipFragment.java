@@ -52,8 +52,14 @@ public class TestShipFragment extends SectionObject {
 			}
 		}
 
-		return Math.max(max.getSectionPosition().getX(), max.getSectionPosition().getY()) + 
-				   Math.max(TextureLoader.getTexture(max.getTextureName()).getWidth(), TextureLoader.getTexture(max.getTextureName()).getHeight())/2;
+		try {
+			return Math.max(max.getSectionPosition().getX(), max.getSectionPosition().getY()) + 
+					   Math.max(TextureLoader.getTexture(max.getTexturePath()).getWidth(), TextureLoader.getTexture(max.getTexturePath()).getHeight())/2;
+		}
+		catch (NullPointerException e) {
+			e.printStackTrace();
+			return 0;
+		}
 	}
 
 	@Override
@@ -105,7 +111,7 @@ public class TestShipFragment extends SectionObject {
 
 		// adjust position of sections to be relative to new average position
 		for (Section section : fragmentBricks) {
-			section.setPosition(section.getSectionPosition().subtract(averagePosition));
+			section.setSectionPosition(section.getSectionPosition().subtract(averagePosition));
 		}
 
 		// update section indices

@@ -327,7 +327,7 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 
 		gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		
-		camera = new Camera(new Vector3D(0, 0, 500), new Vector3D(Constants.modelWidth / 2, Constants.modelHeight / 2, 0), 70);
+		camera = new Camera(new Vector3D(0, 0, 4000), new Vector3D(Constants.modelWidth / 2, Constants.modelHeight / 2, 0), 70);
 
 		cameraControlTable.put("left", false);
 		cameraControlTable.put("right", false);

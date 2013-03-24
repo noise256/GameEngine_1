@@ -17,6 +17,7 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import sectionManager.Section;
 import utilityManager.MathBox;
+import xml.SectionXMLParser;
 import aiManager.AgentInputAttack;
 
 public class PhysicsTest extends GameManager {
@@ -50,29 +51,29 @@ public class PhysicsTest extends GameManager {
 		ArrayList<Section> ship1Sections = new ArrayList<Section>();
 		
 		//front hull
-		ShipSection ship1Section0 = new ShipSection(null, 0, new Vector2D(194, 38.5), "front_hull_left", "front_hull_left.png");
-		ShipSection ship1Section1 = new ShipSection(null, 1, new Vector2D(194, -38.5), "front_hull_right", "front_hull_right.png");
+		ShipSection ship1Section0 = SectionXMLParser.parseShipSectionXML("FrontHullLeftDefinition.xml", 0);
+		ShipSection ship1Section1 = SectionXMLParser.parseShipSectionXML("FrontHullRightDefinition.xml", 1);
 		
 		//tail hull
-		ShipSection ship1Section2 = new ShipSection(null, 2, new Vector2D(-7.5, 37), "tail_hull_left", "tail_hull_left.png");
-		ShipSection ship1Section3 = new ShipSection(null, 3, new Vector2D(-7.5, -37), "tail_hull_right", "tail_hull_right.png");
-		
-		//front guns
-		ShipSection ship1Section10 = new ShipSection(null, 10, new Vector2D(173.5, 43.5), "front_gun_left", "front_gun_left.png");
-		ShipSection ship1Section11 = new ShipSection(null, 11, new Vector2D(173.5, -43.5), "front_gun_right", "front_gun_right.png");
+		ShipSection ship1Section2 = SectionXMLParser.parseShipSectionXML("TailHullLeftDefinition.xml", 2);
+		ShipSection ship1Section3 = SectionXMLParser.parseShipSectionXML("TailHullRightDefinition.xml", 3);
 		
 		//front armour
-		ShipSection ship1Section4 = new ShipSection(null, 4, new Vector2D(186.5, 62.5), "front_armour_left", "front_armour_left.png");
-		ShipSection ship1Section5 = new ShipSection(null, 5, new Vector2D(186.5, -62.5), "front_armour_right", "front_armour_right.png");
+		ShipSection ship1Section4 = SectionXMLParser.parseShipSectionXML("FrontArmourLeftDefinition.xml", 4);
+		ShipSection ship1Section5 = SectionXMLParser.parseShipSectionXML("FrontArmourRightDefinition.xml", 5);
 		
 		//tail armour
-		ShipSection ship1Section6 = new ShipSection(null, 6, new Vector2D(-93.5, 75), "tail_armour_left", "tail_armour_left.png");
-		ShipSection ship1Section7 = new ShipSection(null, 7, new Vector2D(-93.5, -75), "tail_armour_right", "tail_armour_right.png");
+		ShipSection ship1Section6 = SectionXMLParser.parseShipSectionXML("TailArmourLeftDefinition.xml", 6);
+		ShipSection ship1Section7 = SectionXMLParser.parseShipSectionXML("TailArmourRightDefinition.xml", 7);
 		
 		//tail engines
-		ShipSection ship1Section8 = new ShipSection(null, 8, new Vector2D(-172, 53), "tail_engine_left", "tail_engine_left.png");
-		ShipSection ship1Section9 = new ShipSection(null, 9, new Vector2D(-172, -53), "tail_engine_right", "tail_engine_right.png");
+		ShipSection ship1Section8 = SectionXMLParser.parseShipSectionXML("TailEngineLeftDefinition.xml", 8);
+		ShipSection ship1Section9 = SectionXMLParser.parseShipSectionXML("TailEngineRightDefinition.xml", 9);
 		
+		//front guns
+		ShipSection ship1Section10 = SectionXMLParser.parseShipSectionXML("FrontGunLeftDefinition.xml", 10);
+		ShipSection ship1Section11 = SectionXMLParser.parseShipSectionXML("FrontGunRightDefinition.xml", 11);
+				
 		ship1Sections.add(ship1Section0);
 		ship1Sections.add(ship1Section1);
 		
@@ -194,28 +195,28 @@ public class PhysicsTest extends GameManager {
 			ArrayList<Section> ship2Sections = new ArrayList<Section>();
 			
 			//front hull
-			ShipSection ship2Section0 = new ShipSection(null, 0, new Vector2D(194, 38.5), "front_hull_left", "front_hull_left.png");
-			ShipSection ship2Section1 = new ShipSection(null, 1, new Vector2D(194, -38.5), "front_hull_right", "front_hull_right.png");
+			ShipSection ship2Section0 = SectionXMLParser.parseShipSectionXML("FrontHullLeftDefinition.xml", 0);
+			ShipSection ship2Section1 = SectionXMLParser.parseShipSectionXML("FrontHullRightDefinition.xml", 1);
 			
 			//tail hull
-			ShipSection ship2Section2 = new ShipSection(null, 2, new Vector2D(-7.5, 37), "tail_hull_left", "tail_hull_left.png");
-			ShipSection ship2Section3 = new ShipSection(null, 3, new Vector2D(-7.5, -37), "tail_hull_right", "tail_hull_right.png");
-			
-			//front guns
-			ShipSection ship2Section10 = new ShipSection(null, 10, new Vector2D(173.5, 43.5), "front_gun_left", "front_gun_left.png");
-			ShipSection ship2Section11 = new ShipSection(null, 11, new Vector2D(173.5, -43.5), "front_gun_right", "front_gun_right.png");
+			ShipSection ship2Section2 = SectionXMLParser.parseShipSectionXML("TailHullLeftDefinition.xml", 2);
+			ShipSection ship2Section3 = SectionXMLParser.parseShipSectionXML("TailHullRightDefinition.xml", 3);
 			
 			//front armour
-			ShipSection ship2Section4 = new ShipSection(null, 4, new Vector2D(186.5, 62.5), "front_armour_left", "front_armour_left.png");
-			ShipSection ship2Section5 = new ShipSection(null, 5, new Vector2D(186.5, -62.5), "front_armour_right", "front_armour_right.png");
+			ShipSection ship2Section4 = SectionXMLParser.parseShipSectionXML("FrontArmourLeftDefinition.xml", 4);
+			ShipSection ship2Section5 = SectionXMLParser.parseShipSectionXML("FrontArmourRightDefinition.xml", 5);
 			
 			//tail armour
-			ShipSection ship2Section6 = new ShipSection(null, 6, new Vector2D(-93.5, 75), "tail_armour_left", "tail_armour_left.png");
-			ShipSection ship2Section7 = new ShipSection(null, 7, new Vector2D(-93.5, -75), "tail_armour_right", "tail_armour_right.png");
+			ShipSection ship2Section6 = SectionXMLParser.parseShipSectionXML("TailArmourLeftDefinition.xml", 6);
+			ShipSection ship2Section7 = SectionXMLParser.parseShipSectionXML("TailArmourRightDefinition.xml", 7);
 			
 			//tail engines
-			ShipSection ship2Section8 = new ShipSection(null, 8, new Vector2D(-172, 53), "tail_engine_left", "tail_engine_left.png");
-			ShipSection ship2Section9 = new ShipSection(null, 9, new Vector2D(-172, -53), "tail_engine_right", "tail_engine_right.png");
+			ShipSection ship2Section8 = SectionXMLParser.parseShipSectionXML("TailEngineLeftDefinition.xml", 8);
+			ShipSection ship2Section9 = SectionXMLParser.parseShipSectionXML("TailEngineRightDefinition.xml", 9);
+			
+			//front guns
+			ShipSection ship2Section10 = SectionXMLParser.parseShipSectionXML("FrontGunLeftDefinition.xml", 10);
+			ShipSection ship2Section11 = SectionXMLParser.parseShipSectionXML("FrontGunRightDefinition.xml", 11);
 			
 			ship2Sections.add(ship2Section0);
 			ship2Sections.add(ship2Section1);

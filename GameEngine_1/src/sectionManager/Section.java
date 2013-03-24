@@ -10,33 +10,36 @@ import sceneManager.SceneNode;
 import utilityManager.MathBox;
 
 public abstract class Section implements EntityView {
-	private String textureName;
-	private String texturePath;
-	
 	protected Hashtable<String, SceneNode> sceneNodes = new Hashtable<String, SceneNode>();
-
+	
 	protected SectionObject parent;
 	
 	protected int index;
 	protected int health;
 	
+	protected String sectionName;
+	protected String texturePath;
+	
 	protected Vector2D sectionPosition;
+	
+	protected int textureWidth;
+	protected int textureHeight;
+	protected ArrayList<Float> textureVertices;
 	
 	protected boolean alive = true;
 	protected boolean exploding = false;
 	protected int explosionTimer = 100;
 	
-	protected ArrayList<Float> vertices;
-	protected ArrayList<Float> normals;
-	protected ArrayList<Float> textureCoords;
-	
-	public Section(SectionObject parent, int index, int health, Vector2D sectionPosition, String textureName, String texturePath) {
+	public Section(SectionObject parent, int index, int health, String sectionName, String texturePath, Vector2D sectionPosition, int textureWidth, int textureHeight, ArrayList<Float> textureVertices) {
 		this.parent = parent;
 		this.index = index;
 		this.health = health;
-		this.sectionPosition = sectionPosition;
-		this.textureName = textureName;
+		this.sectionName = sectionName;
 		this.texturePath = texturePath;
+		this.sectionPosition = sectionPosition;
+		this.textureWidth = textureWidth;
+		this.textureHeight = textureHeight;
+		this.textureVertices = textureVertices;
 	}
 
 	@Override
@@ -56,21 +59,13 @@ public abstract class Section implements EntityView {
 	public abstract ArrayList<Float> getTextureCoords();
 
 	public abstract ArrayList<double[]> getLines();
-	
-	public int getHealth() {
-		return health;
+
+	public SectionObject getParent() {
+		return parent;
 	}
 
-	public void setHealth(int health) {
-		this.health = health;
-	}
-
-	public Vector2D getSectionPosition() {
-		return sectionPosition;
-	}
-
-	public void setPosition(Vector2D sectionPosition) {
-		this.sectionPosition = sectionPosition;
+	public void setParent(SectionObject parent) {
+		this.parent = parent;
 	}
 
 	public int getIndex() {
@@ -79,6 +74,62 @@ public abstract class Section implements EntityView {
 
 	public void setIndex(int index) {
 		this.index = index;
+	}
+
+	public int getHealth() {
+		return health;
+	}
+
+	public void setHealth(int health) {
+		this.health = health;
+	}
+
+	public String getSectionName() {
+		return sectionName;
+	}
+
+	public void setSectionName(String sectionName) {
+		this.sectionName = sectionName;
+	}
+
+	public String getTexturePath() {
+		return texturePath;
+	}
+
+	public void setTexturePath(String texturePath) {
+		this.texturePath = texturePath;
+	}
+
+	public Vector2D getSectionPosition() {
+		return sectionPosition;
+	}
+
+	public void setSectionPosition(Vector2D sectionPosition) {
+		this.sectionPosition = sectionPosition;
+	}
+
+	public int getTextureWidth() {
+		return textureWidth;
+	}
+
+	public void setTextureWidth(int textureWidth) {
+		this.textureWidth = textureWidth;
+	}
+
+	public int getTextureHeight() {
+		return textureHeight;
+	}
+
+	public void setTextureHeight(int textureHeight) {
+		this.textureHeight = textureHeight;
+	}
+
+	public ArrayList<Float> getTextureVertices() {
+		return textureVertices;
+	}
+
+	public void setTextureVertices(ArrayList<Float> textureVertices) {
+		this.textureVertices = textureVertices;
 	}
 
 	public boolean isAlive() {
@@ -103,21 +154,5 @@ public abstract class Section implements EntityView {
 
 	public void setExplosionTimer(int explosionTimer) {
 		this.explosionTimer = explosionTimer;
-	}
-	
-	public String getTextureName() {
-		return textureName;
-	}
-	
-	public String getTexturePath() {
-		return texturePath;
-	}
-	
-	public SectionObject getParent() {
-		return parent;
-	}
-
-	public void setParent(SectionObject parent) {
-		this.parent = parent;
 	}
 }

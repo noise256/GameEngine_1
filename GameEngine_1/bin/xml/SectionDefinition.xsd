@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="sd" xmlns:sd="sd" elementFormDefault="qualified">
+
+<xs:element name="section_definition" />
+
+<xs:element name="health" type="xs:integer" />
+
+<xs:element name="section_name" type="xs:string" />
+
+<xs:element name="texture_path" type="xs:string" />
+
+<xs:complexType name="position">
+	<xs:sequence>
+		<xs:element name="x" type="xs:decimal"/>
+		<xs:element name="y" type="xs:decimal"/>
+	</xs:sequence>
+</xs:complexType>
+
+<xs:element name="section_position">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element name="position" type="sd:position" />
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+<xs:complexType name="dimension">
+	<xs:sequence>
+		<xs:element name="width" type="xs:integer"/>
+		<xs:element name="height" type="xs:integer"/>
+	</xs:sequence>
+</xs:complexType>
+
+<xs:element name="texture_dimensions">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element name="dimension" type="sd:dimension" />
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+<xs:complexType name="texture_vertex">
+	<xs:sequence>
+		<xs:element name="x" type="xs:decimal"/>
+		<xs:element name="y" type="xs:decimal"/>
+	</xs:sequence>
+</xs:complexType>
+
+<xs:element name="texture_vertices">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element name="vertex" type="sd:texture_vertex" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+</xs:schema>

@@ -159,8 +159,14 @@ public abstract class Ship extends Agent {
 			}
 		}
 
-		return Math.max(Math.abs(max.getSectionPosition().getX()), Math.abs(max.getSectionPosition().getY())) + 
-			   Math.max(TextureLoader.getTexture(max.getTextureName()).getWidth(), TextureLoader.getTexture(max.getTextureName()).getHeight())/2;
+		try {
+			return Math.max(Math.abs(max.getSectionPosition().getX()), Math.abs(max.getSectionPosition().getY())) + 
+					   Math.max(TextureLoader.getTexture(max.getTexturePath()).getWidth(), TextureLoader.getTexture(max.getTexturePath()).getHeight())/2;
+		}
+		catch (NullPointerException e) {
+			e.printStackTrace();
+			return 0;
+		}
 	}
 
 	@Override
@@ -174,7 +180,7 @@ public abstract class Ship extends Agent {
 
 		// adjust position of sections to be relative to new average position
 		for (Section section : fragmentSections) {
-			section.setPosition(section.getSectionPosition().subtract(averagePosition));
+			section.setSectionPosition(section.getSectionPosition().subtract(averagePosition));
 		}
 
 		// update brick indices

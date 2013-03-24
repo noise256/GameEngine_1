@@ -1,5 +1,0 @@
-Battlestar_Main_Hull data/textures/battlestar_main_hull_texture.png
-Battlestar_Left_Link data/textures/battlestar_left_link.png
-Battlestar_Right_Link data/textures/battlestar_right_link.png
-Battlestar_Left_Wing data/textures/battlestar_left_wing.png
-Battlestar_Right_Wing data/textures/battlestar_right_wing.png
