@@ -79,18 +79,25 @@ public abstract class SectionObject extends PhysicalObject {
 				indicesToRemove.add(connected);
 			}
 
-			// clear edges of section being removed
-			adjacencyList.get(section.getIndex()).clear();
-
 			for (Integer indexToRemove : indicesToRemove) {
+				if (indexToRemove > adjacencyList.size()) {
+					@SuppressWarnings("unused")
+					boolean breakpoint = true;
+				}
 				try {
-					adjacencyList.get(indexToRemove).remove((Integer) section.getIndex());
+					ArrayList<Integer> adjacencyListRow = adjacencyList.get(indexToRemove);
+					adjacencyListRow.remove((Integer) section.getIndex());
+//					adjacencyList.get(indexToRemove).remove((Integer) section.getIndex());
 				}
 				catch (IndexOutOfBoundsException e) {
 					e.printStackTrace();
 				}
 			}
 
+
+			// clear edges of section being removed
+			adjacencyList.get(section.getIndex()).clear();
+			
 			sections.remove(section);
 
 			updateObservers(new ObjectChangeEvent(this, ObjectChangeType.CREATION, getFragments()));
@@ -193,37 +200,37 @@ public abstract class SectionObject extends PhysicalObject {
 
 		// position of corners of square section
 		for (Section section : sections) {
-			// get edges of current section, each edge is made up of 4 points
-			ArrayList<double[]> sectionLines = section.getLines();
-
+			//get vertices of each section
+			ArrayList<Vector2D> textureLines = section.getTextureLines();
+			ArrayList<double[]> rotatedLines = new ArrayList<double[]>();
+			
 			// rotate edges by object orientation
-			for (int i = 0; i < sectionLines.size(); i++) {
-				double[] line = new double[] { sectionLines.get(i)[0],// +
-																	// position.getX(),
-						sectionLines.get(i)[1],// + position.getY(),
-						sectionLines.get(i)[2],// + position.getX(),
-						sectionLines.get(i)[3],// + position.getY()
+			for (int i = 0; i < textureLines.size()/2; i+=2) {
+				double[] line = new double[] { 
+						textureLines.get(i).getX(), 
+						textureLines.get(i).getY(),
+						textureLines.get(i+1).getX(),
+						textureLines.get(i+1).getY(),
 				};
 
-				double[] p1 = MathBox.rotatePoint(new double[] { line[0], line[1] }, orientation);
-				double[] p2 = MathBox.rotatePoint(new double[] { line[2], line[3] }, orientation);
+				Vector2D sectionAbsolute = section.getAbsolutePosition();
+				
+				double[] p1 = MathBox.rotatePoint(new double[] {line[0] + sectionAbsolute.getX(), line[1] + sectionAbsolute.getY()}, new double[] {sectionAbsolute.getX(), sectionAbsolute.getY()}, orientation);
+				double[] p2 = MathBox.rotatePoint(new double[] {line[2] + sectionAbsolute.getX(), line[3] + sectionAbsolute.getY()}, new double[] {sectionAbsolute.getX(), sectionAbsolute.getY()}, orientation);
+				
+//				double[] p1 = MathBox.rotatePoint(new double[] { line[0], line[1] }, orientation);
+//				double[] p2 = MathBox.rotatePoint(new double[] { line[2], line[3] }, orientation);
 
-				p1[0] += objectPosition.getX();
-				p1[1] += objectPosition.getY();
-				p2[0] += objectPosition.getX();
-				p2[1] += objectPosition.getY();
+				line[0] = p1[0];// + section.getAbsolutePosition().getX();//objectPosition.getX();
+				line[1] = p1[1];// + section.getAbsolutePosition().getY();//objectPosition.getY();
+				line[2] = p2[0];// + section.getAbsolutePosition().getX();//objectPosition.getX();
+				line[3] = p2[1];// + section.getAbsolutePosition().getY();//objectPosition.getY();
 
-				// double[] p1 = MathBox.rotatePoint(new double[] {line[0],
-				// line[1]}, new double[] {position.getX(), position.getY()},
-				// orientation);
-				// double[] p2 = MathBox.rotatePoint(new double[] {line[2],
-				// line[3]}, new double[] {position.getX(), position.getY()},
-				// orientation);
-				sectionLines.set(i, new double[] { p1[0], p1[1], p2[0], p2[1] });
+				rotatedLines.add(new double[] { line[0], line[1], line[2], line[3] });
 			}
 
 			// add lines to line storage
-			lines.addAll(sectionLines);
+			lines.addAll(rotatedLines);
 		}
 
 		return lines;

@@ -14,7 +14,7 @@ import textureManager.TextureLoader;
 public class ShipSection extends Section {
 	public boolean takingDamage;
 	
-	public ShipSection(SectionObject parent, int index, int health, String sectionName, String texturePath, Vector2D sectionPosition, int textureWidth, int textureHeight, ArrayList<Float> textureVertices) {
+	public ShipSection(SectionObject parent, int index, int health, String sectionName, String texturePath, Vector2D sectionPosition, double textureWidth, double textureHeight, ArrayList<Double> textureVertices) {
 		super(parent, index, health, sectionName, texturePath, sectionPosition, textureWidth, textureHeight, textureVertices);
 	}
 
@@ -68,29 +68,5 @@ public class ShipSection extends Section {
 
 			sceneNodes.put("root", root);
 		}
-	}
-
-	@Override
-	public ArrayList<Float> getVertices() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ArrayList<Float> getNormals(float radius) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ArrayList<Float> getTextureCoords() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ArrayList<double[]> getLines() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

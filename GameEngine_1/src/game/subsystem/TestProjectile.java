@@ -195,20 +195,25 @@ public class TestProjectile extends Agent {
 	public ArrayList<double[]> getLines() {
 		ArrayList<double[]> lines = new ArrayList<double[]>();
 
-		double x = objectPosition.getX();
-		double y = objectPosition.getY();
+		double x1 = objectPosition.getX();
+		double y1 = objectPosition.getY();
 
+		double x2 = oldObjectPosition.getX();
+		double y2 = oldObjectPosition.getY();
+		
+		lines.add(new double[] {x1, y1, x2, y2});
+		
 		// top
-		double[] l1 = new double[] { x - 5, y + 5, x + 5, y + 5, };
+		double[] l1 = new double[] { x1 - 10, y1 + 10, x1 + 10, y1 + 10, };
 
 		// right
-		double[] l2 = new double[] { x + 5, y + 5, x + 5, y - 5 };
+		double[] l2 = new double[] { x1 + 10, y1 + 10, x1 + 10, y1 - 10 };
 
 		// bottom
-		double[] l3 = new double[] { x + 5, y - 5, x - 5, y - 5 };
+		double[] l3 = new double[] { x1 + 10, y1 - 10, x1 - 10, y1 - 10 };
 
 		// left
-		double[] l4 = new double[] { x - 5, y - 5, x - 5, y + 5 };
+		double[] l4 = new double[] { x1 - 10, y1 - 10, x1 - 10, y1 + 10 };
 
 		lines.add(l1);
 		lines.add(l2);

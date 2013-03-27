@@ -26,8 +26,8 @@
 
 <xs:complexType name="dimension">
 	<xs:sequence>
-		<xs:element name="width" type="xs:integer"/>
-		<xs:element name="height" type="xs:integer"/>
+		<xs:element name="width" type="xs:decimal"/>
+		<xs:element name="height" type="xs:decimal"/>
 	</xs:sequence>
 </xs:complexType>
 

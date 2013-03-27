@@ -16,10 +16,10 @@ public class CollisionManager {
 			if (object.canCollide() && collidable.canCollide()) {
 				if (!collidable.equals(object) && !isParent(collidable, object) && !isSameParent(collidable, object)) {
 					if (compareCircleBounds(collidable, object)) {
-//						if (compareLineBounds(collidable, object)) {
+						if (compareLineBounds(collidable, object)) {
 							collidable.collide(object);
 							object.collide(collidable);
-//						}
+						}
 					}
 				}
 			}
@@ -52,11 +52,13 @@ public class CollisionManager {
 	}
 
 	public static boolean compareLineBounds(Collidable first, Collidable second) {
-		for (int i = 0; i < first.getLines().size(); i++) {
-			double[] l1 = first.getLines().get(i);
-			for (int j = 0; j < second.getLines().size(); j++) {
-				double[] l2 = second.getLines().get(j);
-				if (lineIntersection(l1[0], l1[1], l1[2], l1[3], l2[0], l2[1], l2[2], l2[3]) != null) {
+		ArrayList<double[]> lines1 = first.getLines();
+		ArrayList<double[]> lines2 = second.getLines();
+		for (int i = 0; i < lines1.size(); i++) {
+			double[] l1 = lines1.get(i);
+			for (int j = 0; j < lines2.size(); j++) {
+				double[] l2 = lines2.get(j);
+				if (lineSegmentIntersection(l1[0], l1[1], l1[2], l1[3], l2[0], l2[1], l2[2], l2[3])) {
 					return true;
 				}
 			}
@@ -64,7 +66,7 @@ public class CollisionManager {
 		return false;
 	}
 
-	private static Vector2D lineIntersection(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
+	public static Vector2D lineIntersection(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
 		double d = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
 		if (d == 0) {
 			return null;
@@ -76,6 +78,38 @@ public class CollisionManager {
 		return new Vector2D(xi, yi);
 	}
 
+	public static boolean lineSegmentIntersection(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
+		Vector2D cmp = new Vector2D(x3 - x1, y3 - y1);
+		Vector2D r = new Vector2D(x2 - x1, y2 - y1);
+		Vector2D s = new Vector2D(x4 - x3, y4 - y3);
+		
+		double cmpxr = cmp.getX() * r.getY() - cmp.getY() * r.getX();
+		double cmpxs = cmp.getX() * s.getY() - cmp.getY() * s.getX();
+		double rxs = r.getX() * s.getY() - r.getY() * s.getX();
+		
+		if (Double.compare(cmpxr, 0.0) == 0) {
+			if ((x3 - x1 < 0.0) && (x3 - x2 < 0.0) && (x3 - x1 != x3 - x2)) {
+				return true;
+			}
+			if ((y3 - y1 < 0.0) && (y3 - y2 < 0.0) && (y3 - y1 != y3 - y2)) {
+				return true;
+			}
+		}
+		
+		if (Double.compare(rxs, 0.0) == 0.0) {
+			return false;
+		}
+		
+		double rxsr = 1.0 / rxs;
+		double t = cmpxs * rxsr;
+		double u = cmpxr * rxsr;
+		
+		if (t >= 0.0 && t <= 1.0 && u >= 0.0 && u <= 1.0) {
+			return true;
+		}
+		
+		return false;
+	}
 	private static boolean isParent(PhysicalObject first, PhysicalObject second) {
 		if (first.getSource() == null && second.getSource() == null) {
 			return false;

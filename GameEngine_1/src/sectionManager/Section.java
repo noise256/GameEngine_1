@@ -22,15 +22,17 @@ public abstract class Section implements EntityView {
 	
 	protected Vector2D sectionPosition;
 	
-	protected int textureWidth;
-	protected int textureHeight;
-	protected ArrayList<Float> textureVertices;
+	protected double textureWidth;
+	protected double textureHeight;
+	
+	protected ArrayList<Double> textureVertices;
+	protected ArrayList<Vector2D> textureLines;
 	
 	protected boolean alive = true;
 	protected boolean exploding = false;
 	protected int explosionTimer = 100;
 	
-	public Section(SectionObject parent, int index, int health, String sectionName, String texturePath, Vector2D sectionPosition, int textureWidth, int textureHeight, ArrayList<Float> textureVertices) {
+	public Section(SectionObject parent, int index, int health, String sectionName, String texturePath, Vector2D sectionPosition, double textureWidth, double textureHeight, ArrayList<Double> textureVertices) {
 		this.parent = parent;
 		this.index = index;
 		this.health = health;
@@ -40,6 +42,14 @@ public abstract class Section implements EntityView {
 		this.textureWidth = textureWidth;
 		this.textureHeight = textureHeight;
 		this.textureVertices = textureVertices;
+		
+		//Generate texture lines
+		textureLines = new ArrayList<Vector2D>();
+		int numVerts = textureVertices.size();
+		for (int i = 0; i < numVerts; i+=2) {
+			textureLines.add(new Vector2D(textureVertices.get(i % numVerts) - textureWidth/2, textureVertices.get((i+1) % numVerts) - textureHeight/2));
+			textureLines.add(new Vector2D(textureVertices.get((i+2) % numVerts) - textureWidth/2, textureVertices.get((i+3) % numVerts) - textureHeight/2));
+		}
 	}
 
 	@Override
@@ -52,14 +62,10 @@ public abstract class Section implements EntityView {
 		return MathBox.rotatePoint(sectionPosition, parent.getOrientation()).add(parent.getObjectPosition());
 	}
 	
-	public abstract ArrayList<Float> getVertices();
-
-	public abstract ArrayList<Float> getNormals(float radius);
-
-	public abstract ArrayList<Float> getTextureCoords();
-
-	public abstract ArrayList<double[]> getLines();
-
+	public ArrayList<Vector2D> getTextureLines() {
+		return textureLines;
+	}
+	
 	public SectionObject getParent() {
 		return parent;
 	}
@@ -108,28 +114,20 @@ public abstract class Section implements EntityView {
 		this.sectionPosition = sectionPosition;
 	}
 
-	public int getTextureWidth() {
+	public double getTextureWidth() {
 		return textureWidth;
 	}
 
-	public void setTextureWidth(int textureWidth) {
+	public void setTextureWidth(double textureWidth) {
 		this.textureWidth = textureWidth;
 	}
 
-	public int getTextureHeight() {
+	public double getTextureHeight() {
 		return textureHeight;
 	}
 
-	public void setTextureHeight(int textureHeight) {
+	public void setTextureHeight(double textureHeight) {
 		this.textureHeight = textureHeight;
-	}
-
-	public ArrayList<Float> getTextureVertices() {
-		return textureVertices;
-	}
-
-	public void setTextureVertices(ArrayList<Float> textureVertices) {
-		this.textureVertices = textureVertices;
 	}
 
 	public boolean isAlive() {

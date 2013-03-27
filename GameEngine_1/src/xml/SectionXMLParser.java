@@ -24,9 +24,9 @@ public class SectionXMLParser {
 		String sectionName = null;
 		String texturePath = null;
 		Vector2D sectionPosition;
-		int textureWidth = 0;
-		int textureHeight = 0;
-		ArrayList<Float> textureVertices = new ArrayList<Float>();
+		double textureWidth = 0;
+		double textureHeight = 0;
+		ArrayList<Double> textureVertices = new ArrayList<Double>();
 		
 		Document xmlDoc = getDocument(sectionPath);
 		
@@ -75,8 +75,8 @@ public class SectionXMLParser {
 		NodeList widthElementChildren = widthElement.getChildNodes();
 		NodeList heightElementChildren = heightElement.getChildNodes();
 		
-		textureWidth = Integer.parseInt(widthElementChildren.item(0).getNodeValue());
-		textureHeight = Integer.parseInt(heightElementChildren.item(0).getNodeValue());
+		textureWidth = Double.parseDouble(widthElementChildren.item(0).getNodeValue());
+		textureHeight = Double.parseDouble(heightElementChildren.item(0).getNodeValue());
 		
 		/**
 		 * sd:texture_dimensions
@@ -121,8 +121,8 @@ public class SectionXMLParser {
 			NodeList xElementChildren = xElement.getChildNodes();
 			NodeList yElementChildren = yElement.getChildNodes();
 			
-			textureVertices.add(new Float(Float.parseFloat(xElementChildren.item(0).getNodeValue())));
-			textureVertices.add(new Float(Float.parseFloat(yElementChildren.item(0).getNodeValue())));
+			textureVertices.add(new Double(Double.parseDouble(xElementChildren.item(0).getNodeValue())));
+			textureVertices.add(new Double(Double.parseDouble(yElementChildren.item(0).getNodeValue())));
 		}
 		
 		return new ShipSection(null, index, health, sectionName, texturePath, sectionPosition, textureWidth, textureHeight, textureVertices);

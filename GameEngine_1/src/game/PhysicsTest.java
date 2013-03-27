@@ -80,9 +80,6 @@ public class PhysicsTest extends GameManager {
 		ship1Sections.add(ship1Section2);
 		ship1Sections.add(ship1Section3);
 		
-		ship1Sections.add(ship1Section10);
-		ship1Sections.add(ship1Section11);
-		
 		ship1Sections.add(ship1Section4);
 		ship1Sections.add(ship1Section5);
 		
@@ -92,6 +89,8 @@ public class PhysicsTest extends GameManager {
 		ship1Sections.add(ship1Section8);
 		ship1Sections.add(ship1Section9);
 
+		ship1Sections.add(ship1Section10);
+		ship1Sections.add(ship1Section11);
 		
 		ArrayList<ArrayList<Integer>> ship1AdjacencyList = new ArrayList<ArrayList<Integer>>();
 
@@ -224,9 +223,6 @@ public class PhysicsTest extends GameManager {
 			ship2Sections.add(ship2Section2);
 			ship2Sections.add(ship2Section3);
 			
-			ship2Sections.add(ship2Section10);
-			ship2Sections.add(ship2Section11);
-			
 			ship2Sections.add(ship2Section4);
 			ship2Sections.add(ship2Section5);
 			
@@ -236,6 +232,8 @@ public class PhysicsTest extends GameManager {
 			ship2Sections.add(ship2Section8);
 			ship2Sections.add(ship2Section9);
 
+			ship2Sections.add(ship2Section10);
+			ship2Sections.add(ship2Section11);
 			
 			ArrayList<ArrayList<Integer>> ship2AdjacencyList = new ArrayList<ArrayList<Integer>>();
 

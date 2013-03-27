@@ -159,14 +159,8 @@ public abstract class Ship extends Agent {
 			}
 		}
 
-		try {
-			return Math.max(Math.abs(max.getSectionPosition().getX()), Math.abs(max.getSectionPosition().getY())) + 
-					   Math.max(TextureLoader.getTexture(max.getTexturePath()).getWidth(), TextureLoader.getTexture(max.getTexturePath()).getHeight())/2;
-		}
-		catch (NullPointerException e) {
-			e.printStackTrace();
-			return 0;
-		}
+		return Math.max(Math.abs(max.getSectionPosition().getX()), Math.abs(max.getSectionPosition().getY())) + 
+			   Math.max(TextureLoader.getTexture(max.getSectionName()).getWidth(), TextureLoader.getTexture(max.getSectionName()).getHeight())/2;
 	}
 
 	@Override
@@ -184,7 +178,7 @@ public abstract class Ship extends Agent {
 		}
 
 		// update brick indices
-		for (int i = 0; i < fragmentSections.size(); i++) {
+		for (int i = 0; i < fragmentSections.size(); i++) { //TODO BUG HERE!!!!!!!!!!!!!!!!!!!!!!
 			// change adjacency list
 			for (int j = 0; j < adjacencyList.size(); j++) {
 				if (adjacencyList.get(j).contains(new Integer(fragmentSections.get(i).getIndex()))) {

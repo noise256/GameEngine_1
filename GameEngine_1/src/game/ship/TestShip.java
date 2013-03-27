@@ -33,7 +33,7 @@ public class TestShip extends Ship {
 		Section section = getClosestSection(collider.getCollidablePosition());
 
 		try {
-			section.setHealth(section.getHealth() - 2);
+//			section.setHealth(section.getHealth() - 2);
 			
 			if (section.getHealth() <= 0) {
 				ArrayList<Section> adjacentSections = getAdjacentSections(section.getIndex());
