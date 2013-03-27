@@ -213,27 +213,12 @@ public abstract class SectionObject extends PhysicalObject {
 						textureLines.get(i+1).getY(),
 				};
 
-				
-				Vector2D sectionAbsolute = section.getAbsolutePosition();
 				Vector2D sectionPosition = section.getSectionPosition();
 				
 				double[] p1 = MathBox.rotatePoint(new double[] {line[0] + sectionPosition.getX() + objectPosition.getX(), line[1] + sectionPosition.getY() + objectPosition.getY()}, new double[] {objectPosition.getX(), objectPosition.getY()}, orientation);
 				double[] p2 = MathBox.rotatePoint(new double[] {line[2] + sectionPosition.getX() + objectPosition.getX(), line[3] + sectionPosition.getY() + objectPosition.getY()}, new double[] {objectPosition.getX(), objectPosition.getY()}, orientation);
 				
-//				double[] p1 = MathBox.rotatePoint(new double[] { line[0], line[1] }, orientation);
-//				double[] p2 = MathBox.rotatePoint(new double[] { line[2], line[3] }, orientation);
-
-//				line[0] += sectionAbsolute.getX();//objectPosition.getX();
-//				line[1] += sectionAbsolute.getY();//objectPosition.getY();
-//				line[2] += sectionAbsolute.getX();//objectPosition.getX();
-//				line[3] += sectionAbsolute.getY();//objectPosition.getY();
-				
-				line[0] = p1[0];// + section.getAbsolutePosition().getX();//objectPosition.getX();
-				line[1] = p1[1];// + section.getAbsolutePosition().getY();//objectPosition.getY();
-				line[2] = p2[0];// + section.getAbsolutePosition().getX();//objectPosition.getX();
-				line[3] = p2[1];// + section.getAbsolutePosition().getY();//objectPosition.getY();
-
-				rotatedLines.add(new double[] { line[0], line[1], line[2], line[3] });
+				rotatedLines.add(new double[] {p1[0], p1[1], p2[0], p2[1]});
 			}
 
 			// add lines to line storage

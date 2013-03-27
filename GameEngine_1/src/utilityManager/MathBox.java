@@ -268,10 +268,10 @@ public class MathBox {
 	}
 
 	public static double[] rotatePoint(double[] point, double[] pivot, double angle) {
-		double[] r = new double[] { point[0] - pivot[0], point[1] - pivot[1] };
+		double[] r = new double[2];
 
-		r[0] = r[0] * Math.cos(angle) - r[1] * Math.sin(angle);
-		r[1] = r[0] * Math.sin(angle) + r[1] * Math.cos(angle);
+		r[0] = (point[0] - pivot[0]) * Math.cos(angle) - (point[1] - pivot[1]) * Math.sin(angle);
+		r[1] = (point[0] - pivot[0]) * Math.sin(angle) + (point[1] - pivot[1]) * Math.cos(angle);
 
 		r[0] = r[0] + pivot[0];
 		r[1] = r[1] + pivot[1];

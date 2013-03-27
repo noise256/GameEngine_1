@@ -451,6 +451,9 @@ public class SceneRenderer implements GLEventListener, Observer<ObjectEvent>, Ob
 		if (e.getKeyCode() == KeyEvent.VK_N) {
 			Constants.displayNormals = Constants.displayNormals ? false : true;
 		}
+		if (e.getKeyCode() == KeyEvent.VK_M) {
+			Constants.displaySectionLines = Constants.displaySectionLines ? false : true;
+		}
 		if (e.getKeyCode() == KeyEvent.VK_O) {
 			if (!originShift) {
 				camera.translate(new Vector3D(1.0, 0.0, 0.0), -25000);

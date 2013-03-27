@@ -14,4 +14,5 @@ public class Constants {
 	public static int cameraY;
 
 	public static boolean displayNormals = false;
+	public static boolean displaySectionLines = false;
 }

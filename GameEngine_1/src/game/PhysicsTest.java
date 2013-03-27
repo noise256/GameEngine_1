@@ -161,17 +161,17 @@ public class PhysicsTest extends GameManager {
 		
 		TestShip testShip1 = new TestShip(values, ship1Sections, ship1AdjacencyList, goodGuys);
 		
-//		TestTurret ship1TestTurret1 = new TestTurret(testShip1, ship1Section10, new Vector2D(0.0, 0.0), testShip1.getOrientation(), 0.1, 0.005, Math.PI*2, 5, 5);
-//		testShip1.addSubSystem(ship1TestTurret1);
-//		
-//		TestTurret ship1TestTurret2 = new TestTurret(testShip1, ship1Section11, new Vector2D(0.0, 0.0), testShip1.getOrientation(), 0.1, 0.005, Math.PI*2, 5, 5);
-//		testShip1.addSubSystem(ship1TestTurret2);
-//		
-//		TestEngine ship1TestEngine0 = new TestEngine(testShip1, ship1Section8, new Vector2D(0.0, 0.0), testShip1.getOrientation(), 1);
-//		testShip1.addSubSystem(ship1TestEngine0);
-//		
-//		TestEngine ship1TestEngine1 = new TestEngine(testShip1, ship1Section9, new Vector2D(0.0, 0.0), testShip1.getOrientation(), 1);
-//		testShip1.addSubSystem(ship1TestEngine1);
+		TestTurret ship1TestTurret1 = new TestTurret(testShip1, ship1Section10, new Vector2D(0.0, 0.0), testShip1.getOrientation(), 0.1, 0.005, Math.PI*2, 5, 5);
+		testShip1.addSubSystem(ship1TestTurret1);
+		
+		TestTurret ship1TestTurret2 = new TestTurret(testShip1, ship1Section11, new Vector2D(0.0, 0.0), testShip1.getOrientation(), 0.1, 0.005, Math.PI*2, 5, 5);
+		testShip1.addSubSystem(ship1TestTurret2);
+		
+		TestEngine ship1TestEngine0 = new TestEngine(testShip1, ship1Section8, new Vector2D(0.0, 0.0), testShip1.getOrientation(), 1);
+		testShip1.addSubSystem(ship1TestEngine0);
+		
+		TestEngine ship1TestEngine1 = new TestEngine(testShip1, ship1Section9, new Vector2D(0.0, 0.0), testShip1.getOrientation(), 1);
+		testShip1.addSubSystem(ship1TestEngine1);
 		
 		for (Section section : testShip1.getSections()) {
 			section.setParent(testShip1);
