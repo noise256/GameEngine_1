@@ -47,8 +47,8 @@ public abstract class Section implements EntityView {
 		textureLines = new ArrayList<Vector2D>();
 		int numVerts = textureVertices.size();
 		for (int i = 0; i < numVerts; i+=2) {
-			textureLines.add(new Vector2D(textureVertices.get(i % numVerts) - textureWidth/2, textureVertices.get((i+1) % numVerts) - textureHeight/2));
-			textureLines.add(new Vector2D(textureVertices.get((i+2) % numVerts) - textureWidth/2, textureVertices.get((i+3) % numVerts) - textureHeight/2));
+			textureLines.add(new Vector2D(textureVertices.get(i % numVerts) - textureWidth/2, (textureHeight - textureVertices.get((i+1) % numVerts)) - textureHeight/2));
+			textureLines.add(new Vector2D(textureVertices.get((i+2) % numVerts) - textureWidth/2, (textureHeight - textureVertices.get((i+3) % numVerts)) - textureHeight/2));
 		}
 	}
 

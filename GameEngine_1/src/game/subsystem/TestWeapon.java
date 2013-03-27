@@ -8,8 +8,8 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import sectionManager.Section;
 
 public class TestWeapon extends Weapon {
-	public TestWeapon(GameObject source, Section systemSection, Vector2D systemPosition, double systemOrientation, double fireIncrement, double lifeDecrement, double firingArc) {
-		super(source, systemSection, SubSystemType.GUN, systemPosition, systemOrientation, fireIncrement, lifeDecrement, firingArc);
+	public TestWeapon(GameObject source, Section systemSection, Vector2D systemPosition, double systemOrientation, double fireIncrement, double lifeDecrement, double firingArc, float projectileWidth, float projectileHeight) {
+		super(source, systemSection, SubSystemType.GUN, systemPosition, systemOrientation, fireIncrement, lifeDecrement, firingArc, projectileWidth, projectileHeight);
 
 		projectileValues.put("mass", 5.0);
 		projectileValues.put("maxVelocity", 5.0);

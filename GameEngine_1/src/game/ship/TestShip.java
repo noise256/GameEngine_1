@@ -33,7 +33,7 @@ public class TestShip extends Ship {
 		Section section = getClosestSection(collider.getCollidablePosition());
 
 		try {
-//			section.setHealth(section.getHealth() - 2);
+			section.setHealth(section.getHealth() - 2);
 			
 			if (section.getHealth() <= 0) {
 				ArrayList<Section> adjacentSections = getAdjacentSections(section.getIndex());
@@ -88,6 +88,30 @@ public class TestShip extends Ship {
 			}
 			
 			gl.glPopMatrix();
+			
+			/**
+			 * Draw section lines.
+			 */
+			gl.glDisable(GL3bc.GL_LIGHTING);
+			gl.glDisable(GL3bc.GL_BLEND);
+			gl.glEnable(GL3bc.GL_LINE_SMOOTH);
+			gl.glHint(GL3bc.GL_LINE_SMOOTH_HINT, GL3bc.GL_NICEST);
+			gl.glLineWidth(1.0f);
+			
+			gl.glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
+			ArrayList<double[]> sectionLines = getLines();
+			for (int i = 0; i < sectionLines.size(); i++) {
+				gl.glBegin(GL3bc.GL_LINES);
+				gl.glVertex3d(sectionLines.get(i)[0], sectionLines.get(i)[1], 0.0d);
+				gl.glVertex3d(sectionLines.get(i)[2], sectionLines.get(i)[3], 0.0d);
+				gl.glEnd();
+			}
+			
+			gl.glEnable(GL3bc.GL_LIGHTING);
+			gl.glEnable(GL3bc.GL_BLEND);
+			gl.glDisable(GL3bc.GL_LINE_SMOOTH);
+			
+
 
 			if (selected && currentOrder != null) {
 				Vector2D target = null;

@@ -23,9 +23,14 @@ public class TestProjectile extends Agent {
 	private boolean exploding = false;
 	private int explosionTimer = 100;
 
-	public TestProjectile(GameObject source, Hashtable<String, Double> values, double lifeDecrement) {
+	private float projectileWidth;
+	private float projectileHeight;
+	
+	public TestProjectile(GameObject source, Hashtable<String, Double> values, double lifeDecrement, float projectileWidth, float projectileHeight) {
 		super(ObjectType.PROJECTILE, source, values, null, null, null);
 		this.lifeDecrement = lifeDecrement;
+		this.projectileWidth = projectileWidth;
+		this.projectileHeight = projectileHeight;
 	}
 
 	@Override
@@ -52,16 +57,16 @@ public class TestProjectile extends Agent {
 					gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 					gl.glBegin(GL3bc.GL_QUADS);
 					gl.glTexCoord3f(1.0f, 1.0f, 0.0f);
-					gl.glVertex3f(10.0f, 10.0f, 0.0f);
+					gl.glVertex3f(projectileWidth, projectileHeight, 0.0f);
 
 					gl.glTexCoord3f(1.0f, 0.0f, 0.0f);
-					gl.glVertex3f(10.0f, -10.0f, 0.0f);
+					gl.glVertex3f(projectileWidth, -projectileHeight, 0.0f);
 
 					gl.glTexCoord3f(0.0f, 0.0f, 0.0f);
-					gl.glVertex3f(-10.0f, -10.0f, 0.0f);
+					gl.glVertex3f(-projectileWidth, -projectileHeight, 0.0f);
 
 					gl.glTexCoord3f(0.0f, 1.0f, 0.0f);
-					gl.glVertex3f(-10.0f, 10.0f, 0.0f);
+					gl.glVertex3f(-projectileWidth, projectileHeight, 0.0f);
 					gl.glEnd();
 
 					gl.glPopMatrix();
@@ -198,22 +203,22 @@ public class TestProjectile extends Agent {
 		double x1 = objectPosition.getX();
 		double y1 = objectPosition.getY();
 
-		double x2 = oldObjectPosition.getX();
-		double y2 = oldObjectPosition.getY();
+//		double x2 = oldObjectPosition.getX();
+//		double y2 = oldObjectPosition.getY();
 		
-		lines.add(new double[] {x1, y1, x2, y2});
+//		lines.add(new double[] {x1, y1, x2, y2});
 		
 		// top
-		double[] l1 = new double[] { x1 - 10, y1 + 10, x1 + 10, y1 + 10, };
+		double[] l1 = new double[] { x1 - projectileWidth, y1 + projectileHeight, x1 + projectileWidth, y1 + projectileHeight, };
 
 		// right
-		double[] l2 = new double[] { x1 + 10, y1 + 10, x1 + 10, y1 - 10 };
+		double[] l2 = new double[] { x1 + projectileWidth, y1 + projectileHeight, x1 + projectileWidth, y1 - projectileHeight };
 
 		// bottom
-		double[] l3 = new double[] { x1 + 10, y1 - 10, x1 - 10, y1 - 10 };
+		double[] l3 = new double[] { x1 + projectileWidth, y1 - projectileHeight, x1 - projectileWidth, y1 - projectileHeight };
 
 		// left
-		double[] l4 = new double[] { x1 - 10, y1 - 10, x1 - 10, y1 + 10 };
+		double[] l4 = new double[] { x1 - projectileWidth, y1 - projectileHeight, x1 - projectileWidth, y1 + projectileHeight };
 
 		lines.add(l1);
 		lines.add(l2);

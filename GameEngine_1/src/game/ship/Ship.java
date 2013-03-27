@@ -63,7 +63,7 @@ public abstract class Ship extends Agent {
 				
 				if (objectTarget != null) {
 					if (objectTarget.isAlive() && !objectTarget.getFaction().equals(faction)) {
-						attack(((AgentInputAttack) currentOrder).getObjectTarget(), sectionTarget, 5000); //TODO get range from where?
+						attack(((AgentInputAttack) currentOrder).getObjectTarget(), sectionTarget, 1 / 0.005 * 5); //TODO get range from where?
 					}
 					else {
 						currentOrder = null;

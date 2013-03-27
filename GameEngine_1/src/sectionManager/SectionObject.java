@@ -205,7 +205,7 @@ public abstract class SectionObject extends PhysicalObject {
 			ArrayList<double[]> rotatedLines = new ArrayList<double[]>();
 			
 			// rotate edges by object orientation
-			for (int i = 0; i < textureLines.size()/2; i+=2) {
+			for (int i = 0; i < textureLines.size(); i+=2) {
 				double[] line = new double[] { 
 						textureLines.get(i).getX(), 
 						textureLines.get(i).getY(),
@@ -213,14 +213,21 @@ public abstract class SectionObject extends PhysicalObject {
 						textureLines.get(i+1).getY(),
 				};
 
-				Vector2D sectionAbsolute = section.getAbsolutePosition();
 				
-				double[] p1 = MathBox.rotatePoint(new double[] {line[0] + sectionAbsolute.getX(), line[1] + sectionAbsolute.getY()}, new double[] {sectionAbsolute.getX(), sectionAbsolute.getY()}, orientation);
-				double[] p2 = MathBox.rotatePoint(new double[] {line[2] + sectionAbsolute.getX(), line[3] + sectionAbsolute.getY()}, new double[] {sectionAbsolute.getX(), sectionAbsolute.getY()}, orientation);
+				Vector2D sectionAbsolute = section.getAbsolutePosition();
+				Vector2D sectionPosition = section.getSectionPosition();
+				
+				double[] p1 = MathBox.rotatePoint(new double[] {line[0] + sectionPosition.getX() + objectPosition.getX(), line[1] + sectionPosition.getY() + objectPosition.getY()}, new double[] {objectPosition.getX(), objectPosition.getY()}, orientation);
+				double[] p2 = MathBox.rotatePoint(new double[] {line[2] + sectionPosition.getX() + objectPosition.getX(), line[3] + sectionPosition.getY() + objectPosition.getY()}, new double[] {objectPosition.getX(), objectPosition.getY()}, orientation);
 				
 //				double[] p1 = MathBox.rotatePoint(new double[] { line[0], line[1] }, orientation);
 //				double[] p2 = MathBox.rotatePoint(new double[] { line[2], line[3] }, orientation);
 
+//				line[0] += sectionAbsolute.getX();//objectPosition.getX();
+//				line[1] += sectionAbsolute.getY();//objectPosition.getY();
+//				line[2] += sectionAbsolute.getX();//objectPosition.getX();
+//				line[3] += sectionAbsolute.getY();//objectPosition.getY();
+				
 				line[0] = p1[0];// + section.getAbsolutePosition().getX();//objectPosition.getX();
 				line[1] = p1[1];// + section.getAbsolutePosition().getY();//objectPosition.getY();
 				line[2] = p2[0];// + section.getAbsolutePosition().getX();//objectPosition.getX();

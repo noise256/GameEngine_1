@@ -14,8 +14,8 @@ public class TestTurret extends Weapon {
 	private PhysicalObject objectTarget;
 	private Section sectionTarget;
 	
-	public TestTurret(GameObject source, Section systemSection, Vector2D systemPosition, double orientation, double fireIncrement, double lifeDecrement, double firingArc) {
-		super(source, systemSection, SubSystemType.TURRET, systemPosition, orientation, fireIncrement, lifeDecrement, firingArc);
+	public TestTurret(GameObject source, Section systemSection, Vector2D systemPosition, double orientation, double fireIncrement, double lifeDecrement, double firingArc, float projectileWidth, float projectileHeight) {
+		super(source, systemSection, SubSystemType.TURRET, systemPosition, orientation, fireIncrement, lifeDecrement, firingArc, projectileWidth, projectileHeight);
 		
 		projectileValues.put("mass", 5.0);
 		projectileValues.put("maxVelocity", 5.0);

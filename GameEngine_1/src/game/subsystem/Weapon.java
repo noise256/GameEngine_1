@@ -17,7 +17,10 @@ public abstract class Weapon extends SubSystem {
 	protected double fireCount;
 	protected double fireIncrement;
 	protected double lifeDecrement;
-
+	
+	protected float projectileWidth;
+	protected float projectileHeight;
+	
 	protected Hashtable<String, Double> projectileValues = new Hashtable<String, Double>();
 	
 	private double maxRange;
@@ -26,16 +29,18 @@ public abstract class Weapon extends SubSystem {
 	
 	private ArrayList<TestProjectile> projectiles = new ArrayList<TestProjectile>();
 	
-	public Weapon(GameObject source, Section systemSection, SubSystemType subSystemType, Vector2D systemPosition, double orientation, double fireIncrement, double lifeDecrement, double firingArc) {
+	public Weapon(GameObject source, Section systemSection, SubSystemType subSystemType, Vector2D systemPosition, double orientation, double fireIncrement, double lifeDecrement, double firingArc, float projectileWidth, float projectileHeight) {
 		super(source, systemSection, subSystemType, systemPosition, orientation);
 		this.fireIncrement = fireIncrement;
 		this.lifeDecrement = lifeDecrement;
 		this.maxRange = 5 * (1 / lifeDecrement);
 		this.firingArc = firingArc;
+		this.projectileWidth = projectileWidth;
+		this.projectileHeight = projectileHeight;
 	}
 	
 	protected void fire() {
-		TestProjectile newProjectile = new TestProjectile(source, projectileValues, lifeDecrement);
+		TestProjectile newProjectile = new TestProjectile(source, projectileValues, lifeDecrement, projectileWidth, projectileHeight);
 		newProjectile.addObserver(GameManager.getObjectManager());
 		projectiles.add(newProjectile);
 	}
