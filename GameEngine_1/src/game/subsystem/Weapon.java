@@ -21,6 +21,11 @@ public abstract class Weapon extends SubSystem {
 	protected float projectileWidth;
 	protected float projectileHeight;
 	
+	protected boolean burst = true;
+	protected int burstNum = 10;
+	protected double burstInterval = 0.01;
+	protected double burstCount;
+	
 	protected Hashtable<String, Double> projectileValues = new Hashtable<String, Double>();
 	
 	private double maxRange;
@@ -39,10 +44,12 @@ public abstract class Weapon extends SubSystem {
 		this.projectileHeight = projectileHeight;
 	}
 	
-	protected void fire() {
-		TestProjectile newProjectile = new TestProjectile(source, projectileValues, lifeDecrement, projectileWidth, projectileHeight);
-		newProjectile.addObserver(GameManager.getObjectManager());
-		projectiles.add(newProjectile);
+	protected void fire(int num) {
+		for (int i = 0; i < num; i++) {
+			TestProjectile newProjectile = new TestProjectile(source, projectileValues, lifeDecrement, projectileWidth, projectileHeight);
+			newProjectile.addObserver(GameManager.getObjectManager());
+			projectiles.add(newProjectile);
+		}
 	}
 	
 	public boolean isValidTarget(PhysicalObject target) {

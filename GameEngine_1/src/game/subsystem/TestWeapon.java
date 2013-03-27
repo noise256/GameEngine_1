@@ -6,6 +6,7 @@ import objectManager.GameObject;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import sectionManager.Section;
+import utilityManager.MathBox;
 
 public class TestWeapon extends Weapon {
 	public TestWeapon(GameObject source, Section systemSection, Vector2D systemPosition, double systemOrientation, double fireIncrement, double lifeDecrement, double firingArc, float projectileWidth, float projectileHeight) {
@@ -35,13 +36,27 @@ public class TestWeapon extends Weapon {
 		if (fireCount <= 0.0 && activated) {
 			Vector2D absolutePosition = getAbsolutePosition();
 			
-			projectileValues.put("forceX", Math.cos(systemOrientation));
-			projectileValues.put("forceY", Math.sin(systemOrientation));
+			projectileValues.put("forceX", Math.cos(systemOrientation) + MathBox.nextFloat() * 0.05);
+			projectileValues.put("forceY", Math.sin(systemOrientation) + MathBox.nextFloat() * 0.05);
 			projectileValues.put("positionX", absolutePosition.getX());
 			projectileValues.put("positionY", absolutePosition.getY());
 			
-			fire();
-			fireCount = 1.0;
+			if (burst) {
+				fire(1);
+				fireCount = burstInterval;
+				
+				if (burstCount >= burstNum) {
+					burstCount = 0;
+					fireCount = 1;
+				}
+				else {
+					burstCount++;
+				}
+			}
+			else {
+				fire(1);
+				fireCount = 1.0;
+			}
 		}
 		else {
 			fireCount -= fireIncrement;

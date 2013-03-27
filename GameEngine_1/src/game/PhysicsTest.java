@@ -161,10 +161,10 @@ public class PhysicsTest extends GameManager {
 		
 		TestShip testShip1 = new TestShip(values, ship1Sections, ship1AdjacencyList, goodGuys);
 		
-		TestTurret ship1TestTurret1 = new TestTurret(testShip1, ship1Section10, new Vector2D(0.0, 0.0), testShip1.getOrientation(), 0.1, 0.005, Math.PI*2, 5, 5);
+		TestTurret ship1TestTurret1 = new TestTurret(testShip1, ship1Section10, new Vector2D(0.0, 0.0), testShip1.getOrientation(), 0.005, 0.005, Math.PI*2, 5, 5);
 		testShip1.addSubSystem(ship1TestTurret1);
 		
-		TestTurret ship1TestTurret2 = new TestTurret(testShip1, ship1Section11, new Vector2D(0.0, 0.0), testShip1.getOrientation(), 0.1, 0.005, Math.PI*2, 5, 5);
+		TestTurret ship1TestTurret2 = new TestTurret(testShip1, ship1Section11, new Vector2D(0.0, 0.0), testShip1.getOrientation(), 0.005, 0.005, Math.PI*2, 5, 5);
 		testShip1.addSubSystem(ship1TestTurret2);
 		
 		TestEngine ship1TestEngine0 = new TestEngine(testShip1, ship1Section8, new Vector2D(0.0, 0.0), testShip1.getOrientation(), 1);
@@ -304,10 +304,10 @@ public class PhysicsTest extends GameManager {
 			
 			TestShip testShip2 = new TestShip(values, ship2Sections, ship2AdjacencyList, goodGuys);
 			
-			TestTurret ship2TestTurret1 = new TestTurret(testShip2, ship2Section10, new Vector2D(0.0, 0.0), testShip2.getOrientation(), 0.1, 0.005, Math.PI*2, 5, 5);
+			TestTurret ship2TestTurret1 = new TestTurret(testShip2, ship2Section10, new Vector2D(0.0, 0.0), testShip2.getOrientation(), 0.005, 0.005, Math.PI*2, 5, 5);
 			testShip2.addSubSystem(ship2TestTurret1);
 			
-			TestTurret ship2TestTurret2 = new TestTurret(testShip2, ship2Section11, new Vector2D(0.0, 0.0), testShip2.getOrientation(), 0.1, 0.005, Math.PI*2, 5, 5);
+			TestTurret ship2TestTurret2 = new TestTurret(testShip2, ship2Section11, new Vector2D(0.0, 0.0), testShip2.getOrientation(), 0.005, 0.005, Math.PI*2, 5, 5);
 			testShip2.addSubSystem(ship2TestTurret2);
 			
 			TestEngine ship2TestEngine0 = new TestEngine(testShip2, ship2Section8, new Vector2D(0.0, 0.0), testShip2.getOrientation(), 1);

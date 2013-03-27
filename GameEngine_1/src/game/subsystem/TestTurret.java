@@ -7,6 +7,7 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import physicsManager.PhysicalObject;
 import sectionManager.Section;
+import utilityManager.MathBox;
 
 public class TestTurret extends Weapon {
 	private double targetOrientation;
@@ -57,13 +58,27 @@ public class TestTurret extends Weapon {
 		}
 		
 		if (fireCount <= 0.0 && activated) {
-			projectileValues.put("forceX", Math.cos(targetOrientation));
-			projectileValues.put("forceY", Math.sin(targetOrientation));
+			projectileValues.put("forceX", Math.cos(targetOrientation) + MathBox.nextFloat() * 0.05);
+			projectileValues.put("forceY", Math.sin(targetOrientation) + MathBox.nextFloat() * 0.05);
 			projectileValues.put("positionX", absolutePosition.getX());
 			projectileValues.put("positionY", absolutePosition.getY());
 			
-			fire();
-			fireCount = 1.0;
+			if (burst) {
+				fire(1);
+				fireCount = burstInterval;
+				
+				if (burstCount >= burstNum) {
+					burstCount = 0;
+					fireCount = 1;
+				}
+				else {
+					burstCount++;
+				}
+			}
+			else {
+				fire(1);
+				fireCount = 1.0;
+			}
 		}
 		else {
 			fireCount -= fireIncrement;
